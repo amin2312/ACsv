@@ -22,11 +22,11 @@ class Table
     /**
 	 * Head.
 	 */
-    public var head:Array<Field> = new Array<Field>();
+    public var head = new Array<Field>();
     /**
 	 * Body.
 	 */
-    public var body:Array<Dynamic> = new Array<Dynamic>();
+    public var body = new Array<Array<Dynamic>>();
     /**
 	 * Indexed set(optimize for read, like DB index feature).
 	 */
@@ -159,10 +159,9 @@ class Table
             return null;
         }
         var objs = new Array<Array<Dynamic>>();
-        var rows = _selectd;
-        for (i in 0...rows.length)
+        for (i in 0..._selectd.length)
         {
-            var row:Array<Dynamic> = rows[i];
+            var row:Array<Dynamic> = _selectd[i];
             objs.push(this.fmtRow(row));
         }
         return objs;
@@ -188,10 +187,9 @@ class Table
             return null;
         }
         var objs = new Array<Dynamic>();
-        var rows = _selectd;
-        for (i in 0...rows.length)
+        for (i in 0..._selectd.length)
         {
-            var row:Array<Dynamic> = rows[i];
+            var row:Array<Dynamic> = _selectd[i];
             objs.push(this.fmtObj(row));
         }
         return objs;
@@ -276,7 +274,7 @@ class Table
 	 * @param value the specified value
 	 * @param colIndex specified column's index
 	 */
-    public function selectAllWhenE(value:Dynamic, colIndex:Int = 0):Table
+    public function selectAllWhenE(value:Dynamic, colIndex:Int = 0, limit:Int = -1):Table
     {
         var rows = new Array<Dynamic>();
         for (i in 0...this.body.length)
@@ -285,6 +283,11 @@ class Table
             if (row[colIndex] == value)
             {
                 rows.push(row);
+                limit--;
+                if (limit == 0)
+                {
+                    break;
+                }
             }
         }
         _selectd = rows;
@@ -510,16 +513,14 @@ class Table
     /**
 	 * Convert text to array.
 	 */
-    static private function textToArray(text:String):Array<Dynamic>
+    static private function textToArray(text:String):Array<Array<Dynamic>>
     {
-        var array:Array<Dynamic> = [];
+        var array:Array<Array<Dynamic>> = [];
         var maxLen:Int = text.length;
         var ptr:String = text;
         var ptrPos:Int = 0;
         while (true)
         {
-            //ptr = text.substring(ptrPos); // truncate the part to be parsed
-            //var curLen:Int = ptr.length;
             var curLen = maxLen - ptrPos;
             var cellIndexA:Int = 0;
             var cellIndexB:Int = 0;
@@ -646,23 +647,20 @@ class Table
     /**
 	 * Array convert to rows.
 	 */
-    static private function arrayToRows(array:Array<Dynamic>):Table
+    static private function arrayToRows(array:Array<Array<Dynamic>>):Table
     {
-        var head:Array<String> = array.shift();
-        var body:Array<Dynamic> = array;
-
-        var i:Float;
-        var len:Float;
-        var j:Float;
-        var lenJ:Float;
-        var fileds:Array<Field> = new Array<Field>();
+        var head:Array<Dynamic> = array.shift();
+        var body:Array<Array<Dynamic>> = array;
         // parse head
+        var fileds:Array<Field> = new Array<Field>();
         for (i in 0...head.length)
         {
-            var pair:Array<String> = head[i].split(":");
+            var fullName:String = head[i];
+            var parts:Array<String> = fullName.split(":");
             var filed = new Field();
-            filed.name = pair[0];
-            filed.type = pair[1];
+            filed.fullName = fullName;
+            filed.name = parts[0];
+            filed.type = parts[1];
             fileds.push(filed);
         }
         // parse body
@@ -697,7 +695,7 @@ class Table
                     case "number":
                         if (isEmptyCell)
                         {
-                            newVal = 0;
+                            newVal = 0.0;
                         }
                         else
                         {

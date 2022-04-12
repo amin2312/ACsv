@@ -10,15 +10,17 @@ package acsv;
  @:expose
 class Field {
 	/**
-	 * Type.
+	 * Full Name.
 	 */
-	public var type:String;
-
+	public var fullName:String;
 	/**
 	 * Name.
 	 */
 	public var name:String;
-
+	/**
+	 * Type.
+	 */
+	public var type:String;
 	/**
 	 * Constructor.
 	 */

@@ -1,7 +1,7 @@
 <html>
 
 <head>
-    <meta charSet="utf-8"/>
+    <meta charSet="utf-8" />
 </head>
 <style>
     html {
@@ -39,7 +39,7 @@
 
     #nav a {
         color: blue;
-        margin-left:10px;
+        margin-left: 10px;
         text-decoration: none;
     }
 
@@ -53,27 +53,44 @@
         margin: 0px auto;
     }
 
-    #output>div{
-        font-size: 12px;
+    #output>div {
+        font-size: 1rem;
         height: 30px;
         line-height: 30px;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
     }
-    
-    #output>div:nth-child(odd){
+
+    #output>div:nth-child(odd) {
         background-color: #EEE;
     }
-    
+
     #output>div>span {
-        background-color:#090;
-        color:white;
+        background-color: #090;
+        color: white;
         margin: 0px 5px;
         padding: 3px;
     }
+
     .E {
         background-color: #C00;
+    }
+
+    #output table {
+        margin: 5px 0px;
+    }
+    #output td {
+        font-size: 1rem;
+        white-space: pre;
+    }
+    #output tfoot td {
+        font-size: 1.5rem;
+        height: 30px;
+        line-height: 30px;
+        font-weight: bold;
+        text-align: center;
+        background-color: #EEE;
     }
 </style>
 

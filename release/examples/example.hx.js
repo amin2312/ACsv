@@ -9,9 +9,59 @@ function $extend(from, fields) {
 }
 var Example = function() { };
 Example.main = function() {
-	Example.test_common_usage();
+	Example._tab1 = acsv_Table.Parse(Example.standard_format_text);
+	Example._tab2 = acsv_Table.Parse(Example.enhanced_format_text);
+	Example.showTable("standard csv format",Example._tab1);
 	Example.test_standard_csv_format();
+	Example.showTable("enhanced csv format",Example._tab2);
 	Example.test_enhanced_csv_format();
+};
+Example.showTables = function() {
+};
+Example.showTable = function(fileName,csvTable) {
+	var t = window.document.getElementById("output");
+	var tab = window.document.createElement("table");
+	var thead = window.document.createElement("thead");
+	var tr = window.document.createElement("tr");
+	thead.appendChild(tr);
+	var _g1 = 0;
+	var _g = csvTable.head.length;
+	while(_g1 < _g) {
+		var i = _g1++;
+		var td = window.document.createElement("td");
+		var row = csvTable.head[i];
+		td.innerText = row.fullName;
+		tr.appendChild(td);
+	}
+	tab.appendChild(thead);
+	var tbody = window.document.createElement("tbody");
+	var _g11 = 0;
+	var _g2 = csvTable.body.length;
+	while(_g11 < _g2) {
+		var i1 = _g11++;
+		var tr1 = window.document.createElement("tr");
+		var rows = csvTable.body[i1];
+		var _g3 = 0;
+		var _g21 = rows.length;
+		while(_g3 < _g21) {
+			var j = _g3++;
+			var td1 = window.document.createElement("td");
+			var row1 = rows[j];
+			td1.innerText = row1;
+			tr1.appendChild(td1);
+		}
+		tbody.appendChild(tr1);
+	}
+	tab.appendChild(tbody);
+	var tfoot = window.document.createElement("tfoot");
+	var tr2 = window.document.createElement("tr");
+	var td2 = window.document.createElement("td");
+	td2.colSpan = csvTable.head.length;
+	td2.innerText = fileName;
+	tr2.appendChild(td2);
+	tfoot.appendChild(tr2);
+	tab.appendChild(tfoot);
+	t.appendChild(tab);
 };
 Example.print = function(cmd,o) {
 	var t = window.document.getElementById("output");
@@ -25,43 +75,37 @@ Example.print = function(cmd,o) {
 	console.log(cmd);
 	console.log(o);
 };
-Example.test_common_usage = function() {
-	var tab1 = acsv_Table.Parse(Example.standard_format_text);
-	Example.print("select all to rows",tab1.selectAll().toROWs());
-	Example.print("select all to objs",tab1.selectAll().toOBJs());
-	Example.print("select first row",tab1.selectFirstRow().toRow());
-	Example.print("select first obj",tab1.selectFirstRow().toObj());
-	Example.print("select last row",tab1.selectLastRow().toRow());
-	Example.print("select last obj",tab1.selectLastRow().toObj());
-	var tab2 = acsv_Table.Parse(Example.enhanced_format_text);
-	Example.print("[enhanced] select all to rows",tab2.selectAll().toROWs());
-	Example.print("[enhanced] select all to objs",tab2.selectAll().toOBJs());
-	Example.print("[enhanced] select first row",tab2.selectFirstRow().toRow());
-	Example.print("[enhanced] select first obj",tab2.selectFirstRow().toObj());
-	Example.print("[enhanced] select last row",tab2.selectLastRow().toRow());
-	Example.print("[enhanced] select last obj",tab2.selectLastRow().toObj());
-};
 Example.test_standard_csv_format = function() {
-	var table = acsv_Table.Parse(Example.standard_format_text);
-	Example.print("select [id] = \"2\"",table.selectOneWhenE("2").toRow());
-	Example.print("select [id] = \"-1\"",table.selectOneWhenE("-1").toRow());
-	Example.print("select [id] = \"3\" and [id2] = \"20\"",table.selectOneWhenE2("3","20").toRow());
-	Example.print("select [id] = \"3\" and [id2] = \"-1\"",table.selectOneWhenE2("3","-1").toRow());
-	Example.print("select [id] = \"4\" and [id2] = \"21\" and [id3] = \"100\"",table.selectOneWhenE3("4","21","100").toRow());
-	Example.print("select [id] = \"4\" and [id2] = \"21\" and [id3] = \"-1\"",table.selectOneWhenE3("4","21","-1").toRow());
-	Example.print("select all [id2] = \"20\"",table.selectAllWhenE("20",1).toROWs());
-	Example.print("select all [id2] = \"-1\"",table.selectAllWhenE("-1",1).toROWs());
+	Example.print("select all to rows",Example._tab1.selectAll().toROWs());
+	Example.print("select all to objs",Example._tab1.selectAll().toOBJs());
+	Example.print("select first row",Example._tab1.selectFirstRow().toRow());
+	Example.print("select first obj",Example._tab1.selectFirstRow().toObj());
+	Example.print("select last row",Example._tab1.selectLastRow().toRow());
+	Example.print("select last obj",Example._tab1.selectLastRow().toObj());
+	Example.print("select [id] = \"2\"",Example._tab1.selectOneWhenE("2").toObj());
+	Example.print("select [id] = \"-1\"",Example._tab1.selectOneWhenE("-1").toObj());
+	Example.print("select [id] = \"3\" and [id2] = \"20\"",Example._tab1.selectOneWhenE2("3","20").toObj());
+	Example.print("select [id] = \"3\" and [id2] = \"-1\"",Example._tab1.selectOneWhenE2("3","-1").toObj());
+	Example.print("select [id] = \"4\" and [id2] = \"21\" and [id3] = \"100\"",Example._tab1.selectOneWhenE3("4","21","100").toObj());
+	Example.print("select [id] = \"4\" and [id2] = \"21\" and [id3] = \"-1\"",Example._tab1.selectOneWhenE3("4","21","-1").toObj());
+	Example.print("select all [id2] = \"20\"",Example._tab1.selectAllWhenE("20",1).toOBJs());
+	Example.print("select all [id2] = \"-1\"",Example._tab1.selectAllWhenE("-1",1).toOBJs());
 };
 Example.test_enhanced_csv_format = function() {
-	var table = acsv_Table.Parse(Example.enhanced_format_text);
-	Example.print("[enhanced] select [id] = 2",table.selectOneWhenE(2).toRow());
-	Example.print("[enhanced] select [id] = -1",table.selectOneWhenE(-1).toRow());
-	Example.print("[enhanced] select [id] = 3 and [id2] = 20",table.selectOneWhenE2(3,20).toRow());
-	Example.print("[enhanced] select [id] = 3 and [id2] = -1",table.selectOneWhenE2(3,-1).toRow());
-	Example.print("[enhanced] select [id] = 4 and [id2] = 21 and [id3] = 100",table.selectOneWhenE3(4,21,100).toRow());
-	Example.print("[enhanced] select [id] = 4 and [id2] = 21 and [id3] = -1",table.selectOneWhenE3(4,21,-1).toRow());
-	Example.print("[enhanced] select all [id2] = 20",table.selectAllWhenE(20,1).toROWs());
-	Example.print("[enhanced] select all [id2] = -1",table.selectAllWhenE(-1,1).toROWs());
+	Example.print("[enhanced] select all to rows",Example._tab2.selectAll().toROWs());
+	Example.print("[enhanced] select all to objs",Example._tab2.selectAll().toOBJs());
+	Example.print("[enhanced] select first row",Example._tab2.selectFirstRow().toRow());
+	Example.print("[enhanced] select first obj",Example._tab2.selectFirstRow().toObj());
+	Example.print("[enhanced] select last row",Example._tab2.selectLastRow().toRow());
+	Example.print("[enhanced] select last obj",Example._tab2.selectLastRow().toObj());
+	Example.print("[enhanced] select [id] = 2",Example._tab2.selectOneWhenE(2).toObj());
+	Example.print("[enhanced] select [id] = -1",Example._tab2.selectOneWhenE(-1).toObj());
+	Example.print("[enhanced] select [id] = 3 and [id2] = 20",Example._tab2.selectOneWhenE2(3,20).toObj());
+	Example.print("[enhanced] select [id] = 3 and [id2] = -1",Example._tab2.selectOneWhenE2(3,-1).toObj());
+	Example.print("[enhanced] select [id] = 4 and [id2] = 21 and [id3] = 100",Example._tab2.selectOneWhenE3(4,21,100).toObj());
+	Example.print("[enhanced] select [id] = 4 and [id2] = 21 and [id3] = -1",Example._tab2.selectOneWhenE3(4,21,-1).toObj());
+	Example.print("[enhanced] select all [id2] = 20",Example._tab2.selectAllWhenE(20,1).toOBJs());
+	Example.print("[enhanced] select all [id2] = -1",Example._tab2.selectAllWhenE(-1,1).toOBJs());
 };
 var HxOverrides = function() { };
 HxOverrides.cca = function(s,index) {
@@ -193,32 +237,30 @@ acsv_Table.textToArray = function(text) {
 acsv_Table.arrayToRows = function(array) {
 	var head = array.shift();
 	var body = array;
-	var i;
-	var len;
-	var j;
-	var lenJ;
 	var fileds = [];
 	var _g1 = 0;
 	var _g = head.length;
 	while(_g1 < _g) {
-		var i1 = _g1++;
-		var pair = head[i1].split(":");
+		var i = _g1++;
+		var fullName = head[i];
+		var parts = fullName.split(":");
 		var filed = new acsv_Field();
-		filed.name = pair[0];
-		filed.type = pair[1];
+		filed.fullName = fullName;
+		filed.name = parts[0];
+		filed.type = parts[1];
 		fileds.push(filed);
 	}
 	var _g11 = 0;
 	var _g2 = body.length;
 	while(_g11 < _g2) {
-		var i2 = _g11++;
-		var row = body[i2];
+		var i1 = _g11++;
+		var row = body[i1];
 		var _g3 = 0;
 		var _g21 = row.length;
 		while(_g3 < _g21) {
-			var j1 = _g3++;
-			var type = fileds[j1].type;
-			var cell = row[j1];
+			var j = _g3++;
+			var type = fileds[j].type;
+			var cell = row[j];
 			var newVal = cell;
 			var isEmptyCell = cell == null || cell == "";
 			switch(type) {
@@ -245,7 +287,7 @@ acsv_Table.arrayToRows = function(array) {
 				break;
 			case "number":
 				if(isEmptyCell) {
-					newVal = 0;
+					newVal = 0.0;
 				} else {
 					newVal = parseFloat(newVal);
 				}
@@ -258,9 +300,9 @@ acsv_Table.arrayToRows = function(array) {
 				}
 				break;
 			}
-			row[j1] = newVal;
+			row[j] = newVal;
 		}
-		body[i2] = row;
+		body[i1] = row;
 	}
 	var table = new acsv_Table();
 	table.head = fileds;
@@ -337,12 +379,11 @@ acsv_Table.prototype = {
 			return null;
 		}
 		var objs = [];
-		var rows = this._selectd;
 		var _g1 = 0;
-		var _g = rows.length;
+		var _g = this._selectd.length;
 		while(_g1 < _g) {
 			var i = _g1++;
-			var row = rows[i];
+			var row = this._selectd[i];
 			objs.push(this.fmtRow(row));
 		}
 		return objs;
@@ -358,12 +399,11 @@ acsv_Table.prototype = {
 			return null;
 		}
 		var objs = [];
-		var rows = this._selectd;
 		var _g1 = 0;
-		var _g = rows.length;
+		var _g = this._selectd.length;
 		while(_g1 < _g) {
 			var i = _g1++;
-			var row = rows[i];
+			var row = this._selectd[i];
 			objs.push(this.fmtObj(row));
 		}
 		return objs;
@@ -423,7 +463,10 @@ acsv_Table.prototype = {
 		}
 		return this.selectAllWhenE3(value1,value2,value3,colIndex3,colIndex2,colIndex1,1);
 	}
-	,selectAllWhenE: function(value,colIndex) {
+	,selectAllWhenE: function(value,colIndex,limit) {
+		if(limit == null) {
+			limit = -1;
+		}
 		if(colIndex == null) {
 			colIndex = 0;
 		}
@@ -435,6 +478,10 @@ acsv_Table.prototype = {
 			var row = this.body[i];
 			if(row[colIndex] == value) {
 				rows.push(row);
+				--limit;
+				if(limit == 0) {
+					break;
+				}
 			}
 		}
 		this._selectd = rows;
@@ -635,7 +682,7 @@ js__$Boot_HaxeError.__super__ = Error;
 js__$Boot_HaxeError.prototype = $extend(Error.prototype,{
 });
 Example.standard_format_text = "id,id2,id3,name,brief\r\n1,20,100,John,He is a googd man\r\n2,20,200,张三,\"他是一个好人\r\n我们都喜欢他\"\r\n3,20,300,море,\"Он хороший человек\r\nмы все любим его\r\nЕго девиз:\r\n\"\"доверяй себе\"\"\"\r\n4,21,100,الشمس,صباح الخير\r\n5,21,200,चंद्रमा,\r\n6,21,300,,सुसंध्या\r\n7,22,100,,อยากเป็นซุปตาร์\r\n8,22,200,ดาว,";
-Example.enhanced_format_text = "id:int,id2:int,id3:int,name:string,money:number,marry:bool,education:json,tags:strings,brief\r\n1,20,100,John,101.1,true,\"[\"\"MSU\"\"]\",\"good,cool\",He is a googd man\r\n2,20,200,张三,102.2,false,\"[\"\"JHU\"\",\"\"MIT\"\"]\",good,\"他是一个好人\r\n我们都喜欢他\"\r\n3,20,300,море,103.4,true,\"[\"\"BC\"\",\"\"HYP\"\",\"\"NYU\"\"]\",strong,\"Он хороший человек\r\nмы все любим его\r\nЕго девиз:\r\n\"\"доверяй себе\"\"\"\r\n4,21,100,الشمس,104.8,false,\"{\"\"USC\"\":2020}\",\"strong,cool\",صباح الخير\r\n5,21,200,चंद्रमा,105.16,1,\"{\"\"UCHI\"\":2020,\"\"UCB\"\":2021}\",\"height,strong\",\r\n6,21,300,,106.32,0,\"{\"\"UCHI\"\":2020,\"\"UCB\"\":[2021,2022]}\",\"thin,good\",सुसंध्या\r\n7,22,100,,107.64,1,\"[\"\"VT\"\",{\"\"UCSD\"\":2020}]\",,อยากเป็นซุปตาร์\r\n8,22,200,ดาว,108.128,0,,\"hot,thin,good\",";
+Example.enhanced_format_text = "id:int,id2:int,id3:int,name:string,weight:number,marry:bool,education:json,tags:strings,brief\r\n1,20,100,John,120.1,true,\"[\"\"MSU\"\"]\",\"good,cool\",He is a googd man\r\n2,20,200,张三,121.2,false,\"[\"\"JHU\"\",\"\"MIT\"\"]\",good,\"他是一个好人\r\n我们都喜欢他\"\r\n3,20,300,море,123.4,true,\"[\"\"BC\"\",\"\"HYP\"\",\"\"NYU\"\"]\",strong,\"Он хороший человек\r\nмы все любим его\r\nЕго девиз:\r\n\"\"доверяй себе\"\"\"\r\n4,21,100,الشمس,124.5,false,\"{\"\"USC\"\":12}\",\"strong,cool\",صباح الخير\r\n5,21,200,चंद्रमा,126.7,1,\"{\"\"UCHI\"\":34,\"\"UCB\"\":56}\",\"height,strong\",\r\n6,21,300,,127.8,0,\"{\"\"UCHI\"\":78,\"\"UCB\"\":[90,12]}\",\"thin,good\",सुसंध्या\r\n7,22,100,,128.9,1,\"[\"\"VT\"\",{\"\"UCSD\"\":34}]\",,อยากเป็นซุปตาร์\r\n8,22,200,ดาว,129.01,0,,\"hot,thin,good\",";
 acsv_Table.JSON_TYPES = ["json","strings"];
 acsv_Table.CompareTypeEqual = 0;
 acsv_Table.CompareTypeGreater = 1;

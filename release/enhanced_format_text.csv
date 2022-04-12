@@ -1,13 +1,13 @@
-﻿id:int,id2:int,id3:int,name:string,money:number,marry:bool,education:json,tags:strings,brief
-1,20,100,John,101.1,true,"[""MSU""]","good,cool",He is a googd man
-2,20,200,张三,102.2,false,"[""JHU"",""MIT""]",good,"他是一个好人
+﻿id:int,id2:int,id3:int,name:string,weight:number,marry:bool,education:json,tags:strings,brief
+1,20,100,John,120.1,true,"[""MSU""]","good,cool",He is a googd man
+2,20,200,张三,121.2,false,"[""JHU"",""MIT""]",good,"他是一个好人
 我们都喜欢他"
-3,20,300,море,103.4,true,"[""BC"",""HYP"",""NYU""]",strong,"Он хороший человек
+3,20,300,море,123.4,true,"[""BC"",""HYP"",""NYU""]",strong,"Он хороший человек
 мы все любим его
 Его девиз:
 ""доверяй себе"""
-4,21,100,الشمس,104.8,false,"{""USC"":2020}","strong,cool",صباح الخير
-5,21,200,चंद्रमा,105.16,1,"{""UCHI"":2020,""UCB"":2021}","height,strong",
-6,21,300,,106.32,0,"{""UCHI"":2020,""UCB"":[2021,2022]}","thin,good",सुसंध्या
-7,22,100,,107.64,1,"[""VT"",{""UCSD"":2020}]",,อยากเป็นซุปตาร์
-8,22,200,ดาว,108.128,0,,"hot,thin,good",
+4,21,100,الشمس,124.5,false,"{""USC"":12}","strong,cool",صباح الخير
+5,21,200,चंद्रमा,126.7,1,"{""UCHI"":34,""UCB"":56}","height,strong",
+6,21,300,,127.8,0,"{""UCHI"":78,""UCB"":[90,12]}","thin,good",सुसंध्या
+7,22,100,,128.9,1,"[""VT"",{""UCSD"":34}]",,อยากเป็นซุปตาร์
+8,22,200,ดาว,129.01,0,,"hot,thin,good",
