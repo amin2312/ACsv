@@ -1,0 +1,3 @@
+-cp src/hx
+-main Example
+-js release/examples/example.hx.js

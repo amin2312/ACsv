@@ -1,0 +1,90 @@
+<html>
+
+<head>
+    <meta charSet="utf-8"/>
+</head>
+<style>
+    html {
+        font-size: 12px;
+    }
+
+    html,
+    body {
+        margin: 0px;
+        padding: 0px;
+        color: #000;
+    }
+
+    button {
+        padding: 0px;
+        margin: 5px;
+    }
+
+    table {
+        border-spacing: 0px;
+        border-collapse: collapse;
+    }
+
+    td {
+        border: 1px #000 solid;
+        padding: 5px;
+    }
+
+    #nav {
+        height: 30px;
+        line-height: 30px;
+        font-size: 1.5rem;
+        background-color: #EEE;
+    }
+
+    #nav a {
+        color: blue;
+        margin-left:10px;
+        text-decoration: none;
+    }
+
+    #nav a:hover {
+        color: blue;
+        text-decoration: underline;
+    }
+
+    #main {
+        width: 1000px;
+        margin: 0px auto;
+    }
+
+    #output>div{
+        font-size: 12px;
+        height: 30px;
+        line-height: 30px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+    
+    #output>div:nth-child(odd){
+        background-color: #EEE;
+    }
+    
+    #output>div>span {
+        background-color:#090;
+        color:white;
+        margin: 0px 5px;
+        padding: 3px;
+    }
+    .E {
+        background-color: #C00;
+    }
+</style>
+
+<body>
+    <div id="main">
+        <div id="nav"><a href="https://github.com/amin2312/ATween">[Home]</a><a href="basic.html">[Basic examples]</a></div>
+        <div style="line-height: 60px; font-size:2rem; font-weight: bold; text-align: center;">ACsv haxe examples</div>
+        <div id="output">
+        </div>
+    </div>
+</body>
+
+</html>
+<script src="example.hx.js"></script>
