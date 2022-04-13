@@ -76,36 +76,40 @@ Example.print = function(cmd,o) {
 	console.log(o);
 };
 Example.test_standard_csv_format = function() {
-	Example.print("select all to rows",Example._tab1.selectAll().toROWs());
-	Example.print("select all to objs",Example._tab1.selectAll().toOBJs());
-	Example.print("select first row",Example._tab1.selectFirstRow().toRow());
-	Example.print("select first obj",Example._tab1.selectFirstRow().toObj());
-	Example.print("select last row",Example._tab1.selectLastRow().toRow());
-	Example.print("select last obj",Example._tab1.selectLastRow().toObj());
-	Example.print("select [id] = \"2\"",Example._tab1.selectOneWhenE("2").toObj());
-	Example.print("select [id] = \"-1\"",Example._tab1.selectOneWhenE("-1").toObj());
-	Example.print("select [id] = \"3\" and [id2] = \"20\"",Example._tab1.selectOneWhenE2("3","20").toObj());
-	Example.print("select [id] = \"3\" and [id2] = \"-1\"",Example._tab1.selectOneWhenE2("3","-1").toObj());
-	Example.print("select [id] = \"4\" and [id2] = \"21\" and [id3] = \"100\"",Example._tab1.selectOneWhenE3("4","21","100").toObj());
-	Example.print("select [id] = \"4\" and [id2] = \"21\" and [id3] = \"-1\"",Example._tab1.selectOneWhenE3("4","21","-1").toObj());
-	Example.print("select all [id2] = \"20\"",Example._tab1.selectAllWhenE("20",1).toOBJs());
-	Example.print("select all [id2] = \"-1\"",Example._tab1.selectAllWhenE("-1",1).toOBJs());
+	Example.print("select all to rows",Example._tab1.selectAll().toRows());
+	Example.print("select all to objs",Example._tab1.selectAll().toObjs());
+	Example.print("select first row",Example._tab1.selectFirstRow().toFirstRow());
+	Example.print("select first obj",Example._tab1.selectFirstRow().toFirstObj());
+	Example.print("select last row",Example._tab1.selectLastRow().toFirstRow());
+	Example.print("select last obj",Example._tab1.selectLastRow().toFirstObj());
+	Example.print("select [id] = \"2\"",Example._tab1.selectWhenE(1,"2").toFirstObj());
+	Example.print("select [id] = \"-1\"",Example._tab1.selectWhenE(1,"-1").toFirstObj());
+	Example.print("select [id] = \"3\" and [id2] = \"20\"",Example._tab1.selectWhenE2(1,"3","20").toFirstObj());
+	Example.print("select [id] = \"3\" and [id2] = \"-1\"",Example._tab1.selectWhenE2(1,"3","-1").toFirstObj());
+	Example.print("select [id] = \"4\" and [id2] = \"21\" and [id3] = \"100\"",Example._tab1.selectWhenE3(1,"4","21","100").toFirstObj());
+	Example.print("select [id] = \"4\" and [id2] = \"21\" and [id3] = \"-1\"",Example._tab1.selectWhenE3(1,"4","21","-1").toFirstObj());
+	Example.print("select all [id2] = \"20\"",Example._tab1.selectWhenE(0,"20",1).toObjs());
+	Example.print("select all [id2] = \"-1\"",Example._tab1.selectWhenE(0,"-1",1).toObjs());
 };
 Example.test_enhanced_csv_format = function() {
-	Example.print("[enhanced] select all to rows",Example._tab2.selectAll().toROWs());
-	Example.print("[enhanced] select all to objs",Example._tab2.selectAll().toOBJs());
-	Example.print("[enhanced] select first row",Example._tab2.selectFirstRow().toRow());
-	Example.print("[enhanced] select first obj",Example._tab2.selectFirstRow().toObj());
-	Example.print("[enhanced] select last row",Example._tab2.selectLastRow().toRow());
-	Example.print("[enhanced] select last obj",Example._tab2.selectLastRow().toObj());
-	Example.print("[enhanced] select [id] = 2",Example._tab2.selectOneWhenE(2).toObj());
-	Example.print("[enhanced] select [id] = -1",Example._tab2.selectOneWhenE(-1).toObj());
-	Example.print("[enhanced] select [id] = 3 and [id2] = 20",Example._tab2.selectOneWhenE2(3,20).toObj());
-	Example.print("[enhanced] select [id] = 3 and [id2] = -1",Example._tab2.selectOneWhenE2(3,-1).toObj());
-	Example.print("[enhanced] select [id] = 4 and [id2] = 21 and [id3] = 100",Example._tab2.selectOneWhenE3(4,21,100).toObj());
-	Example.print("[enhanced] select [id] = 4 and [id2] = 21 and [id3] = -1",Example._tab2.selectOneWhenE3(4,21,-1).toObj());
-	Example.print("[enhanced] select all [id2] = 20",Example._tab2.selectAllWhenE(20,1).toOBJs());
-	Example.print("[enhanced] select all [id2] = -1",Example._tab2.selectAllWhenE(-1,1).toOBJs());
+	Example.print("[enhanced] select all to rows",Example._tab2.selectAll().toRows());
+	Example.print("[enhanced] select all to objs",Example._tab2.selectAll().toObjs());
+	Example.print("[enhanced] select first row",Example._tab2.selectFirstRow().toFirstRow());
+	Example.print("[enhanced] select first obj",Example._tab2.selectFirstRow().toFirstObj());
+	Example.print("[enhanced] select last row",Example._tab2.selectLastRow().toFirstRow());
+	Example.print("[enhanced] select last obj",Example._tab2.selectLastRow().toFirstObj());
+	Example.print("[enhanced] select [id] = 2",Example._tab2.selectWhenE(1,2).toFirstObj());
+	Example.print("[enhanced] select [id] = -1",Example._tab2.selectWhenE(1,-1).toFirstObj());
+	Example.print("[enhanced] select [id] = 3 and [id2] = 20",Example._tab2.selectWhenE2(1,3,20).toFirstObj());
+	Example.print("[enhanced] select [id] = 3 and [id2] = -1",Example._tab2.selectWhenE2(1,3,-1).toFirstObj());
+	Example.print("[enhanced] select [id] = 4 and [id2] = 21 and [id3] = 100",Example._tab2.selectWhenE3(1,4,21,100).toFirstObj());
+	Example.print("[enhanced] select [id] = 4 and [id2] = 21 and [id3] = -1",Example._tab2.selectWhenE3(1,4,21,-1).toFirstObj());
+	Example.print("[enhanced] select all [id2] = 20",Example._tab2.selectWhenE(0,20,1).toObjs());
+	Example.print("[enhanced] select all [id2] = -1",Example._tab2.selectWhenE(0,-1,1).toObjs());
+	Example.print("[enhanced] select all [id2] > 21",Example._tab2.selectWhenG(0,false,21,1).toObjs());
+	Example.print("[enhanced] select all [id2] >= 21",Example._tab2.selectWhenG(0,true,21,1).toObjs());
+	Example.print("[enhanced] select all [id2] < 21",Example._tab2.selectWhenL(0,false,21,1).toObjs());
+	Example.print("[enhanced] select all [id2] <= 21",Example._tab2.selectWhenL(0,true,21,1).toObjs());
 };
 var HxOverrides = function() { };
 HxOverrides.cca = function(s,index) {
@@ -133,7 +137,7 @@ StringTools.replace = function(s,sub,by) {
 var acsv_Field = $hx_exports["acsv"]["Field"] = function() {
 };
 var acsv_Table = $hx_exports["acsv"]["Table"] = function() {
-	this._indexed = { };
+	this._indexSet = { };
 	this.body = [];
 	this.head = [];
 };
@@ -282,6 +286,9 @@ acsv_Table.arrayToRows = function(array) {
 				if(isEmptyCell) {
 					newVal = null;
 				} else {
+					if(!(cell.charAt(0) == "[" || cell.charAt(0) == "{")) {
+						throw new js__$Boot_HaxeError(fileds[j].name + "," + cell);
+					}
 					newVal = cell;
 				}
 				break;
@@ -329,7 +336,7 @@ acsv_Table.prototype = {
 			var key = row[colIndex];
 			map[key] = row;
 		}
-		this._indexed[colIndex] = map;
+		this._indexSet[colIndex] = map;
 	}
 	,fmtRow: function(row) {
 		var obj = [];
@@ -368,13 +375,19 @@ acsv_Table.prototype = {
 		}
 		return obj;
 	}
-	,toRow: function() {
+	,toFirstRow: function() {
 		if(this._selectd == null || this._selectd.length == 0) {
 			return null;
 		}
 		return this.fmtRow(this._selectd[0]);
 	}
-	,toROWs: function() {
+	,toLastRow: function() {
+		if(this._selectd == null || this._selectd.length == 0) {
+			return null;
+		}
+		return this.fmtRow(this._selectd[this._selectd.length - 1]);
+	}
+	,toRows: function() {
 		if(this._selectd == null || this._selectd.length == 0) {
 			return null;
 		}
@@ -388,13 +401,19 @@ acsv_Table.prototype = {
 		}
 		return objs;
 	}
-	,toObj: function() {
+	,toFirstObj: function() {
 		if(this._selectd == null || this._selectd.length == 0) {
 			return null;
 		}
 		return this.fmtObj(this._selectd[0]);
 	}
-	,toOBJs: function() {
+	,toLastObj: function() {
+		if(this._selectd == null || this._selectd.length == 0) {
+			return null;
+		}
+		return this.fmtObj(this._selectd[this._selectd.length - 1]);
+	}
+	,toObjs: function() {
 		if(this._selectd == null || this._selectd.length == 0) {
 			return null;
 		}
@@ -420,55 +439,21 @@ acsv_Table.prototype = {
 		this._selectd = [this.body[this.body.length - 1]];
 		return this;
 	}
-	,selectOneWhenE: function(value,colIndex) {
+	,selectWhenE: function(limit,value,colIndex) {
 		if(colIndex == null) {
 			colIndex = 0;
 		}
-		this._selectd = null;
-		var map = this._indexed[colIndex];
-		if(map != null) {
-			this._selectd = [map[value]];
-			return this;
-		}
-		var _g1 = 0;
-		var _g = this.body.length;
-		while(_g1 < _g) {
-			var i = _g1++;
-			var row = this.body[i];
-			if(row[colIndex] == value) {
-				this._selectd = [row];
+		if(limit == 1) {
+			var map = this._indexSet[colIndex];
+			if(map != null) {
+				var val = map[value];
+				if(val != null) {
+					this._selectd = [val];
+				} else {
+					this._selectd = null;
+				}
 				return this;
 			}
-		}
-		return this;
-	}
-	,selectOneWhenE2: function(value1,value2,colIndex2,colIndex1) {
-		if(colIndex1 == null) {
-			colIndex1 = 0;
-		}
-		if(colIndex2 == null) {
-			colIndex2 = 1;
-		}
-		return this.selectAllWhenE2(value1,value2,colIndex2,colIndex1,1);
-	}
-	,selectOneWhenE3: function(value1,value2,value3,colIndex3,colIndex2,colIndex1) {
-		if(colIndex1 == null) {
-			colIndex1 = 0;
-		}
-		if(colIndex2 == null) {
-			colIndex2 = 1;
-		}
-		if(colIndex3 == null) {
-			colIndex3 = 2;
-		}
-		return this.selectAllWhenE3(value1,value2,value3,colIndex3,colIndex2,colIndex1,1);
-	}
-	,selectAllWhenE: function(value,colIndex,limit) {
-		if(limit == null) {
-			limit = -1;
-		}
-		if(colIndex == null) {
-			colIndex = 0;
 		}
 		var rows = [];
 		var _g1 = 0;
@@ -487,10 +472,7 @@ acsv_Table.prototype = {
 		this._selectd = rows;
 		return this;
 	}
-	,selectAllWhenE2: function(value1,value2,colIndex2,colIndex1,limit) {
-		if(limit == null) {
-			limit = -1;
-		}
+	,selectWhenE2: function(limit,value1,value2,colIndex2,colIndex1) {
 		if(colIndex1 == null) {
 			colIndex1 = 0;
 		}
@@ -514,10 +496,7 @@ acsv_Table.prototype = {
 		this._selectd = rows;
 		return this;
 	}
-	,selectAllWhenE3: function(value1,value2,value3,colIndex3,colIndex2,colIndex1,limit) {
-		if(limit == null) {
-			limit = -1;
-		}
+	,selectWhenE3: function(limit,value1,value2,value3,colIndex3,colIndex2,colIndex1) {
 		if(colIndex1 == null) {
 			colIndex1 = 0;
 		}
@@ -544,7 +523,7 @@ acsv_Table.prototype = {
 		this._selectd = rows;
 		return this;
 	}
-	,selectAllWhenG: function(value,colIndex) {
+	,selectWhenG: function(limit,withEqu,value,colIndex) {
 		if(colIndex == null) {
 			colIndex = 0;
 		}
@@ -554,112 +533,60 @@ acsv_Table.prototype = {
 		while(_g1 < _g) {
 			var i = _g1++;
 			var row = this.body[i];
-			if(row[colIndex] > value) {
+			var rowVal = row[colIndex];
+			if(rowVal > value || withEqu && rowVal == value) {
 				rows.push(row);
-			}
-		}
-		this._selectd = rows;
-		return this;
-	}
-	,selectAllWhenGE: function(value,colIndex) {
-		if(colIndex == null) {
-			colIndex = 0;
-		}
-		var rows = [];
-		var _g1 = 0;
-		var _g = this.body.length;
-		while(_g1 < _g) {
-			var i = _g1++;
-			var row = this.body[i];
-			if(row[colIndex] >= value) {
-				rows.push(row);
-			}
-		}
-		this._selectd = rows;
-		return this;
-	}
-	,selectAllWhenL: function(value,colIndex) {
-		if(colIndex == null) {
-			colIndex = 0;
-		}
-		var rows = [];
-		var _g1 = 0;
-		var _g = this.body.length;
-		while(_g1 < _g) {
-			var i = _g1++;
-			var row = this.body[i];
-			if(row[colIndex] < value) {
-				rows.push(row);
-			}
-		}
-		this._selectd = rows;
-		return this;
-	}
-	,selectAllWhenLE: function(value,colIndex) {
-		if(colIndex == null) {
-			colIndex = 0;
-		}
-		var rows = [];
-		var _g1 = 0;
-		var _g = this.body.length;
-		while(_g1 < _g) {
-			var i = _g1++;
-			var row = this.body[i];
-			if(row[colIndex] <= value) {
-				rows.push(row);
-			}
-		}
-		this._selectd = rows;
-		return this;
-	}
-	,selectRowWhenNear: function(value,nearType,colIndex) {
-		if(colIndex == null) {
-			colIndex = 0;
-		}
-		this._selectd = null;
-		var rowIndex = 0;
-		var cellVal;
-		var _g1 = 0;
-		var _g = this.body.length;
-		while(_g1 < _g) {
-			var i = _g1++;
-			var row = this.body[i];
-			rowIndex = i;
-			cellVal = row[colIndex];
-			var isNear = false;
-			if(value < 0) {
-				if(nearType == 0) {
-					isNear = value == cellVal;
-				} else if(nearType == 1) {
-					isNear = value < cellVal;
-				} else if(nearType == 2) {
-					isNear = value <= cellVal;
-				} else if(nearType == 3) {
-					isNear = value > cellVal;
-				} else if(nearType == 2) {
-					isNear = value >= cellVal;
-				}
-				if(isNear) {
-					break;
-				}
-			} else {
-				if(nearType == 0) {
-					isNear = value == cellVal;
-				} else if(nearType == 1) {
-					isNear = value > cellVal;
-				} else if(nearType == 2) {
-					isNear = value >= cellVal;
-				} else if(nearType == 3) {
-					isNear = value < cellVal;
-				} else if(nearType == 2) {
-					isNear = value <= cellVal;
-				}
-				if(isNear) {
+				--limit;
+				if(limit == 0) {
 					break;
 				}
 			}
 		}
-		this._selectd = this.body[rowIndex];
+		this._selectd = rows;
+		return this;
+	}
+	,selectWhenL: function(limit,withEqu,value,colIndex) {
+		if(colIndex == null) {
+			colIndex = 0;
+		}
+		var rows = [];
+		var _g1 = 0;
+		var _g = this.body.length;
+		while(_g1 < _g) {
+			var i = _g1++;
+			var row = this.body[i];
+			var rowVal = row[colIndex];
+			if(rowVal < value || withEqu && rowVal == value) {
+				rows.push(row);
+				--limit;
+				if(limit == 0) {
+					break;
+				}
+			}
+		}
+		this._selectd = rows;
+		return this;
+	}
+	,selectWhenGTandLT: function(limit,GwithEqu,LwithEqu,value,colIndex) {
+		if(colIndex == null) {
+			colIndex = 0;
+		}
+		var rows = [];
+		var _g1 = 0;
+		var _g = this.body.length;
+		while(_g1 < _g) {
+			var i = _g1++;
+			var row = this.body[i];
+			var rowVal = row[colIndex];
+			if(rowVal > value || GwithEqu && rowVal == value) {
+				rows.push(row);
+				--limit;
+				if(limit == 0) {
+					break;
+				}
+			}
+		}
+		this._selectd = rows;
 		return this;
 	}
 };
@@ -684,10 +611,5 @@ js__$Boot_HaxeError.prototype = $extend(Error.prototype,{
 Example.standard_format_text = "id,id2,id3,name,brief\r\n1,20,100,John,He is a googd man\r\n2,20,200,张三,\"他是一个好人\r\n我们都喜欢他\"\r\n3,20,300,море,\"Он хороший человек\r\nмы все любим его\r\nЕго девиз:\r\n\"\"доверяй себе\"\"\"\r\n4,21,100,الشمس,صباح الخير\r\n5,21,200,चंद्रमा,\r\n6,21,300,,सुसंध्या\r\n7,22,100,,อยากเป็นซุปตาร์\r\n8,22,200,ดาว,";
 Example.enhanced_format_text = "id:int,id2:int,id3:int,name:string,weight:number,marry:bool,education:json,tags:strings,brief\r\n1,20,100,John,120.1,true,\"[\"\"MSU\"\"]\",\"good,cool\",He is a googd man\r\n2,20,200,张三,121.2,false,\"[\"\"JHU\"\",\"\"MIT\"\"]\",good,\"他是一个好人\r\n我们都喜欢他\"\r\n3,20,300,море,123.4,true,\"[\"\"BC\"\",\"\"HYP\"\",\"\"NYU\"\"]\",strong,\"Он хороший человек\r\nмы все любим его\r\nЕго девиз:\r\n\"\"доверяй себе\"\"\"\r\n4,21,100,الشمس,124.5,false,\"{\"\"USC\"\":12}\",\"strong,cool\",صباح الخير\r\n5,21,200,चंद्रमा,126.7,1,\"{\"\"UCHI\"\":34,\"\"UCB\"\":56}\",\"height,strong\",\r\n6,21,300,,127.8,0,\"{\"\"UCHI\"\":78,\"\"UCB\"\":[90,12]}\",\"thin,good\",सुसंध्या\r\n7,22,100,,128.9,1,\"[\"\"VT\"\",{\"\"UCSD\"\":34}]\",,อยากเป็นซุปตาร์\r\n8,22,200,ดาว,129.01,0,,\"hot,thin,good\",";
 acsv_Table.JSON_TYPES = ["json","strings"];
-acsv_Table.CompareTypeEqual = 0;
-acsv_Table.CompareTypeGreater = 1;
-acsv_Table.CompareTypeGreaterOrEqual = 2;
-acsv_Table.CompareTypeLess = 3;
-acsv_Table.CompareTypeLessOrEqual = 4;
 Example.main();
 })(typeof exports != "undefined" ? exports : typeof window != "undefined" ? window : typeof self != "undefined" ? self : this);

@@ -5,8 +5,8 @@ package acsv;
  * 2. Version 1.0.0
  * 3. MIT License
  *
- * ACsv is a easy, tiny and enhanced csv parse library,
- * it also provides cross-platform versions(via haxe).
+ * ACsv is a easy, tiny and powerful csv parse library,
+ * It also provides cross-platform versions(via haxe).
  */
 @:expose
 class Table
@@ -28,33 +28,13 @@ class Table
 	 */
     public var body = new Array<Array<Dynamic>>();
     /**
-	 * Indexed set(optimize for read, like DB index feature).
+	 * Index Set(optimize for read).
 	 */
-    private var _indexed:Dynamic = {};
+    private var _indexSet:Dynamic = {};
     /**
-	 * selected data(for Method Chaining).
+	 * Selected data(for Method Chaining).
 	 **/
     private var _selectd:Array<Dynamic>;
-    /**
-	 * Compare Type - Equal.
-	 **/
-    inline public static var CompareTypeEqual:Int = 0;
-    /**
-	 * Compare Type - Greater.
-	 **/
-    inline public static var CompareTypeGreater:Int = 1;
-    /**
-	 * Compare Type - GreaterEqual.
-	 **/
-    inline public static var CompareTypeGreaterOrEqual:Int = 2;
-    /**
-	 * Compare Type - Less.
-	 **/
-    inline public static var CompareTypeLess:Int = 3;
-    /**
-	 * Compare Type - LessEqual.
-	 **/
-    inline public static var CompareTypeLessOrEqual:Int = 4;
     /**
 	 * Constructor.
 	 */
@@ -62,7 +42,7 @@ class Table
     {}
     /**
 	 * Merge table.
-	 * @param b As name.
+	 * @param b source table
 	 */
     public function merge(b:Table):Void
     {
@@ -77,9 +57,9 @@ class Table
     }
     /**
 	 * Creates index at the specified column index.
-     * This function is only valid for "selectOneWhenE".
-	 * @param colIndex column index.
-	**/
+     * This function is only valid for "selectWhenE" and "limit" param is 1.
+	 * @param colIndex column index
+	 */
     public function createIndexAt(colIndex:Int):Void
     {
         var map:Dynamic = {};
@@ -89,10 +69,10 @@ class Table
             var key:Dynamic = row[colIndex];
             map[key] = row;
         }
-        _indexed[colIndex] = map;
+        _indexSet[colIndex] = map;
     }
     /**
-	 * Format raw row to row.
+	 * Format data to row.
 	 */
     private function fmtRow(row:Array<Dynamic>):Array<Dynamic>
     {
@@ -115,7 +95,7 @@ class Table
         return obj;
     }
     /**
-	 * Format raw row to obj.
+	 * Format data to obj.
 	 */
     private function fmtObj(row:Array<Dynamic>):Dynamic
     {
@@ -139,9 +119,9 @@ class Table
         return obj;
     }
     /**
-	 * Fetch selected result to a row.
+	 * Fetch first selected result to a row and return it.
 	 */
-    public function toRow():Array<Dynamic>
+    public function toFirstRow():Array<Dynamic>
     {
         if (_selectd == null || _selectd.length == 0)
         {
@@ -150,9 +130,20 @@ class Table
         return this.fmtRow(_selectd[0]);
     }
     /**
-	 * Fetch selected result to the rows.
+	 * Fetch last selected result to a row and return it.
 	 */
-    public function toROWs():Array<Array<Dynamic>>
+    public function toLastRow():Array<Dynamic>
+    {
+        if (_selectd == null || _selectd.length == 0)
+        {
+            return null;
+        }
+        return this.fmtRow(_selectd[_selectd.length - 1]);
+    }
+    /**
+	 * Fetch all selected result to the rows and return it.
+	 */
+    public function toRows():Array<Array<Dynamic>>
     {
         if (_selectd == null || _selectd.length == 0)
         {
@@ -167,9 +158,9 @@ class Table
         return objs;
     }
     /**
-	 * Fetch selected result to a object.
+	 * Fetch first selected result to a object and return it.
 	 */
-    public function toObj():Dynamic
+    public function toFirstObj():Dynamic
     {
         if (_selectd == null || _selectd.length == 0)
         {
@@ -178,9 +169,20 @@ class Table
         return this.fmtObj(_selectd[0]);
     }
     /**
-	 * Fetch selected result to the objects.
+	 * Fetch last selected result to a object and return it.
 	 */
-    public function toOBJs():Array<Dynamic>
+    public function toLastObj():Dynamic
+    {
+        if (_selectd == null || _selectd.length == 0)
+        {
+            return null;
+        }
+        return this.fmtObj(_selectd[_selectd.length - 1]);
+    }
+    /**
+	 * Fetch all selected result to the objects and return it.
+	 */
+    public function toObjs():Array<Dynamic>
     {
         if (_selectd == null || _selectd.length == 0)
         {
@@ -195,7 +197,7 @@ class Table
         return objs;
     }
     /**
-	 * Select all records.
+	 * Select all rows.
 	 */
     public function selectAll():Table
     {
@@ -219,63 +221,32 @@ class Table
         return this;
     }
     /**
-	 * Select a row when the column's value is equal to specified value.
+	 * Select the rows when the column's value is equal to specified value.
+     * @param limit maximum length of selected result(0 is infinite, if you only need 1 result, 1 is recommended, it will improve performance)
 	 * @param value the specified value
 	 * @param colIndex specified column's index
 	 */
-    public function selectOneWhenE(value:Dynamic, colIndex:Int = 0):Table
+    public function selectWhenE(limit:Int, value:Dynamic, colIndex:Int = 0):Table
     {
-        _selectd = null;
         // 1.check indexed set
-        var map:Dynamic = _indexed[colIndex];
-        if (map != null)
+        if (limit == 1)
         {
-            _selectd = [map[value]];
-            return this;
-        }
-        // 2.line-by-line scan
-        for (i in 0...this.body.length)
-        {
-            var row:Array<Dynamic> = this.body[i];
-            if (row[colIndex] == value)
+            var map:Dynamic = _indexSet[colIndex];
+            if (map != null)
             {
-                _selectd = [row];
+                var val = map[value];
+                if (val != null)
+                {
+                    _selectd = [val];
+                }
+                else
+                {
+                    _selectd = null;
+                }
                 return this;
             }
         }
-        return this;
-    }
-    /**
-	 * Select a row when the column's values are equal to specified values.
-	 * @param value1 first specified value
-	 * @param value2 second specified value
-	 * @param colIndex2 second specified column's index
-	 * @param colIndex1 first specified column's index
-	 */
-    public function selectOneWhenE2(value1:Dynamic, value2:Dynamic, colIndex2:Int = 1, colIndex1:Int = 0):Table
-    {
-        return this.selectAllWhenE2(value1, value2, colIndex2, colIndex1, 1);
-    }
-    /**
-	 * Select a row when the column's values are equal to specified values.
-	 * @param value1 first specified value
-	 * @param value2 second specified value
-	 * @param value3 Third specified value
-	 * @param colIndex3 Third specified column's index
-	 * @param colIndex2 second specified column's index
-	 * @param colIndex1 first specified column's index
-	 */
-    public function selectOneWhenE3(value1:Dynamic, value2:Dynamic, value3:Dynamic, colIndex3:Int = 2, colIndex2:Int = 1, colIndex1:Int = 0):Table
-    {
-        return this.selectAllWhenE3(value1, value2, value3, colIndex3, colIndex2, colIndex1, 1);
-    }
-    /**
-	 * Select the rows when the column's value is equal to specified value.
-	 * @param value the specified value
-	 * @param colIndex specified column's index
-	 */
-    public function selectAllWhenE(value:Dynamic, colIndex:Int = 0, limit:Int = -1):Table
-    {
+        // 2.line-by-line scan
         var rows = new Array<Dynamic>();
         for (i in 0...this.body.length)
         {
@@ -293,16 +264,15 @@ class Table
         _selectd = rows;
         return this;
     }
-
     /**
 	 * Select the rows when the column's values are equal to specified values.
+     * @param limit maximum length of selected result(0 is infinite, if you only need 1 result, 1 is recommended, it will improve performance)
 	 * @param value1 first specified value
 	 * @param value2 second specified value
 	 * @param colIndex2 second specified column's index
 	 * @param colIndex1 first specified column's index
-     * @param limit maximum length of selected result(-1 is unlimited)
 	 */
-    public function selectAllWhenE2(value1:Dynamic, value2:Dynamic, colIndex2:Int = 1, colIndex1:Int = 0, limit:Int = -1):Table
+    public function selectWhenE2(limit:Int, value1:Dynamic, value2:Dynamic, colIndex2:Int = 1, colIndex1:Int = 0):Table
     {
         var rows:Array<Dynamic> = new Array<Dynamic>();
         for (i in 0...this.body.length)
@@ -323,15 +293,15 @@ class Table
     }
     /**
 	 * Select the rows when the column's values are equal to specified values.
+	 * @param limit maximum length of selected result(0 is infinite, if you only need 1 result, 1 is recommended, it will improve performance)
 	 * @param value1 first specified value
 	 * @param value2 second specified value
-	 * @param value3 Third specified value
-	 * @param colIndex3 Third specified column's index
+	 * @param value3 third specified value
+	 * @param colIndex3 third specified column's index
 	 * @param colIndex2 second specified column's index
 	 * @param colIndex1 first specified column's index
-     * @param limit maximum length of selected result(-1 is unlimited)
 	 */
-    public function selectAllWhenE3(value1:Dynamic, value2:Dynamic, value3:Dynamic, colIndex3:Int = 2, colIndex2:Int = 1, colIndex1:Int = 0, limit:Int = -1):Table
+    public function selectWhenE3(limit:Int, value1:Dynamic, value2:Dynamic, value3:Dynamic, colIndex3:Int = 2, colIndex2:Int = 1, colIndex1:Int = 0):Table
     {
         var rows:Array<Dynamic> = new Array<Dynamic>();
         for (i in 0...this.body.length)
@@ -352,37 +322,26 @@ class Table
     }
     /**
 	 * Select the rows where the column's value is greater than specified value.
+     * @param limit maximum length of selected result(0 is infinite, if you only need 1 result, 1 is recommended, it will improve performance)
+     * @param withEqu whether include equation
 	 * @param value the specified value
 	 * @param colIndex specified column's index
 	 */
-    public function selectAllWhenG(value:Float, colIndex:Int = 0):Table
+    public function selectWhenG(limit:Int, withEqu:Bool, value:Float, colIndex:Int = 0):Table
     {
         var rows = new Array<Dynamic>();
         for (i in 0...this.body.length)
         {
             var row:Array<Dynamic> = this.body[i];
-            if (row[colIndex] > value)
+            var rowVal = row[colIndex];
+            if (rowVal > value || (withEqu && rowVal == value))
             {
                 rows.push(row);
-            }
-        }
-        _selectd = rows;
-        return this;
-    }
-    /**
-	 * Select the rows where the column's value is greater than or equal to specified values.
-	 * @param value the specified value
-	 * @param colIndex specified column's index
-	 */
-    public function selectAllWhenGE(value:Float, colIndex:Int = 0):Table
-    {
-        var rows = new Array<Dynamic>();
-        for (i in 0...this.body.length)
-        {
-            var row:Array<Dynamic> = this.body[i];
-            if (row[colIndex] >= value)
-            {
-                rows.push(row);
+                limit--;
+                if (limit == 0)
+                {
+                    break;
+                }
             }
         }
         _selectd = rows;
@@ -390,115 +349,57 @@ class Table
     }
     /**
 	 * Select the rows where the column's value is less than specified values.
+	 * @param limit maximum length of selected result(0 is infinite, if you only need one result, 1 is recommended, it will improve performance)
+     * @param withEqu whether include equation
 	 * @param value the specified value
 	 * @param colIndex specified column's index
 	 */
-    public function selectAllWhenL(value:Float, colIndex:Int = 0):Table
+    public function selectWhenL(limit:Int, withEqu:Bool, value:Float, colIndex:Int = 0):Table
     {
         var rows = new Array<Dynamic>();
         for (i in 0...this.body.length)
         {
             var row:Array<Dynamic> = this.body[i];
-            if (row[colIndex] < value)
+            var rowVal = row[colIndex];
+            if (rowVal < value || (withEqu && rowVal == value))
             {
                 rows.push(row);
+                limit--;
+                if (limit == 0)
+                {
+                    break;
+                }
             }
         }
         _selectd = rows;
         return this;
     }
     /**
-	 * Select the rows where the column's value is less than or equal to specified values.
+	 * Select the rows where the column's value is greater than specified value and less than specified value.
+     * @param limit maximum length of selected result(0 is infinite, if you only need one result, 1 is recommended, it will improve performance)
+     * @param GwithEqu is greater than and equal to
+     * @param LwithEqu is less than and equal to
 	 * @param value the specified value
 	 * @param colIndex specified column's index
 	 */
-    public function selectAllWhenLE(value:Float, colIndex:Int = 0):Table
+    public function selectWhenGTandLT(limit:Int, GwithEqu:Bool, LwithEqu:Bool, value:Float, colIndex:Int = 0):Table
     {
         var rows = new Array<Dynamic>();
         for (i in 0...this.body.length)
         {
             var row:Array<Dynamic> = this.body[i];
-            if (row[colIndex] <= value)
+            var rowVal = row[colIndex];
+            if (rowVal > value || (GwithEqu && rowVal == value))
             {
                 rows.push(row);
+                limit--;
+                if (limit == 0)
+                {
+                    break;
+                }
             }
         }
         _selectd = rows;
-        return this;
-    }
-    /**
-	 * Select a row when the column's value is near specified value.
-	 * @param value the specified value
-	 * @param nearType The near type, see CompareType
-	 * @param colIndex specified column's index
-	 */
-    public function selectRowWhenNear(value:Float, nearType:Int, colIndex:Int = 0):Table
-    {
-        _selectd = null;
-        var rowIndex:Int = 0;
-        var cellVal:Dynamic;
-        for (i in 0...this.body.length)
-        {
-            var row:Array<Dynamic> = this.body[i];
-            rowIndex = i;
-            cellVal = row[colIndex];
-            var isNear = false;
-            if (value < 0)
-            {
-                if (nearType == CompareTypeEqual)
-                {
-                    isNear = (value == cellVal);
-                }
-                else if (nearType == CompareTypeGreater)
-                {
-                    isNear = (value < cellVal);
-                }
-                else if (nearType == CompareTypeGreaterOrEqual)
-                {
-                    isNear = (value <= cellVal);
-                }
-                else if (nearType == CompareTypeLess)
-                {
-                    isNear = (value > cellVal);
-                }
-                else if (nearType == CompareTypeGreaterOrEqual)
-                {
-                    isNear = (value >= cellVal);
-                }
-                if (isNear)
-                {
-                    break;
-                }
-            }
-            else
-            {
-                if (nearType == CompareTypeEqual)
-                {
-                    isNear = (value == cellVal);
-                }
-                else if (nearType == CompareTypeGreater)
-                {
-                    isNear = (value > cellVal);
-                }
-                else if (nearType == CompareTypeGreaterOrEqual)
-                {
-                    isNear = (value >= cellVal);
-                }
-                else if (nearType == CompareTypeLess)
-                {
-                    isNear = (value < cellVal);
-                }
-                else if (nearType == CompareTypeGreaterOrEqual)
-                {
-                    isNear = (value <= cellVal);
-                }
-                if (isNear)
-                {
-                    break;
-                }
-            }
-        }
-        _selectd = body[rowIndex];
         return this;
     }
     /**
@@ -645,7 +546,7 @@ class Table
         return array;
     }
     /**
-	 * Array convert to rows.
+	 * Convert array to rows.
 	 */
     static private function arrayToRows(array:Array<Array<Dynamic>>):Table
     {
@@ -708,6 +609,10 @@ class Table
                         }
                         else
                         {
+                            if(!(cell.charAt(0) == '[' || cell.charAt(0) == '{' ))
+                            {
+                                throw fileds[j].name + ','+ cell;
+                            }
                             newVal = cell;
                         }
                     case "strings":

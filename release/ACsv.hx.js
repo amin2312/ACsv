@@ -280,7 +280,7 @@ acsv_Table.prototype = {
 		}
 		return objs;
 	}
-	,toObj: function() {
+	,toFirstObj: function() {
 		return this.rowToObj(this._lastSelectd);
 	}
 	,toObjs: function() {
