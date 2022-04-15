@@ -70,9 +70,17 @@ class Table
         {
             var row:Array<Dynamic> = this.body[i];
             var key:Dynamic = row[colIndex];
+            #if (js || lua)
             map[key] = row;
+            #else
+            Reflect.setProperty(map, key + '', row);
+            #end
         }
+        #if (js || lua)
         _indexSet[colIndex] = map;
+        #else
+        Reflect.setProperty(_indexSet, colIndex + '', map);
+        #end
     }
     /**
 	 * Get column index by specified field name.
@@ -108,10 +116,13 @@ class Table
         {
             var type = this.head[i].type;
             var val0 = row[i];
-            var val1:Dynamic;
+            var val1:Dynamic = null;
             if (type != null && type != '' && Table.JSON_TYPES.indexOf(type) != -1)
             {
-                val1 = haxe.Json.parse(val0);
+                if (val0 != null)
+                {
+                    val1 = haxe.Json.parse(val0);
+                }
             }
             else
             {
@@ -132,16 +143,23 @@ class Table
             var name = this.head[i].name;
             var type = this.head[i].type;
             var val0 = row[i];
-            var val1:Dynamic;
+            var val1:Dynamic = null;
             if (type != null && type != '' && Table.JSON_TYPES.indexOf(type) != -1)
             {
-                val1 = haxe.Json.parse(val0);
+                if (val0 != null)
+                {
+                    val1 = haxe.Json.parse(val0);
+                }
             }
             else
             {
                 val1 = val0;
             }
+            #if (js || lua)
             untyped obj[name] = val1;
+            #else
+            Reflect.setProperty(obj, name, val1);
+            #end
         }
         return obj;
     }
@@ -176,13 +194,13 @@ class Table
         {
             return null;
         }
-        var objs = new Array<Array<Dynamic>>();
+        var arr = new Array<Array<Dynamic>>();
         for (i in 0..._selectd.length)
         {
             var row:Array<Dynamic> = _selectd[i];
-            objs.push(this.fmtRow(row));
+            arr.push(this.fmtRow(row));
         }
-        return objs;
+        return arr;
     }
     /**
 	 * Fetch first selected result to a object and return it.
@@ -215,13 +233,13 @@ class Table
         {
             return null;
         }
-        var objs = new Array<Dynamic>();
+        var arr = new Array<Dynamic>();
         for (i in 0..._selectd.length)
         {
             var row:Array<Dynamic> = _selectd[i];
-            objs.push(this.fmtObj(row));
+            arr.push(this.fmtObj(row));
         }
-        return objs;
+        return arr;
     }
     /**
 	 * Select all rows.
@@ -262,10 +280,18 @@ class Table
         // 1.check indexed set
         if (limit == 1)
         {
+            #if (js || lua)
             var map:Dynamic = _indexSet[colIndex];
+            #else
+            var map:Dynamic = Reflect.getProperty(_indexSet, colIndex + '');
+            #end
             if (map != null)
             {
+                #if (js || lua)
                 var val = map[value];
+                #else
+                var val = Reflect.getProperty(map, value + '');
+                #end
                 if (val != null)
                 {
                     _selectd = [val];
@@ -550,7 +576,8 @@ class Table
                         cellIndexB = ptr.indexOf("\"", ptrPos + cellIndexB);
                         if (cellIndexB == -1)
                         {
-                            throw "Invalid Double Quote";
+                            trace("[ACsv] Invalid Double Quote");
+                            return null;
                         }
                         cellIndexB -= ptrPos;
                         if (ptr.charAt(ptrPos + cellIndexB + 1) == "\"") // """" is normal double quote
@@ -645,56 +672,66 @@ class Table
                 var cell:String = row[j];
                 var newVal:Dynamic = cell;
                 var isEmptyCell = (cell == null || cell == '');
-                switch (type) {
-                    case "bool":
-                        if (isEmptyCell || cell == "false" || cell == '0')
+                if (type == "bool")
+                {
+                    if (isEmptyCell || cell == "false" || cell == '0')
+                    {
+                        newVal = false;
+                    }
+                    else
+                    {
+                        newVal = true;
+                    }
+                }
+                else if (type == "int")
+                {
+                    if (isEmptyCell)
+                    {
+                        newVal = 0;
+                    }
+                    else
+                    {
+                        newVal = Std.parseInt(newVal);
+                    }
+                }
+                else if (type == "number")
+                {
+                    if (isEmptyCell)
+                    {
+                        newVal = 0.0;
+                    }
+                    else
+                    {
+                        newVal = Std.parseFloat(newVal);
+                    }
+                }
+                else if (type == "json")
+                {
+                    if (isEmptyCell)
+                    {
+                        newVal = null;
+                    }
+                    else
+                    {
+                        var chr0 = cell.charAt(0);
+                        if (!(chr0 == '[' || chr0 == '{' ))
                         {
-                            newVal = false;
+                            trace("[ACsv] Invalid json format:" + fileds[j].name + ',' + cell);
+                            return null;
                         }
-                        else
-                        {
-                            newVal = true;
-                        }
-                    case "int":
-                        if (isEmptyCell)
-                        {
-                            newVal = 0;
-                        }
-                        else
-                        {
-                            newVal = Std.parseInt(newVal);
-                        }
-                    case "number":
-                        if (isEmptyCell)
-                        {
-                            newVal = 0.0;
-                        }
-                        else
-                        {
-                            newVal = Std.parseFloat(newVal);
-                        }
-                    case "json":
-                        if (isEmptyCell)
-                        {
-                            newVal = null;
-                        }
-                        else
-                        {
-                            if(!(cell.charAt(0) == '[' || cell.charAt(0) == '{' ))
-                            {
-                                throw fileds[j].name + ','+ cell;
-                            }
-                            newVal = cell;
-                        }
-                    case "strings":
-                        if (isEmptyCell)
-                        {
-                            newVal = "[]";
-                        }
-                        else
-                        {
-                            newVal = '["' + cell.split(',').join('","') + '"]';
-                        }
+                        newVal = cell;
+                    }
+                }
+                else if (type == "strings")
+                {
+                    if (isEmptyCell)
+                    {
+                        newVal = "[]";
+                    }
+                    else
+                    {
+                        newVal = '["' + cell.split(',').join('","') + '"]';
+                    }
                 }
                 row[j] = newVal;
             }

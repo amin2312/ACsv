@@ -1,2 +1,5 @@
-// use haxe dox to gen docs
+//
+// USE haxe dox to gen docs
+// Please install dox first: haxelib install dox
+//
 haxelib run dox -i release/ACsv.dox.xml -o release/docs/hx --title "ACsv library" -ex \S+ -in acsv -in Array$ -in String$ -in Int$ -in Float$ -in Dynamic$

@@ -1,3 +1,5 @@
 -cp src/hx
 -main Example
 -js release/examples/example.hx.js
+#-lua release/examples/example.hx.lua
+#-python release/examples/example.hx.py

@@ -1,5 +1,0 @@
--cp src/hx
-acsv.Table
-acsv.Field
--js release/ACsv.hx.js
--xml release/ACsv.dox.xml

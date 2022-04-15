@@ -1,0 +1,7 @@
+-cp src/hx
+acsv.Table
+acsv.Field
+-xml release/ACsv.dox.xml
+#-js release/ACsv.hx.js
+#-lua release/ACsv.hx.lua
+-python release/ACsv.hx.py

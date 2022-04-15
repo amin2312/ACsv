@@ -110,7 +110,7 @@ Besok juga hari yang baik"
         #end
         
     }
-    public static function print(cmd:String, o:Dynamic):Void
+    public static function P(cmd:String, o:Dynamic):Void
     {
         #if js
         var t = js.Browser.document.getElementById('output');
@@ -123,53 +123,63 @@ Besok juga hari yang baik"
         t.appendChild(div);
         #end
         trace(cmd);
-        trace(o);
+        if (o == null) // fix some language's bug
+        {
+            trace(null);
+        }
+        else
+        {
+            trace(o);
+        }
     }
 
 	public static function test_standard_csv_format()
     {
-		print('select all to rows', _tab1.selectAll().toRows());
-		print('select all to objs', _tab1.selectAll().toObjs());
-		print('select first row', _tab1.selectFirstRow().toFirstRow());
-        print('select first obj', _tab1.selectFirstRow().toFirstObj());
-		print('select last row', _tab1.selectLastRow().toFirstRow());
-        print('select last obj', _tab1.selectLastRow().toFirstObj());
+		P('select all to rows', _tab1.selectAll().toRows());
+		P('select all to objs', _tab1.selectAll().toObjs());
+		P('select first row', _tab1.selectFirstRow().toFirstRow());
+        P('select first obj', _tab1.selectFirstRow().toFirstObj());
+		P('select last row', _tab1.selectLastRow().toFirstRow());
+        P('select last obj', _tab1.selectLastRow().toFirstObj());
 
-		print('select [id] = "2"', _tab1.selectWhenE(1, "2").toFirstObj());
-		print('select [id] = "-1"', _tab1.selectWhenE(1, "-1").toFirstObj());
-		print('select [id] = "3" and [id2] = "21"', _tab1.selectWhenE2(1, "3", "21").toFirstObj());
-		print('select [id] = "3" and [id2] = "-1"', _tab1.selectWhenE2(1, "3", "-1").toFirstObj());
-		print('select [id] = "4" and [id2] = "21" and [id3] = "200"', _tab1.selectWhenE3(1, "4", "21", "200").toFirstObj());
-		print('select [id] = "4" and [id2] = "21" and [id3] = "-1"', _tab1.selectWhenE3(1, "4", "21", "-1").toFirstObj());
-		print('select all [id2] = "20"', _tab1.selectWhenE(0, "20", 1).toObjs());
-		print('select all [id2] = "-1"', _tab1.selectWhenE(0, "-1", 1).toObjs());
+		P('select [id] = "2"', _tab1.selectWhenE(1, "2").toFirstObj());
+		P('select [id] = "-1"', _tab1.selectWhenE(1, "-1").toFirstObj());
+		P('select [id] = "3" and [id2] = "21"', _tab1.selectWhenE2(1, "3", "21").toFirstObj());
+		P('select [id] = "3" and [id2] = "-1"', _tab1.selectWhenE2(1, "3", "-1").toFirstObj());
+		P('select [id] = "4" and [id2] = "21" and [id3] = "200"', _tab1.selectWhenE3(1, "4", "21", "200").toFirstObj());
+		P('select [id] = "4" and [id2] = "21" and [id3] = "-1"', _tab1.selectWhenE3(1, "4", "21", "-1").toFirstObj());
+		P('select all [id2] = "20"', _tab1.selectWhenE(0, "20", 1).toObjs());
+		P('select all [id2] = "-1"', _tab1.selectWhenE(0, "-1", 1).toObjs());
 	}
 
 	public static function test_enhanced_csv_format()
     {
-		print('[enhanced] select all to rows', _tab2.selectAll().toRows());
-		print('[enhanced] select all to objs', _tab2.selectAll().toObjs());
-		print('[enhanced] select first row', _tab2.selectFirstRow().toFirstRow());
-        print('[enhanced] select first obj', _tab2.selectFirstRow().toFirstObj());
-		print('[enhanced] select last row', _tab2.selectLastRow().toFirstRow());
-        print('[enhanced] select last obj', _tab2.selectLastRow().toFirstObj());
+		P('[enhanced] select all to rows', _tab2.selectAll().toRows());
+		P('[enhanced] select all to objs', _tab2.selectAll().toObjs());
+		P('[enhanced] select first row', _tab2.selectFirstRow().toFirstRow());
+        P('[enhanced] select first obj', _tab2.selectFirstRow().toFirstObj());
+		P('[enhanced] select last row', _tab2.selectLastRow().toFirstRow());
+        P('[enhanced] select last obj', _tab2.selectLastRow().toFirstObj());
 
-		print('[enhanced] select [id] = 2', _tab2.selectWhenE(1, 2).toFirstObj());
-		print('[enhanced] select [id] = -1', _tab2.selectWhenE(1, -1).toFirstObj());
-		print('[enhanced] select [id] = 3 and [id2] = 22', _tab2.selectWhenE2(1, 3, 22).toFirstObj());
-		print('[enhanced] select [id] = 3 and [id2] = -1', _tab2.selectWhenE2(1, 3, -1).toFirstObj());
-		print('[enhanced] select [id] = 4 and [id2] = 22 and [id3] = 200', _tab2.selectWhenE3(1, 4, 22, 200).toFirstObj());
-		print('[enhanced] select [id] = 4 and [id2] = 22 and [id3] = -1', _tab2.selectWhenE3(1, 4, 22, -1).toFirstObj());
-		print('[enhanced] select all [id2] = 21', _tab2.selectWhenE(0, 21, 1).toObjs());
-		print('[enhanced] select all [id2] = -1', _tab2.selectWhenE(0, -1, 1).toObjs());
+		P('[enhanced] select [id] = 2', _tab2.selectWhenE(1, 2).toFirstObj());
+		P('[enhanced] select [id] = -1', _tab2.selectWhenE(1, -1).toFirstObj());
+		P('[enhanced] select [id] = 3 and [id2] = 22', _tab2.selectWhenE2(1, 3, 22).toFirstObj());
+		P('[enhanced] select [id] = 3 and [id2] = -1', _tab2.selectWhenE2(1, 3, -1).toFirstObj());
+		P('[enhanced] select [id] = 4 and [id2] = 22 and [id3] = 200', _tab2.selectWhenE3(1, 4, 22, 200).toFirstObj());
+		P('[enhanced] select [id] = 4 and [id2] = 22 and [id3] = -1', _tab2.selectWhenE3(1, 4, 22, -1).toFirstObj());
+		P('[enhanced] select all [id2] = 21', _tab2.selectWhenE(0, 21, 1).toObjs());
+		P('[enhanced] select all [id2] = -1', _tab2.selectWhenE(0, -1, 1).toObjs());
 
-		print('[enhanced] select all [id2] > 25', _tab2.selectWhenG(0, false, 25, 1).toObjs());
-		print('[enhanced] select all [id2] >= 25', _tab2.selectWhenG(0, true, 25, 1).toObjs());
-		print('[enhanced] select all [id2] < 22', _tab2.selectWhenL(0, false, 22, 1).toObjs());
-		print('[enhanced] select all [id2] <= 22', _tab2.selectWhenL(0, true, 22, 1).toObjs());
-        print('[enhanced] select all [id2] > 21 and [id2] < 24', _tab2.selectWhenGreaterAndLess(0, false, false, 21, 24, 1).toObjs());
-        print('[enhanced] select all [id2] >= 21 and [id2] <= 24', _tab2.selectWhenGreaterAndLess(0, true, true, 21, 24, 1).toObjs());
-        print('[enhanced] select all [id2] < 22 or [id2] > 25', _tab2.selectWhenLessOrGreater(0, false, false, 22, 25, 1).toObjs());
-        print('[enhanced] select all [id2] <= 22 or [id2] >= 25', _tab2.selectWhenLessOrGreater(0, true, true, 22, 25, 1).toObjs());
+		P('[enhanced] select all [id2] > 25', _tab2.selectWhenG(0, false, 25, 1).toObjs());
+		P('[enhanced] select all [id2] >= 25', _tab2.selectWhenG(0, true, 25, 1).toObjs());
+		P('[enhanced] select all [id2] < 22', _tab2.selectWhenL(0, false, 22, 1).toObjs());
+		P('[enhanced] select all [id2] <= 22', _tab2.selectWhenL(0, true, 22, 1).toObjs());
+        P('[enhanced] select all [id2] > 21 and [id2] < 24', _tab2.selectWhenGreaterAndLess(0, false, false, 21, 24, 1).toObjs());
+        P('[enhanced] select all [id2] >= 21 and [id2] <= 24', _tab2.selectWhenGreaterAndLess(0, true, true, 21, 24, 1).toObjs());
+        P('[enhanced] select all [id2] < 22 or [id2] > 25', _tab2.selectWhenLessOrGreater(0, false, false, 22, 25, 1).toObjs());
+        P('[enhanced] select all [id2] <= 22 or [id2] >= 25', _tab2.selectWhenLessOrGreater(0, true, true, 22, 25, 1).toObjs());
+        
+        _tab2.createIndexAt(0);
+		P('[enhanced] 9th row name', _tab2.selectWhenE(1, 9).toObjs()[0].name);
 	}
 }
