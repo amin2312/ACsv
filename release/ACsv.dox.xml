@@ -648,15 +648,16 @@
 			<c path="String"/>
 			<haxe_doc>* Type.</haxe_doc>
 		</type>
-		<new public="1" set="method" line="27">
+		<new public="1" set="method" line="28">
 			<f a=""><x path="Void"/></f>
+			<meta><m n=":dox"><e>hide</e></m></meta>
 			<haxe_doc>* Constructor.</haxe_doc>
 		</new>
 		<haxe_doc>* 1. Copyright (c) 2022 amin2312
  * 2. Version 1.0.0
  * 3. MIT License
  *
- * CSV Head Field.</haxe_doc>
+ * CSV head field.</haxe_doc>
 		<meta>
 			<m n=":directlyUsed"/>
 			<m n=":expose"/>
@@ -667,21 +668,21 @@
 			<c path="Array"><c path="String"/></c>
 			<haxe_doc>* Supported json field types.</haxe_doc>
 		</JSON_TYPES>
-		<Parse public="1" set="method" line="478" static="1">
+		<Parse public="1" set="method" line="479" static="1">
 			<f a="content">
 				<c path="String"/>
 				<c path="acsv.Table"/>
 			</f>
 			<haxe_doc>* Parse csv conent.</haxe_doc>
 		</Parse>
-		<textToArray set="method" line="487" static="1">
+		<textToArray set="method" line="488" static="1">
 			<f a="text">
 				<c path="String"/>
 				<c path="Array"><c path="Array"><d/></c></c>
 			</f>
 			<haxe_doc>* Convert text to array.</haxe_doc>
 		</textToArray>
-		<arrayToRows set="method" line="621" static="1">
+		<arrayToRows set="method" line="622" static="1">
 			<f a="array">
 				<c path="Array"><c path="Array"><d/></c></c>
 				<c path="acsv.Table"/>
@@ -708,26 +709,26 @@
 			<c path="Array"><d/></c>
 			<haxe_doc>* Selected data(for Method Chaining).</haxe_doc>
 		</_selectd>
-		<merge public="1" set="method" line="48">
+		<merge public="1" set="method" line="49">
 			<f a="b">
 				<c path="acsv.Table"/>
 				<x path="Void"/>
 			</f>
 			<haxe_doc><![CDATA[* Merge a table.
-     <br/><b>Notice:</b> two tables' structure must be same.
+	 * <br/><b>Notice:</b> two tables' structure must be same.
 	 * @param b source table]]></haxe_doc>
 		</merge>
-		<createIndexAt public="1" set="method" line="65">
+		<createIndexAt public="1" set="method" line="66">
 			<f a="colIndex">
 				<x path="Int"/>
 				<x path="Void"/>
 			</f>
 			<haxe_doc><![CDATA[* Create index for the specified column.
-     <br>This function is only valid for "selectWhenE" and "limit" param is 1.
-     <br>It will improve performance.
+	 * <br>This function is only valid for "selectWhenE" and "limit" param is 1.
+	 * <br>It will improve performance.
 	 * @param colIndex column index]]></haxe_doc>
 		</createIndexAt>
-		<getColumnIndexBy public="1" set="method" line="80">
+		<getColumnIndexBy public="1" set="method" line="81">
 			<f a="name">
 				<c path="String"/>
 				<x path="Int"/>
@@ -735,19 +736,19 @@
 			<haxe_doc>* Get column index by specified field name.
 	 * @param name As name mean.</haxe_doc>
 		</getColumnIndexBy>
-		<getCurrentSelectdData public="1" set="method" line="96">
+		<getCurrentSelectdData public="1" set="method" line="97">
 			<f a=""><c path="Array"><d/></c></f>
 			<haxe_doc><![CDATA[* Get current selected data.
 	 <br>It be assigned after call "select???" function]]></haxe_doc>
 		</getCurrentSelectdData>
-		<fmtRow set="method" line="103">
+		<fmtRow set="method" line="104">
 			<f a="row">
 				<c path="Array"><d/></c>
 				<c path="Array"><d/></c>
 			</f>
 			<haxe_doc>* Format data to row.</haxe_doc>
 		</fmtRow>
-		<fmtObj set="method" line="126">
+		<fmtObj set="method" line="127">
 			<f a="row">
 				<c path="Array"><d/></c>
 				<d/>
@@ -755,46 +756,46 @@
 			<meta><m n=":has_untyped"/></meta>
 			<haxe_doc>* Format data to obj.</haxe_doc>
 		</fmtObj>
-		<toFirstRow public="1" set="method" line="150">
+		<toFirstRow public="1" set="method" line="151">
 			<f a=""><c path="Array"><d/></c></f>
 			<haxe_doc>* Fetch first selected result to a row and return it.</haxe_doc>
 		</toFirstRow>
-		<toLastRow public="1" set="method" line="161">
+		<toLastRow public="1" set="method" line="162">
 			<f a=""><c path="Array"><d/></c></f>
 			<haxe_doc>* Fetch last selected result to a row and return it.</haxe_doc>
 		</toLastRow>
-		<toRows public="1" set="method" line="172">
+		<toRows public="1" set="method" line="173">
 			<f a=""><c path="Array"><c path="Array"><d/></c></c></f>
 			<haxe_doc>* Fetch all selected results to the rows and return it.</haxe_doc>
 		</toRows>
-		<toFirstObj public="1" set="method" line="189">
+		<toFirstObj public="1" set="method" line="190">
 			<f a=""><d/></f>
 			<haxe_doc>* Fetch first selected result to a object and return it.</haxe_doc>
 		</toFirstObj>
-		<toLastObj public="1" set="method" line="200">
+		<toLastObj public="1" set="method" line="201">
 			<f a=""><d/></f>
 			<haxe_doc>* Fetch last selected result to a object and return it.</haxe_doc>
 		</toLastObj>
-		<toObjs public="1" set="method" line="211">
+		<toObjs public="1" set="method" line="212">
 			<f a=""><c path="Array"><d/></c></f>
 			<haxe_doc>* Fetch all selected results to the objects and return it.</haxe_doc>
 		</toObjs>
-		<selectAll public="1" set="method" line="229">
+		<selectAll public="1" set="method" line="230">
 			<f a=""><c path="acsv.Table"/></f>
 			<haxe_doc>* Select all rows.
      * @return Current THIS instance(Method Chaining), can call "to???" function to get result in next step.</haxe_doc>
 		</selectAll>
-		<selectFirstRow public="1" set="method" line="238">
+		<selectFirstRow public="1" set="method" line="239">
 			<f a=""><c path="acsv.Table"/></f>
 			<haxe_doc>* Select the first row.
      * @return Current THIS instance(Method Chaining), can call "to???" function to get result in next step.</haxe_doc>
 		</selectFirstRow>
-		<selectLastRow public="1" set="method" line="247">
+		<selectLastRow public="1" set="method" line="248">
 			<f a=""><c path="acsv.Table"/></f>
 			<haxe_doc>* Select the last row.
      * @return Current THIS instance(Method Chaining), can call "to???" function to get result in next step.</haxe_doc>
 		</selectLastRow>
-		<selectWhenE public="1" set="method" line="259">
+		<selectWhenE public="1" set="method" line="260">
 			<f a="limit:value:?colIndex">
 				<x path="Int"/>
 				<d/>
@@ -807,7 +808,7 @@
      * @param colIndex specified column's index
      * @return Current THIS instance(Method Chaining), can call "to???" function to get result in next step.</haxe_doc>
 		</selectWhenE>
-		<selectWhenE2 public="1" set="method" line="306">
+		<selectWhenE2 public="1" set="method" line="307">
 			<f a="limit:value1:value2:?colIndex2:?colIndex1">
 				<x path="Int"/>
 				<d/>
@@ -824,7 +825,7 @@
      * @param colIndex1 first specified column's index
      * @return Current THIS instance(Method Chaining), can call "to???" function to get result in next step.</haxe_doc>
 		</selectWhenE2>
-		<selectWhenE3 public="1" set="method" line="336">
+		<selectWhenE3 public="1" set="method" line="337">
 			<f a="limit:value1:value2:value3:?colIndex3:?colIndex2:?colIndex1">
 				<x path="Int"/>
 				<d/>
@@ -845,7 +846,7 @@
      * @param colIndex1 first specified column's index
      * @return Current THIS instance(Method Chaining), can call "to???" function to get result in next step.</haxe_doc>
 		</selectWhenE3>
-		<selectWhenG public="1" set="method" line="363">
+		<selectWhenG public="1" set="method" line="364">
 			<f a="limit:withEqu:value:?colIndex">
 				<x path="Int"/>
 				<x path="Bool"/>
@@ -860,7 +861,7 @@
      * @param colIndex specified column's index
      * @return Current THIS instance(Method Chaining), can call "to???" function to get result in next step.</haxe_doc>
 		</selectWhenG>
-		<selectWhenL public="1" set="method" line="391">
+		<selectWhenL public="1" set="method" line="392">
 			<f a="limit:withEqu:value:?colIndex">
 				<x path="Int"/>
 				<x path="Bool"/>
@@ -875,7 +876,7 @@
      * @param colIndex specified column's index
      * @return Current THIS instance(Method Chaining), can call "to???" function to get result in next step.</haxe_doc>
 		</selectWhenL>
-		<selectWhenGreaterAndLess public="1" set="method" line="421">
+		<selectWhenGreaterAndLess public="1" set="method" line="422">
 			<f a="limit:GWithEqu:LWithEqu:GValue:LValue:?colIndex">
 				<x path="Int"/>
 				<x path="Bool"/>
@@ -894,7 +895,7 @@
      * @param colIndex specified column's index
      * @return Current THIS instance(Method Chaining), can call "to???" function to get result in next step.]]></haxe_doc>
 		</selectWhenGreaterAndLess>
-		<selectWhenLessOrGreater public="1" set="method" line="453">
+		<selectWhenLessOrGreater public="1" set="method" line="454">
 			<f a="limit:LWithEqu:GWithEqu:LValue:GValue:?colIndex">
 				<x path="Int"/>
 				<x path="Bool"/>
@@ -913,8 +914,9 @@
      * @param colIndex specified column's index
      * @return Current THIS instance(Method Chaining), can call "to???" function to get result in next step.]]></haxe_doc>
 		</selectWhenLessOrGreater>
-		<new public="1" set="method" line="41">
+		<new public="1" set="method" line="42">
 			<f a=""><x path="Void"/></f>
+			<meta><m n=":dox"><e>hide</e></m></meta>
 			<haxe_doc>* Constructor.</haxe_doc>
 		</new>
 		<haxe_doc>* 1. Copyright (c) 2022 amin2312

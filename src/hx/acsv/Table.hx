@@ -38,11 +38,12 @@ class Table
     /**
 	 * Constructor.
 	 */
+    @:dox(hide)
     public function new()
     {}
     /**
 	 * Merge a table.
-     <br/><b>Notice:</b> two tables' structure must be same.
+	 * <br/><b>Notice:</b> two tables' structure must be same.
 	 * @param b source table
 	 */
     public function merge(b:Table):Void
@@ -58,8 +59,8 @@ class Table
     }
     /**
 	 * Create index for the specified column.
-     <br>This function is only valid for "selectWhenE" and "limit" param is 1.
-     <br>It will improve performance.
+	 * <br>This function is only valid for "selectWhenE" and "limit" param is 1.
+	 * <br>It will improve performance.
 	 * @param colIndex column index
 	 */
     public function createIndexAt(colIndex:Int):Void

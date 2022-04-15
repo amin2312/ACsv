@@ -5,7 +5,7 @@ package acsv;
  * 2. Version 1.0.0
  * 3. MIT License
  *
- * CSV Head Field.
+ * CSV head field.
  */
  @:expose
 class Field {
@@ -24,5 +24,6 @@ class Field {
 	/**
 	 * Constructor.
 	 */
+	@:dox(hide)
 	public function new() {}
 }
