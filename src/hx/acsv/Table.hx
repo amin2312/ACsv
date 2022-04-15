@@ -20,11 +20,11 @@ class Table
 	 */
     public var content:String;
     /**
-	 * Head.
+	 * Parsed csv table Head.
 	 */
     public var head = new Array<Field>();
     /**
-	 * Body.
+	 * Parsed csv table Body.
 	 */
     public var body = new Array<Array<Dynamic>>();
     /**
@@ -41,7 +41,8 @@ class Table
     public function new()
     {}
     /**
-	 * Merge table.
+	 * Merge a table.
+     <br/><b>Notice:</b> two tables' structure must be same.
 	 * @param b source table
 	 */
     public function merge(b:Table):Void
@@ -56,8 +57,9 @@ class Table
         this.content += c;
     }
     /**
-	 * Creates index at the specified column index.
-     * This function is only valid for "selectWhenE" and "limit" param is 1.
+	 * Create index for the specified column.
+     <br>This function is only valid for "selectWhenE" and "limit" param is 1.
+     <br>It will improve performance.
 	 * @param colIndex column index
 	 */
     public function createIndexAt(colIndex:Int):Void
@@ -70,6 +72,30 @@ class Table
             map[key] = row;
         }
         _indexSet[colIndex] = map;
+    }
+    /**
+	 * Get column index by specified field name.
+	 * @param name As name mean.
+	 */
+    public function getColumnIndexBy(name:String):Int
+    {
+        for (i in 0...this.head.length)
+        {
+            var field = this.head[i];
+            if (field.name == name)
+            {
+                return i;
+            }
+        }
+        return -1;
+    }
+    /**
+	 * Get current selected data.
+	 <br>It be assigned after call "select???" function
+	 */
+    public function getCurrentSelectdData():Array<Dynamic>
+    {
+        return _selectd;
     }
     /**
 	 * Format data to row.
@@ -141,11 +167,11 @@ class Table
         return this.fmtRow(_selectd[_selectd.length - 1]);
     }
     /**
-	 * Fetch all selected result to the rows and return it.
+	 * Fetch all selected results to the rows and return it.
 	 */
     public function toRows():Array<Array<Dynamic>>
     {
-        if (_selectd == null || _selectd.length == 0)
+        if (_selectd == null)
         {
             return null;
         }
@@ -180,11 +206,11 @@ class Table
         return this.fmtObj(_selectd[_selectd.length - 1]);
     }
     /**
-	 * Fetch all selected result to the objects and return it.
+	 * Fetch all selected results to the objects and return it.
 	 */
     public function toObjs():Array<Dynamic>
     {
-        if (_selectd == null || _selectd.length == 0)
+        if (_selectd == null)
         {
             return null;
         }
@@ -198,6 +224,7 @@ class Table
     }
     /**
 	 * Select all rows.
+     * @return Current THIS instance(Method Chaining), can call "to???" function to get result in next step.
 	 */
     public function selectAll():Table
     {
@@ -206,6 +233,7 @@ class Table
     }
     /**
 	 * Select the first row.
+     * @return Current THIS instance(Method Chaining), can call "to???" function to get result in next step.
 	 */
     public function selectFirstRow():Table
     {
@@ -214,6 +242,7 @@ class Table
     }
     /**
 	 * Select the last row.
+     * @return Current THIS instance(Method Chaining), can call "to???" function to get result in next step.
 	 */
     public function selectLastRow():Table
     {
@@ -221,10 +250,11 @@ class Table
         return this;
     }
     /**
-	 * Select the rows when the column's value is equal to specified value.
-     * @param limit maximum length of selected result(0 is infinite, if you only need 1 result, 1 is recommended, it will improve performance)
-	 * @param value the specified value
-	 * @param colIndex specified column's index
+     * Select the rows when the column's value is equal to specified value.
+     * @param limit maximum length of selected results (0 is infinite, if you only need 1 result, 1 is recommended, it will improve performance)
+     * @param value the specified value
+     * @param colIndex specified column's index
+     * @return Current THIS instance(Method Chaining), can call "to???" function to get result in next step.
 	 */
     public function selectWhenE(limit:Int, value:Dynamic, colIndex:Int = 0):Table
     {
@@ -266,11 +296,12 @@ class Table
     }
     /**
 	 * Select the rows when the column's values are equal to specified values.
-     * @param limit maximum length of selected result(0 is infinite, if you only need 1 result, 1 is recommended, it will improve performance)
-	 * @param value1 first specified value
-	 * @param value2 second specified value
-	 * @param colIndex2 second specified column's index
-	 * @param colIndex1 first specified column's index
+     * @param limit maximum length of selected results (0 is infinite, if you only need 1 result, 1 is recommended, it will improve performance)
+     * @param value1 first specified value
+     * @param value2 second specified value
+     * @param colIndex2 second specified column's index
+     * @param colIndex1 first specified column's index
+     * @return Current THIS instance(Method Chaining), can call "to???" function to get result in next step.
 	 */
     public function selectWhenE2(limit:Int, value1:Dynamic, value2:Dynamic, colIndex2:Int = 1, colIndex1:Int = 0):Table
     {
@@ -293,13 +324,14 @@ class Table
     }
     /**
 	 * Select the rows when the column's values are equal to specified values.
-	 * @param limit maximum length of selected result(0 is infinite, if you only need 1 result, 1 is recommended, it will improve performance)
-	 * @param value1 first specified value
-	 * @param value2 second specified value
-	 * @param value3 third specified value
-	 * @param colIndex3 third specified column's index
-	 * @param colIndex2 second specified column's index
-	 * @param colIndex1 first specified column's index
+     * @param limit maximum length of selected results (0 is infinite, if you only need 1 result, 1 is recommended, it will improve performance)
+     * @param value1 first specified value
+     * @param value2 second specified value
+     * @param value3 third specified value
+     * @param colIndex3 third specified column's index
+     * @param colIndex2 second specified column's index
+     * @param colIndex1 first specified column's index
+     * @return Current THIS instance(Method Chaining), can call "to???" function to get result in next step.
 	 */
     public function selectWhenE3(limit:Int, value1:Dynamic, value2:Dynamic, value3:Dynamic, colIndex3:Int = 2, colIndex2:Int = 1, colIndex1:Int = 0):Table
     {
@@ -321,11 +353,12 @@ class Table
         return this;
     }
     /**
-	 * Select the rows where the column's value is greater than specified value.
-     * @param limit maximum length of selected result(0 is infinite, if you only need 1 result, 1 is recommended, it will improve performance)
+	 * Select the rows when the column's value is greater than specified value.
+     * @param limit maximum length of selected results (0 is infinite, if you only need 1 result, 1 is recommended, it will improve performance)
      * @param withEqu whether include equation
-	 * @param value the specified value
-	 * @param colIndex specified column's index
+     * @param value the specified value
+     * @param colIndex specified column's index
+     * @return Current THIS instance(Method Chaining), can call "to???" function to get result in next step.
 	 */
     public function selectWhenG(limit:Int, withEqu:Bool, value:Float, colIndex:Int = 0):Table
     {
@@ -348,11 +381,12 @@ class Table
         return this;
     }
     /**
-	 * Select the rows where the column's value is less than specified values.
-	 * @param limit maximum length of selected result(0 is infinite, if you only need one result, 1 is recommended, it will improve performance)
+	 * Select the rows when the column's value is less than specified values.
+     * @param limit maximum length of selected results (0 is infinite, if you only need 1 result, 1 is recommended, it will improve performance)
      * @param withEqu whether include equation
-	 * @param value the specified value
-	 * @param colIndex specified column's index
+     * @param value the specified value
+     * @param colIndex specified column's index
+     * @return Current THIS instance(Method Chaining), can call "to???" function to get result in next step.
 	 */
     public function selectWhenL(limit:Int, withEqu:Bool, value:Float, colIndex:Int = 0):Table
     {
@@ -375,21 +409,25 @@ class Table
         return this;
     }
     /**
-	 * Select the rows where the column's value is greater than specified value and less than specified value.
-     * @param limit maximum length of selected result(0 is infinite, if you only need one result, 1 is recommended, it will improve performance)
-     * @param GwithEqu is greater than and equal to
-     * @param LwithEqu is less than and equal to
-	 * @param value the specified value
-	 * @param colIndex specified column's index
+	 * Select the rows when the column's value is greater than specified value <b>and</b> less than specified value.
+     * @param limit maximum length of selected results (0 is infinite, if you only need 1 result, 1 is recommended, it will improve performance)
+     * @param GWithEqu whether greater and equal
+     * @param LWithEqu whether less and equal
+     * @param GValue the specified greater value
+     * @param LValue the specified less value
+     * @param colIndex specified column's index
+     * @return Current THIS instance(Method Chaining), can call "to???" function to get result in next step.
 	 */
-    public function selectWhenGTandLT(limit:Int, GwithEqu:Bool, LwithEqu:Bool, value:Float, colIndex:Int = 0):Table
+    public function selectWhenGreaterAndLess(limit:Int, GWithEqu:Bool, LWithEqu:Bool, GValue:Float, LValue:Float, colIndex:Int = 0):Table
     {
         var rows = new Array<Dynamic>();
         for (i in 0...this.body.length)
         {
             var row:Array<Dynamic> = this.body[i];
             var rowVal = row[colIndex];
-            if (rowVal > value || (GwithEqu && rowVal == value))
+            var v1 = (rowVal > GValue || (GWithEqu && rowVal == GValue));
+            var v2 = (rowVal < LValue || (LWithEqu && rowVal == LValue));
+            if (v1 && v2)
             {
                 rows.push(row);
                 limit--;
@@ -403,7 +441,39 @@ class Table
         return this;
     }
     /**
-	 * Parse conent.
+	 * Select the rows when the column's value is less than specified value <b>or</b> greater than specified value.
+     * @param limit maximum length of selected results (0 is infinite, if you only need 1 result, 1 is recommended, it will improve performance)
+     * @param LWithEqu whether less and equal
+     * @param GWithEqu whether greater and equal
+     * @param LValue the specified less value
+     * @param GValue the specified greater value
+     * @param colIndex specified column's index
+     * @return Current THIS instance(Method Chaining), can call "to???" function to get result in next step.
+	 */
+    public function selectWhenLessOrGreater(limit:Int, LWithEqu:Bool, GWithEqu:Bool, LValue:Float, GValue:Int, colIndex:Int = 0):Table
+    {
+        var rows = new Array<Dynamic>();
+        for (i in 0...this.body.length)
+        {
+            var row:Array<Dynamic> = this.body[i];
+            var rowVal = row[colIndex];
+            var v1 = (rowVal < LValue || (LWithEqu && rowVal == LValue));
+            var v2 = (rowVal > GValue || (GWithEqu && rowVal == GValue));
+            if (v1 || v2)
+            {
+                rows.push(row);
+                limit--;
+                if (limit == 0)
+                {
+                    break;
+                }
+            }
+        }
+        _selectd = rows;
+        return this;
+    }
+    /**
+	 * Parse csv conent.
 	 */
     public static function Parse(content:String):Table
     {

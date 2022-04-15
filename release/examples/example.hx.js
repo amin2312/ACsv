@@ -84,9 +84,9 @@ Example.test_standard_csv_format = function() {
 	Example.print("select last obj",Example._tab1.selectLastRow().toFirstObj());
 	Example.print("select [id] = \"2\"",Example._tab1.selectWhenE(1,"2").toFirstObj());
 	Example.print("select [id] = \"-1\"",Example._tab1.selectWhenE(1,"-1").toFirstObj());
-	Example.print("select [id] = \"3\" and [id2] = \"20\"",Example._tab1.selectWhenE2(1,"3","20").toFirstObj());
+	Example.print("select [id] = \"3\" and [id2] = \"21\"",Example._tab1.selectWhenE2(1,"3","21").toFirstObj());
 	Example.print("select [id] = \"3\" and [id2] = \"-1\"",Example._tab1.selectWhenE2(1,"3","-1").toFirstObj());
-	Example.print("select [id] = \"4\" and [id2] = \"21\" and [id3] = \"100\"",Example._tab1.selectWhenE3(1,"4","21","100").toFirstObj());
+	Example.print("select [id] = \"4\" and [id2] = \"21\" and [id3] = \"200\"",Example._tab1.selectWhenE3(1,"4","21","200").toFirstObj());
 	Example.print("select [id] = \"4\" and [id2] = \"21\" and [id3] = \"-1\"",Example._tab1.selectWhenE3(1,"4","21","-1").toFirstObj());
 	Example.print("select all [id2] = \"20\"",Example._tab1.selectWhenE(0,"20",1).toObjs());
 	Example.print("select all [id2] = \"-1\"",Example._tab1.selectWhenE(0,"-1",1).toObjs());
@@ -100,16 +100,20 @@ Example.test_enhanced_csv_format = function() {
 	Example.print("[enhanced] select last obj",Example._tab2.selectLastRow().toFirstObj());
 	Example.print("[enhanced] select [id] = 2",Example._tab2.selectWhenE(1,2).toFirstObj());
 	Example.print("[enhanced] select [id] = -1",Example._tab2.selectWhenE(1,-1).toFirstObj());
-	Example.print("[enhanced] select [id] = 3 and [id2] = 20",Example._tab2.selectWhenE2(1,3,20).toFirstObj());
+	Example.print("[enhanced] select [id] = 3 and [id2] = 22",Example._tab2.selectWhenE2(1,3,22).toFirstObj());
 	Example.print("[enhanced] select [id] = 3 and [id2] = -1",Example._tab2.selectWhenE2(1,3,-1).toFirstObj());
-	Example.print("[enhanced] select [id] = 4 and [id2] = 21 and [id3] = 100",Example._tab2.selectWhenE3(1,4,21,100).toFirstObj());
-	Example.print("[enhanced] select [id] = 4 and [id2] = 21 and [id3] = -1",Example._tab2.selectWhenE3(1,4,21,-1).toFirstObj());
-	Example.print("[enhanced] select all [id2] = 20",Example._tab2.selectWhenE(0,20,1).toObjs());
+	Example.print("[enhanced] select [id] = 4 and [id2] = 22 and [id3] = 200",Example._tab2.selectWhenE3(1,4,22,200).toFirstObj());
+	Example.print("[enhanced] select [id] = 4 and [id2] = 22 and [id3] = -1",Example._tab2.selectWhenE3(1,4,22,-1).toFirstObj());
+	Example.print("[enhanced] select all [id2] = 21",Example._tab2.selectWhenE(0,21,1).toObjs());
 	Example.print("[enhanced] select all [id2] = -1",Example._tab2.selectWhenE(0,-1,1).toObjs());
-	Example.print("[enhanced] select all [id2] > 21",Example._tab2.selectWhenG(0,false,21,1).toObjs());
-	Example.print("[enhanced] select all [id2] >= 21",Example._tab2.selectWhenG(0,true,21,1).toObjs());
-	Example.print("[enhanced] select all [id2] < 21",Example._tab2.selectWhenL(0,false,21,1).toObjs());
-	Example.print("[enhanced] select all [id2] <= 21",Example._tab2.selectWhenL(0,true,21,1).toObjs());
+	Example.print("[enhanced] select all [id2] > 25",Example._tab2.selectWhenG(0,false,25,1).toObjs());
+	Example.print("[enhanced] select all [id2] >= 25",Example._tab2.selectWhenG(0,true,25,1).toObjs());
+	Example.print("[enhanced] select all [id2] < 22",Example._tab2.selectWhenL(0,false,22,1).toObjs());
+	Example.print("[enhanced] select all [id2] <= 22",Example._tab2.selectWhenL(0,true,22,1).toObjs());
+	Example.print("[enhanced] select all [id2] > 21 and [id2] < 24",Example._tab2.selectWhenGreaterAndLess(0,false,false,21,24,1).toObjs());
+	Example.print("[enhanced] select all [id2] >= 21 and [id2] <= 24",Example._tab2.selectWhenGreaterAndLess(0,true,true,21,24,1).toObjs());
+	Example.print("[enhanced] select all [id2] < 22 or [id2] > 25",Example._tab2.selectWhenLessOrGreater(0,false,false,22,25,1).toObjs());
+	Example.print("[enhanced] select all [id2] <= 22 or [id2] >= 25",Example._tab2.selectWhenLessOrGreater(0,true,true,22,25,1).toObjs());
 };
 var HxOverrides = function() { };
 HxOverrides.cca = function(s,index) {
@@ -337,6 +341,18 @@ acsv_Table.prototype = {
 			map[key] = row;
 		}
 		this._indexSet[colIndex] = map;
+	}
+	,getColumnIndexBy: function(name) {
+		var _g1 = 0;
+		var _g = this.head.length;
+		while(_g1 < _g) {
+			var i = _g1++;
+			var field = this.head[i];
+			if(field.name == name) {
+				return i;
+			}
+		}
+		return -1;
 	}
 	,fmtRow: function(row) {
 		var obj = [];
@@ -567,7 +583,7 @@ acsv_Table.prototype = {
 		this._selectd = rows;
 		return this;
 	}
-	,selectWhenGTandLT: function(limit,GwithEqu,LwithEqu,value,colIndex) {
+	,selectWhenGreaterAndLess: function(limit,GWithEqu,LWithEqu,GValue,LValue,colIndex) {
 		if(colIndex == null) {
 			colIndex = 0;
 		}
@@ -578,7 +594,33 @@ acsv_Table.prototype = {
 			var i = _g1++;
 			var row = this.body[i];
 			var rowVal = row[colIndex];
-			if(rowVal > value || GwithEqu && rowVal == value) {
+			var v1 = rowVal > GValue || GWithEqu && rowVal == GValue;
+			var v2 = rowVal < LValue || LWithEqu && rowVal == LValue;
+			if(v1 && v2) {
+				rows.push(row);
+				--limit;
+				if(limit == 0) {
+					break;
+				}
+			}
+		}
+		this._selectd = rows;
+		return this;
+	}
+	,selectWhenLessOrGreater: function(limit,LWithEqu,GWithEqu,LValue,GValue,colIndex) {
+		if(colIndex == null) {
+			colIndex = 0;
+		}
+		var rows = [];
+		var _g1 = 0;
+		var _g = this.body.length;
+		while(_g1 < _g) {
+			var i = _g1++;
+			var row = this.body[i];
+			var rowVal = row[colIndex];
+			var v1 = rowVal < LValue || LWithEqu && rowVal == LValue;
+			var v2 = rowVal > GValue || GWithEqu && rowVal == GValue;
+			if(v1 || v2) {
 				rows.push(row);
 				--limit;
 				if(limit == 0) {
@@ -608,8 +650,8 @@ js__$Boot_HaxeError.wrap = function(val) {
 js__$Boot_HaxeError.__super__ = Error;
 js__$Boot_HaxeError.prototype = $extend(Error.prototype,{
 });
-Example.standard_format_text = "id,id2,id3,name,brief\r\n1,20,100,John,He is a googd man\r\n2,20,200,张三,\"他是一个好人\r\n我们都喜欢他\"\r\n3,20,300,море,\"Он хороший человек\r\nмы все любим его\r\nЕго девиз:\r\n\"\"доверяй себе\"\"\"\r\n4,21,100,الشمس,صباح الخير\r\n5,21,200,चंद्रमा,\r\n6,21,300,,सुसंध्या\r\n7,22,100,,อยากเป็นซุปตาร์\r\n8,22,200,ดาว,";
-Example.enhanced_format_text = "id:int,id2:int,id3:int,name:string,weight:number,marry:bool,education:json,tags:strings,brief\r\n1,20,100,John,120.1,true,\"[\"\"MSU\"\"]\",\"good,cool\",He is a googd man\r\n2,20,200,张三,121.2,false,\"[\"\"JHU\"\",\"\"MIT\"\"]\",good,\"他是一个好人\r\n我们都喜欢他\"\r\n3,20,300,море,123.4,true,\"[\"\"BC\"\",\"\"HYP\"\",\"\"NYU\"\"]\",strong,\"Он хороший человек\r\nмы все любим его\r\nЕго девиз:\r\n\"\"доверяй себе\"\"\"\r\n4,21,100,الشمس,124.5,false,\"{\"\"USC\"\":12}\",\"strong,cool\",صباح الخير\r\n5,21,200,चंद्रमा,126.7,1,\"{\"\"UCHI\"\":34,\"\"UCB\"\":56}\",\"height,strong\",\r\n6,21,300,,127.8,0,\"{\"\"UCHI\"\":78,\"\"UCB\"\":[90,12]}\",\"thin,good\",सुसंध्या\r\n7,22,100,,128.9,1,\"[\"\"VT\"\",{\"\"UCSD\"\":34}]\",,อยากเป็นซุปตาร์\r\n8,22,200,ดาว,129.01,0,,\"hot,thin,good\",";
+Example.standard_format_text = "id,id2,id3,name,brief\r\n1,20,100,John,He is a googd man\r\n2,20,100,张三,\"他是一个好人\r\n我们都喜欢他\"\r\n3,21,100,море,\"Он хороший человек\r\nмы все любим его\r\nЕго девиз:\r\n\"\"доверяй себе\"\"\"\r\n4,21,200,الشمس,صباح الخير\r\n5,22,200,चंद्रमा,सुसंध्या\r\n6,22,200,ดาว,";
+Example.enhanced_format_text = "id:int,id2:int,id3:int,name:string,weight:number,marry:bool,education:json,tags:strings,brief\r\n1,21,100,John,120.1,true,\"[\"\"AB\"\"]\",\"good,cool\",\"Today is good day\r\nTomorrow is good day too\"\r\n2,21,100,张三,121.2,false,\"[\"\"CD\"\",\"\"EF\"\"]\",good,今天是个好日子\r\n3,22,100,море,123.4,true,\"[\"\"GH\"\",\"\"AB\"\",\"\"CD\"\"]\",good,\"Сегодня хороший день\r\nЗавтра тоже хороший день\"\r\n4,22,200,الشمس,124.5,false,\"{\"\"AA\"\":12}\",strong,صباح الخير\r\n5,23,200,चंद्रमा,126.7,1,\"{\"\"BB\"\":12}\",strong,सुसंध्या\r\n6,23,200,Emilia,,0,\"{\"\"CC\"\":34,\"\"DD\"\":56}\",\"strong,cool\",Hoje é um bom dia\r\n7,24,300,Ayşe,128.9,0,\"{\"\"EE\"\":34,\"\"FF\"\":56}\",\"strong,cool\",Bugün güzel bir gün\r\n8,24,300,陽菜乃,129.01,,\"{\"\"AC\"\":78,\"\"BD\"\":[90,12]}\",\"height,strong\",今日はいい日です\r\n9,25,300,Dwi,130.12,1,\"{\"\"EF\"\":78,\"\"CF\"\":[90,12]}\",,\"Hari ini adalah hari yang baik\r\nBesok juga hari yang baik\"\r\n10,25,400,Bảo,131.23,1,\"[\"\"BC\"\",{\"\"AT\"\":34}]\",\"thin,good\",\r\n11,26,400,민준,132.34,0,\"[\"\"FG\"\",{\"\"AG\"\":34}]\",\"hot,thin,good\",오늘은 좋은 날이다\r\n12,26,400,ดาว,133.456,0,,,";
 acsv_Table.JSON_TYPES = ["json","strings"];
 Example.main();
 })(typeof exports != "undefined" ? exports : typeof window != "undefined" ? window : typeof self != "undefined" ? self : this);

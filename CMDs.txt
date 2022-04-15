@@ -1,2 +1,2 @@
-// use typedoc to gen docs
-npx typedoc --out release/docs/ts --entryPointStrategy expand ./src/ts --cleanOutputDir false --excludePrivate
+// use haxe dox to gen docs
+haxelib run dox -i release/ACsv.dox.xml -o release/docs/hx --title "ACsv library" -ex \S+ -in acsv -in Array$ -in String$ -in Int$ -in Float$ -in Dynamic$
