@@ -354,6 +354,9 @@ acsv_Table.prototype = {
 		}
 		return -1;
 	}
+	,getCurrentSelectdData: function() {
+		return this._selectd;
+	}
 	,fmtRow: function(row) {
 		var obj = [];
 		var _g1 = 0;
@@ -404,7 +407,7 @@ acsv_Table.prototype = {
 		return this.fmtRow(this._selectd[this._selectd.length - 1]);
 	}
 	,toRows: function() {
-		if(this._selectd == null || this._selectd.length == 0) {
+		if(this._selectd == null) {
 			return null;
 		}
 		var objs = [];
@@ -430,7 +433,7 @@ acsv_Table.prototype = {
 		return this.fmtObj(this._selectd[this._selectd.length - 1]);
 	}
 	,toObjs: function() {
-		if(this._selectd == null || this._selectd.length == 0) {
+		if(this._selectd == null) {
 			return null;
 		}
 		var objs = [];
