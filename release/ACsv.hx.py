@@ -71,7 +71,11 @@ class Reflect:
 class Std:
     _hx_class_name = "Std"
     __slots__ = ()
-    _hx_statics = ["parseInt", "shortenPossibleNumber", "parseFloat"]
+    _hx_statics = ["string", "parseInt", "shortenPossibleNumber", "parseFloat"]
+
+    @staticmethod
+    def string(s):
+        return python_Boot.toString1(s,"")
 
     @staticmethod
     def parseInt(x):
@@ -199,8 +203,8 @@ class acsv_Table:
             _g1 = (_g1 + 1)
             row = (self.body[i] if i >= 0 and i < len(self.body) else None)
             key = (row[colIndex] if colIndex >= 0 and colIndex < len(row) else None)
-            Reflect.setProperty(_hx_map,key,row)
-        Reflect.setProperty(self._indexSet,(str(colIndex) + ""),_hx_map)
+            Reflect.setProperty(_hx_map,(Std.string(key) + ""),row)
+        Reflect.setProperty(self._indexSet,(Std.string(colIndex) + ""),_hx_map)
 
     def getColumnIndexBy(self,name):
         _g1 = 0
@@ -317,9 +321,9 @@ class acsv_Table:
         if (colIndex is None):
             colIndex = 0
         if (limit == 1):
-            _hx_map = Reflect.getProperty(self._indexSet,(str(colIndex) + ""))
+            _hx_map = Reflect.getProperty(self._indexSet,(Std.string(colIndex) + ""))
             if (_hx_map is not None):
-                val = HxOverrides.arrayGet(_hx_map, value)
+                val = Reflect.getProperty(_hx_map,(Std.string(value) + ""))
                 if (val is not None):
                     self._selectd = [val]
                 else:
@@ -1287,7 +1291,7 @@ class _HxException(Exception):
 class HxOverrides:
     _hx_class_name = "HxOverrides"
     __slots__ = ()
-    _hx_statics = ["eq", "stringOrNull", "arrayGet", "mapKwArgs"]
+    _hx_statics = ["eq", "stringOrNull", "mapKwArgs"]
 
     @staticmethod
     def eq(a,b):
@@ -1301,17 +1305,6 @@ class HxOverrides:
             return "null"
         else:
             return s
-
-    @staticmethod
-    def arrayGet(a,i):
-        if isinstance(a,list):
-            x = a
-            if ((i > -1) and ((i < len(x)))):
-                return x[i]
-            else:
-                return None
-        else:
-            return a[i]
 
     @staticmethod
     def mapKwArgs(a,v):

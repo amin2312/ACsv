@@ -691,7 +691,11 @@ class Table
                     }
                     else
                     {
+                        #if js
+                        newVal = untyped parseInt(newVal);
+                        #else
                         newVal = Std.parseInt(newVal);
+                        #end
                     }
                 }
                 else if (type == "number")

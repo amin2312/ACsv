@@ -115,25 +115,6 @@ Example.test_enhanced_csv_format = function() {
 	Example._tab2.createIndexAt(0);
 	Example.P("[enhanced] 9th row name",Example._tab2.selectWhenE(1,9).toObjs()[0].name);
 };
-var HxOverrides = function() { };
-HxOverrides.cca = function(s,index) {
-	var x = s.charCodeAt(index);
-	if(x != x) {
-		return undefined;
-	}
-	return x;
-};
-var Std = function() { };
-Std.parseInt = function(x) {
-	var v = parseInt(x,10);
-	if(v == 0 && (HxOverrides.cca(x,1) == 120 || HxOverrides.cca(x,1) == 88)) {
-		v = parseInt(x);
-	}
-	if(isNaN(v)) {
-		return null;
-	}
-	return v;
-};
 var StringTools = function() { };
 StringTools.replace = function(s,sub,by) {
 	return s.split(sub).join(by);
@@ -282,7 +263,7 @@ acsv_Table.arrayToRows = function(array) {
 				if(isEmptyCell) {
 					newVal = 0;
 				} else {
-					newVal = Std.parseInt(newVal);
+					newVal = parseInt(newVal);
 				}
 			} else if(type == "number") {
 				if(isEmptyCell) {

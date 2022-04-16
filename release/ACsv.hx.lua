@@ -445,7 +445,7 @@ acsv.Table.textToArray = function(text)
             repeat 
             cellIndexB = ptr:indexOf("\"",ptrPos + cellIndexB);
             if (cellIndexB == -1) then 
-              haxe.Log.trace("[ACsv] Invalid Double Quote",_hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="Table.hx",lineNumber=571,className="acsv.Table",methodName="textToArray"}));
+              haxe.Log.trace("[ACsv] Invalid Double Quote",_hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="Table.hx",lineNumber=579,className="acsv.Table",methodName="textToArray"}));
               do return nil end;
             end;
             cellIndexB = cellIndexB - ptrPos;
@@ -556,7 +556,7 @@ acsv.Table.arrayToRows = function(array)
               else
                 local chr0 = cell:charAt(0);
                 if (not ((chr0 == "[") or (chr0 == "{"))) then 
-                  haxe.Log.trace("[ACsv] Invalid json format:" .. fileds[j].name .. "," .. cell,_hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="Table.hx",lineNumber=711,className="acsv.Table",methodName="arrayToRows"}));
+                  haxe.Log.trace("[ACsv] Invalid json format:" .. fileds[j].name .. "," .. cell,_hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="Table.hx",lineNumber=723,className="acsv.Table",methodName="arrayToRows"}));
                   do return nil end;
                 end;
                 newVal = cell;
