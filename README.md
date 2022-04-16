@@ -3,13 +3,15 @@ ACsv Library
 **ACsv** is a easy, tiny and powerful csv parse library.  
 
 The features:
-* Standard - support standard csv file format(RFC 4180)
-* Easy to use - provide the demo, examples and documentation
+* Standard - support standard csv format (RFC 4180)
+* Easy to use - provide the example, demo and documentation
 * Tiny size - js version is only 6k
-* Powerful - support enhanced csv format
-* Cross-platform - provide js,lua,python version
+* Powerful - support enhanced csv format, you can declare the field types, please see details from 'release/csvs/enhanced_format_text.csv'  
+	> \* current supported field types: bool, int, number, json, strings
+* Cross platform - provide js,lua,python version 
+  
 
-Demo
+Example
 ----------------
 ```javascript
 var table = acsv.Table.Parse(csv_content);
@@ -17,10 +19,10 @@ table.selectWhenE(1, 1).toObj();
 table.selectWhenE2(1, 21, 2).toObjs();
 ```
 
-Examples 
+Demos 
 ----------------
-* [Javascript example - via haxe code to compile](https://amin2312.github.io/ACsv/release/examples/example.hx.html)
-* [Javascript example - via ts code with library to compile](https://amin2312.github.io/ACsv/release/examples/example.ts.html)
+* [Javascript demo - via haxe code to compile](https://amin2312.github.io/ACsv/release/demos/demo.hx.html)
+* [Javascript demo - via ts code with library to compile](https://amin2312.github.io/ACsv/release/demos/demo.ts.html)
 
 Docs
 ----------------
@@ -29,49 +31,47 @@ Docs
 Others
 ----------------
 ***⭐ If you like this project, please give a star ⭐***
-***
 + **español**  
-"ATween" es una biblioteca fácil, rápida y pequeña.
-Puede ejecutarse en entorno "javascript" u otras plataformas (a través de "haxe", como "lua").
-Y ha estado funcionando en sistemas comerciales durante más de 5 años, es estable, puede usarlo con confianza.
+"ACsv" es una biblioteca de análisis CSV fácil, pequeña y potente.  
+Se está ejecutando en un sistema comercial.  
+Es estable y se puede utilizar con confianza.
 + **portugués**  
-"ATween" é uma biblioteca fácil, rápida e pequena.
-Pode ser executado em ambiente "javascript" ou outras plataformas (via "haxe", como "lua").
-E ele funciona em sistemas comerciais há mais de 5 anos, é estável, você pode usar com confiança.
+"ACsv" é uma biblioteca de análise de CSV fácil, pequena e poderosa.  
+Ele está sendo executado em um sistema comercial.  
+É estável e pode ser usado com confiança.
 + **Deutsch**  
-"ATween" ist eine einfache, schnelle und kleine Bibliothek.
-Es kann in einer "javascript"-Umgebung oder anderen Plattformen (über "haxe", wie "lua") ausgeführt werden.
-Und es läuft seit über 5 Jahren in kommerziellen Systemen, es ist stabil, Sie können es mit Zuversicht verwenden.
+"ACsv" ist eine einfache, winzige und leistungsstarke CSV-Parsing-Bibliothek.  
+Es läuft in einem kommerziellen System.  
+Es ist stabil und kann mit Zuversicht verwendet werden.
 + **français**  
-"ATween" est une bibliothèque simple, rapide et minuscule.
-Il peut s'exécuter dans un environnement "javascript" ou sur d'autres plates-formes (via "haxe", comme "lua").
-Et il fonctionne dans des systèmes commerciaux depuis plus de 5 ans, il est stable, vous pouvez l'utiliser en toute confiance.
+"ACsv" est une bibliothèque d'analyse CSV simple, petite et puissante.  
+Il fonctionne dans un système commercial.  
+Il est stable et peut être utilisé en toute confiance.
 + **italiano**  
-"ATween" è una libreria facile, veloce e minuscola.
-Può essere eseguito in ambiente "javascript" o altre piattaforme (tramite "haxe", come "lua").
-E funziona nei sistemi commerciali da oltre 5 anni, è stabile, puoi usarlo con sicurezza.
+"ACsv" è una libreria di analisi CSV semplice, piccola e potente.  
+È in esecuzione in un sistema commerciale.  
+È stabile e può essere utilizzato con sicurezza.
 + **Türkçe**  
-"ATween" kolay, hızlı ve küçük bir kütüphanedir.
-"javascript" ortamında veya diğer platformlarda ("lua" gibi "haxe" aracılığıyla) çalışabilir.
-Ve 5 yılı aşkın süredir ticari sistemlerde çalışmaktadır, stabildir, güvenle kullanabilirsiniz.
+"ACsv" kolay, küçük ve güçlü bir CSV ayrıştırma kitaplığıdır.  
+Ticari bir sistemde çalışıyor.  
+Stabildir ve güvenle kullanılabilir.
 + **русский**  
-"ATween" это простая, быстрая и крошечная библиотека.
-Он может работать в среде "javascript" или на других платформах (через "haxe", например "lua").
-И он работает в коммерческих системах более 5 лет, он стабилен, вы можете использовать его с уверенностью.
+"ACsv" — это простая, компактная и мощная библиотека для разбора CSV.  
+Он работает в коммерческой системе.  
+Он стабилен и может использоваться с уверенностью.
 - **中文**  
-"ATween" 是一个简单、快速且小型的库。
-它可以在"javascript"环境或其他平台（通过"haxe"，例如"lua"）中运行。
-并且已经在商业系统中运行5年以上，它是稳定的，可以放心使用。
+"ACsv"是一个简单、小巧且功能强大的 CSV 解析库。   
+它正在商业系统中运行。  
+它很稳定，可以放心使用。
 + **日本語**  
-"ATween"は、簡単、高速、そして小さなライブラリです。
-"javascript"環境または他のプラットフォーム（"lua"などの"haxe"経由）で実行できます。
-ライブラリは5年以上商用システムで実行されており、安定しており、自信を持って使用できます。
+"ACsv"は、簡単で小さくて強力なCSV解析ライブラリです。  
+商用システムで実行されています。  
+安定していて安心してお使いいただけます。
 + **tiếng Việt**  
-"ATween" là một thư viện dễ dàng, nhanh chóng và nhỏ.
-Nó có thể chạy trong môi trường "javascript" hoặc các nền tảng khác (thông qua "haxe", chẳng hạn như "lua").
-Và nó đã chạy trong các hệ thống thương mại hơn 5 năm, nó ổn định, bạn có thể tự tin sử dụng.
+"ACsv" là một thư viện phân tích cú pháp CSV dễ dàng, nhỏ và mạnh mẽ.  
+Nó đang chạy trong một hệ thống thương mại.  
+Nó ổn định và có thể được sử dụng một cách tự tin.
 + **Indonesia**  
-"ATween" adalah perpustakaan yang mudah, cepat, dan kecil.
-Itu dapat berjalan di lingkungan "javascript" atau platform lain (melalui "haxe", seperti "lua").
-Dan telah berjalan dalam sistem komersial selama lebih dari 5 tahun, stabil, Anda dapat menggunakannya dengan percaya diri.
-
+"ACsv" adalah library penguraian CSV yang mudah, kecil, dan kuat.  
+Itu berjalan dalam sistem komersial.  
+Ini stabil dan dapat digunakan dengan percaya diri.
