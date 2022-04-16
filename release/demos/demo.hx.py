@@ -37,7 +37,7 @@ class Enum:
 class Example:
     _hx_class_name = "Example"
     __slots__ = ()
-    _hx_statics = ["standard_format_text", "enhanced_format_text", "_tab1", "_tab2", "main", "showTables", "showTable", "P", "test_standard_csv_format", "test_enhanced_csv_format"]
+    _hx_statics = ["standard_format_text", "enhanced_format_text", "_tab1", "_tab2", "main", "showTable", "P", "test_standard_csv_format", "test_enhanced_csv_format"]
     _tab1 = None
     _tab2 = None
 
@@ -49,10 +49,6 @@ class Example:
         Example.test_standard_csv_format()
         Example.showTable("enhanced csv format",Example._tab2)
         Example.test_enhanced_csv_format()
-
-    @staticmethod
-    def showTables():
-        pass
 
     @staticmethod
     def showTable(fileName,csvTable):
@@ -400,7 +396,6 @@ class acsv_Table:
         if (limit == 1):
             _hx_map = Reflect.getProperty(self._indexSet,(Std.string(colIndex) + ""))
             if (_hx_map is not None):
-                print(str(111111111111111111111111))
                 val = Reflect.getProperty(_hx_map,(Std.string(value) + ""))
                 if (val is not None):
                     self._selectd = [val]

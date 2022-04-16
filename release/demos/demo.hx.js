@@ -10,8 +10,6 @@ Example.main = function() {
 	Example.showTable("enhanced csv format",Example._tab2);
 	Example.test_enhanced_csv_format();
 };
-Example.showTables = function() {
-};
 Example.showTable = function(fileName,csvTable) {
 	var t = window.document.getElementById("output");
 	var tab = window.document.createElement("table");
@@ -23,8 +21,8 @@ Example.showTable = function(fileName,csvTable) {
 	while(_g1 < _g) {
 		var i = _g1++;
 		var td = window.document.createElement("td");
-		var row = csvTable.head[i];
-		td.innerText = row.fullName;
+		var rowI = csvTable.head[i];
+		td.innerText = rowI.fullName;
 		tr.appendChild(td);
 	}
 	tab.appendChild(thead);
@@ -40,8 +38,8 @@ Example.showTable = function(fileName,csvTable) {
 		while(_g3 < _g21) {
 			var j = _g3++;
 			var td1 = window.document.createElement("td");
-			var row1 = rows[j];
-			td1.innerText = row1;
+			var rowJ = rows[j];
+			td1.innerText = rowJ;
 			tr1.appendChild(td1);
 		}
 		tbody.appendChild(tr1);

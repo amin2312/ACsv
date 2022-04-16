@@ -7,9 +7,10 @@
     "target": "ES5",
     
     "rootDir": "src/ts",
-    "outFile": "release/examples/example.ts.js",
+    "outFile": "release/demos/demo.ts.js",
   },
   "exclude": [
+    "src/hx/*",
     "release/*"
   ]
 }

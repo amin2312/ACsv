@@ -187,16 +187,14 @@ Example.main = function()
   Example.showTable("enhanced csv format",Example._tab2);
   Example.test_enhanced_csv_format();
 end
-Example.showTables = function() 
-end
 Example.showTable = function(fileName,csvTable) 
 end
 Example.P = function(cmd,o) 
-  haxe.Log.trace(cmd,_hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="Example.hx",lineNumber=125,className="Example",methodName="P"}));
+  haxe.Log.trace(cmd,_hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="Example.hx",lineNumber=120,className="Example",methodName="P"}));
   if (o == nil) then 
-    haxe.Log.trace(nil,_hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="Example.hx",lineNumber=128,className="Example",methodName="P"}));
+    haxe.Log.trace(nil,_hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="Example.hx",lineNumber=123,className="Example",methodName="P"}));
   else
-    haxe.Log.trace(o,_hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="Example.hx",lineNumber=132,className="Example",methodName="P"}));
+    haxe.Log.trace(o,_hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="Example.hx",lineNumber=127,className="Example",methodName="P"}));
   end;
 end
 Example.test_standard_csv_format = function() 
@@ -216,7 +214,6 @@ Example.test_standard_csv_format = function()
   Example.P("select all [id2] = \"-1\"",Example._tab1:selectWhenE(0,"-1",1):toObjs());
 end
 Example.test_enhanced_csv_format = function() 
-  Example._tab2:createIndexAt(1);
   Example.P("[enhanced] select all to rows",Example._tab2:selectAll():toRows());
   Example.P("[enhanced] select all to objs",Example._tab2:selectAll():toObjs());
   Example.P("[enhanced] select first row",Example._tab2:selectFirstRow():toFirstRow());
@@ -239,6 +236,7 @@ Example.test_enhanced_csv_format = function()
   Example.P("[enhanced] select all [id2] >= 21 and [id2] <= 24",Example._tab2:selectWhenGreaterAndLess(0,true,true,21,24,1):toObjs());
   Example.P("[enhanced] select all [id2] < 22 or [id2] > 25",Example._tab2:selectWhenLessOrGreater(0,false,false,22,25,1):toObjs());
   Example.P("[enhanced] select all [id2] <= 22 or [id2] >= 25",Example._tab2:selectWhenLessOrGreater(0,true,true,22,25,1):toObjs());
+  Example._tab2:createIndexAt(0);
   Example.P("[enhanced] 9th row name",Example._tab2:selectWhenE(1,9):toObjs()[0].name);
 end
 
@@ -510,7 +508,7 @@ acsv.Table.textToArray = function(text)
             repeat 
             cellIndexB = ptr:indexOf("\"",ptrPos + cellIndexB);
             if (cellIndexB == -1) then 
-              haxe.Log.trace("[ACsv] Invalid Double Quote",_hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="Table.hx",lineNumber=571,className="acsv.Table",methodName="textToArray"}));
+              haxe.Log.trace("[ACsv] Invalid Double Quote",_hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="Table.hx",lineNumber=579,className="acsv.Table",methodName="textToArray"}));
               do return nil end;
             end;
             cellIndexB = cellIndexB - ptrPos;
@@ -621,7 +619,7 @@ acsv.Table.arrayToRows = function(array)
               else
                 local chr0 = cell:charAt(0);
                 if (not ((chr0 == "[") or (chr0 == "{"))) then 
-                  haxe.Log.trace("[ACsv] Invalid json format:" .. fileds[j].name .. "," .. cell,_hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="Table.hx",lineNumber=711,className="acsv.Table",methodName="arrayToRows"}));
+                  haxe.Log.trace("[ACsv] Invalid json format:" .. fileds[j].name .. "," .. cell,_hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="Table.hx",lineNumber=723,className="acsv.Table",methodName="arrayToRows"}));
                   do return nil end;
                 end;
                 newVal = cell;

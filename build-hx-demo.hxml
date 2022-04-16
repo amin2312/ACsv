@@ -1,0 +1,5 @@
+-cp src/hx
+-main Example
+-js release/demos/demo.hx.js
+#-lua release/demos/demo.hx.lua
+#-python release/demos/demo.hx.py
