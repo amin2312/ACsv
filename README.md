@@ -8,7 +8,7 @@ The features:
 * Tiny size - js version is only 6k
 * Powerful - support enhanced csv format, you can declare the field types, please see details from 'release/csvs/enhanced_format_text.csv'  
 	> \* current supported field types: bool, int, number, json, strings
-* Cross platform - provide js,lua,python version 
+* Cross platform - provide js, lua, python version 
   
 
 Example
@@ -26,7 +26,7 @@ Demos
 
 Docs
 ----------------
-[Online docs - via dox](https://amin2312.github.io/ATween/release/docs/hx/index.html)
+[Online docs - via dox](https://amin2312.github.io/ACsv/release/docs/hx/index.html)
 
 Others
 ----------------
@@ -59,7 +59,7 @@ Stabildir ve güvenle kullanılabilir.
 "ACsv" — это простая, компактная и мощная библиотека для разбора CSV.  
 Он работает в коммерческой системе.  
 Он стабилен и может использоваться с уверенностью.
-- **中文**  
++ **中文**  
 "ACsv"是一个简单、小巧且功能强大的 CSV 解析库。   
 它正在商业系统中运行。  
 它很稳定，可以放心使用。
