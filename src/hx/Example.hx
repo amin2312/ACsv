@@ -1,9 +1,7 @@
 package ;
 
 import acsv.*;
-/**
-* Unit Test For ACsv
-**/
+
 class Example
 {
 /**
@@ -40,7 +38,7 @@ Besok juga hari yang baik"
 11,26,400,민준,132.34,0,"[""FG"",{""AG"":34}]","hot,thin,good",오늘은 좋은 날이다
 12,26,400,ดาว,133.456,0,,,';
     /**
-     * 
+     * Tables
      */
     private static var _tab1:Table;
     private static var _tab2:Table;
@@ -57,9 +55,6 @@ Besok juga hari yang baik"
         showTable("enhanced csv format", _tab2);
         test_enhanced_csv_format();
     }
-    public static function showTables():Void
-    {
-    }
     
     private static function showTable(fileName:String, csvTable:Table):Void
     {
@@ -73,8 +68,8 @@ Besok juga hari yang baik"
             for(i in 0...csvTable.head.length)
             {
                 var td =  js.Browser.document.createElement('td');
-                var row = csvTable.head[i];
-                td.innerText = row.fullName;
+                var rowI = csvTable.head[i];
+                td.innerText = rowI.fullName;
                 tr.appendChild(td);
             }
             tab.appendChild(thead);
@@ -88,8 +83,8 @@ Besok juga hari yang baik"
                 for(j in 0...rows.length)
                 {
                     var td =  js.Browser.document.createElement('td');
-                    var row = rows[j];
-                    td.innerText = row;
+                    var rowJ = rows[j];
+                    td.innerText = rowJ;
                     tr.appendChild(td);
                 }
                 tbody.appendChild(tr);
