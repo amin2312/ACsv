@@ -197,14 +197,14 @@ class Table
         {
             return null;
         }
-        var arr = new Array<Array<Dynamic>>();
+        var dst = new Array<Array<Dynamic>>();
         for (i in 0..._selectd.length)
         {
             var row:Array<Dynamic> = _selectd[i];
-            arr.push(this.fmtRow(row));
+            dst.push(this.fmtRow(row));
         }
         _selectd = null;
-        return arr;
+        return dst;
     }
     /**
 	 * Fetch first selected result to a object and return it.
@@ -241,14 +241,14 @@ class Table
         {
             return null;
         }
-        var arr = new Array<Dynamic>();
+        var dst = new Array<Dynamic>();
         for (i in 0..._selectd.length)
         {
             var row:Array<Dynamic> = _selectd[i];
-            arr.push(this.fmtObj(row));
+            dst.push(this.fmtObj(row));
         }
         _selectd = null;
-        return arr;
+        return dst;
     }
     /**
 	 * Select all rows.
