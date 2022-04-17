@@ -1,11 +1,12 @@
 ACsv Library
 ================
-**ACsv** is a easy, tiny and powerful csv parse library.  
+**ACsv** is a easy, fast and powerful csv parse library.  
 
 The features:
 * Standard - support standard csv format (RFC 4180)
-* Easy to use - provide the example, demo and documentation
 * Tiny size - js version is only 6k
+* Easy to use - provide the example, demo and documentation
+* Fast speed - optimized code for high performance, it can works easy in older devices
 * Powerful - support enhanced csv format, you can declare the field type after field name (like <b>width:int</b>, <b>name:string</b>), please see details from "release/csvs/enhanced_format_text.csv"  
 	> \* current supported field types: bool, int, number, json, strings
 * Cross platform - provide js, lua, python version 

@@ -5,8 +5,7 @@ package acsv;
  * 2. Version 1.0.0
  * 3. MIT License
  *
- * ACsv is a easy, tiny and powerful csv parse library,
- * It also provides cross-platform versions(via haxe).
+ * ACsv is a easy, fast and powerful csv parse library.  
  */
 @:expose
 class Table

@@ -2,7 +2,7 @@ package ;
 
 import acsv.*;
 
-class Example
+class Demo
 {
 /**
  * Standard csv format text
