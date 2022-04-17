@@ -18,7 +18,8 @@ Example
 var table = acsv.Table.Parse(csv_content);
 table.selectWhenE(1, 1).toObj();
 table.selectWhenE2(1, 21, 2).toObjs();
-table.selectWhenE(0, 100, 2).selectWhenL(0, false, 22, 1).toObjs(); // Method Chaining Usage - multi filter selected data
+// Method Chaining Usage - multi filter selected data
+table.selectWhenE(0, 100, 2).selectWhenL(0, false, 22, 1).toObjs();
 ```
 
 Demos 
