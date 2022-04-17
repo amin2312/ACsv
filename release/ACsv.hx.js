@@ -8,6 +8,7 @@ StringTools.replace = function(s,sub,by) {
 var acsv_Field = $hx_exports["acsv"]["Field"] = function() {
 };
 var acsv_Table = $hx_exports["acsv"]["Table"] = function() {
+	this._selectd = null;
 	this._indexSet = { };
 	this.body = [];
 	this.head = [];
@@ -263,16 +264,20 @@ acsv_Table.prototype = {
 		return obj;
 	}
 	,toFirstRow: function() {
-		if(this._selectd == null || this._selectd.length == 0) {
-			return null;
+		var rzl = null;
+		if(this._selectd != null && this._selectd.length > 0) {
+			rzl = this.fmtRow(this._selectd[0]);
 		}
-		return this.fmtRow(this._selectd[0]);
+		this._selectd = null;
+		return rzl;
 	}
 	,toLastRow: function() {
-		if(this._selectd == null || this._selectd.length == 0) {
-			return null;
+		var rzl = null;
+		if(this._selectd != null && this._selectd.length > 0) {
+			rzl = this.fmtRow(this._selectd[this._selectd.length - 1]);
 		}
-		return this.fmtRow(this._selectd[this._selectd.length - 1]);
+		this._selectd = null;
+		return rzl;
 	}
 	,toRows: function() {
 		if(this._selectd == null) {
@@ -286,19 +291,24 @@ acsv_Table.prototype = {
 			var row = this._selectd[i];
 			arr.push(this.fmtRow(row));
 		}
+		this._selectd = null;
 		return arr;
 	}
 	,toFirstObj: function() {
-		if(this._selectd == null || this._selectd.length == 0) {
-			return null;
+		var rzl = null;
+		if(this._selectd != null && this._selectd.length > 0) {
+			rzl = this.fmtObj(this._selectd[0]);
 		}
-		return this.fmtObj(this._selectd[0]);
+		this._selectd = null;
+		return rzl;
 	}
 	,toLastObj: function() {
-		if(this._selectd == null || this._selectd.length == 0) {
-			return null;
+		var rzl = null;
+		if(this._selectd != null && this._selectd.length > 0) {
+			rzl = this.fmtObj(this._selectd[this._selectd.length - 1]);
 		}
-		return this.fmtObj(this._selectd[this._selectd.length - 1]);
+		this._selectd = null;
+		return rzl;
 	}
 	,toObjs: function() {
 		if(this._selectd == null) {
@@ -312,6 +322,7 @@ acsv_Table.prototype = {
 			var row = this._selectd[i];
 			arr.push(this.fmtObj(row));
 		}
+		this._selectd = null;
 		return arr;
 	}
 	,selectAll: function() {
@@ -342,21 +353,25 @@ acsv_Table.prototype = {
 				return this;
 			}
 		}
-		var rows = [];
+		var src = this._selectd;
+		if(src == null) {
+			src = this.body;
+		}
+		var dst = [];
 		var _g1 = 0;
-		var _g = this.body.length;
+		var _g = src.length;
 		while(_g1 < _g) {
 			var i = _g1++;
-			var row = this.body[i];
+			var row = src[i];
 			if(row[colIndex] == value) {
-				rows.push(row);
+				dst.push(row);
 				--limit;
 				if(limit == 0) {
 					break;
 				}
 			}
 		}
-		this._selectd = rows;
+		this._selectd = dst;
 		return this;
 	}
 	,selectWhenE2: function(limit,value1,value2,colIndex2,colIndex1) {
@@ -366,21 +381,25 @@ acsv_Table.prototype = {
 		if(colIndex2 == null) {
 			colIndex2 = 1;
 		}
-		var rows = [];
+		var src = this._selectd;
+		if(src == null) {
+			src = this.body;
+		}
+		var dst = [];
 		var _g1 = 0;
-		var _g = this.body.length;
+		var _g = src.length;
 		while(_g1 < _g) {
 			var i = _g1++;
-			var row = this.body[i];
+			var row = src[i];
 			if(row[colIndex1] == value1 && row[colIndex2] == value2) {
-				rows.push(row);
+				dst.push(row);
 				--limit;
 				if(limit == 0) {
 					break;
 				}
 			}
 		}
-		this._selectd = rows;
+		this._selectd = dst;
 		return this;
 	}
 	,selectWhenE3: function(limit,value1,value2,value3,colIndex3,colIndex2,colIndex1) {
@@ -393,113 +412,133 @@ acsv_Table.prototype = {
 		if(colIndex3 == null) {
 			colIndex3 = 2;
 		}
-		var rows = [];
+		var src = this._selectd;
+		if(src == null) {
+			src = this.body;
+		}
+		var dst = [];
 		var _g1 = 0;
-		var _g = this.body.length;
+		var _g = src.length;
 		while(_g1 < _g) {
 			var i = _g1++;
-			var row = this.body[i];
+			var row = src[i];
 			if(row[colIndex1] == value1 && row[colIndex2] == value2 && row[colIndex3] == value3) {
-				rows.push(row);
+				dst.push(row);
 				--limit;
 				if(limit == 0) {
 					break;
 				}
 			}
 		}
-		this._selectd = rows;
+		this._selectd = dst;
 		return this;
 	}
 	,selectWhenG: function(limit,withEqu,value,colIndex) {
 		if(colIndex == null) {
 			colIndex = 0;
 		}
-		var rows = [];
+		var src = this._selectd;
+		if(src == null) {
+			src = this.body;
+		}
+		var dst = [];
 		var _g1 = 0;
-		var _g = this.body.length;
+		var _g = src.length;
 		while(_g1 < _g) {
 			var i = _g1++;
-			var row = this.body[i];
+			var row = src[i];
 			var rowVal = row[colIndex];
 			if(rowVal > value || withEqu && rowVal == value) {
-				rows.push(row);
+				dst.push(row);
 				--limit;
 				if(limit == 0) {
 					break;
 				}
 			}
 		}
-		this._selectd = rows;
+		this._selectd = dst;
 		return this;
 	}
 	,selectWhenL: function(limit,withEqu,value,colIndex) {
 		if(colIndex == null) {
 			colIndex = 0;
 		}
-		var rows = [];
+		var src = this._selectd;
+		if(src == null) {
+			src = this.body;
+		}
+		var dst = [];
 		var _g1 = 0;
-		var _g = this.body.length;
+		var _g = src.length;
 		while(_g1 < _g) {
 			var i = _g1++;
-			var row = this.body[i];
+			var row = src[i];
 			var rowVal = row[colIndex];
 			if(rowVal < value || withEqu && rowVal == value) {
-				rows.push(row);
+				dst.push(row);
 				--limit;
 				if(limit == 0) {
 					break;
 				}
 			}
 		}
-		this._selectd = rows;
+		this._selectd = dst;
 		return this;
 	}
 	,selectWhenGreaterAndLess: function(limit,GWithEqu,LWithEqu,GValue,LValue,colIndex) {
 		if(colIndex == null) {
 			colIndex = 0;
 		}
-		var rows = [];
+		var src = this._selectd;
+		if(src == null) {
+			src = this.body;
+		}
+		var dst = [];
 		var _g1 = 0;
-		var _g = this.body.length;
+		var _g = src.length;
 		while(_g1 < _g) {
 			var i = _g1++;
-			var row = this.body[i];
+			var row = src[i];
 			var rowVal = row[colIndex];
 			var v1 = rowVal > GValue || GWithEqu && rowVal == GValue;
 			var v2 = rowVal < LValue || LWithEqu && rowVal == LValue;
 			if(v1 && v2) {
-				rows.push(row);
+				dst.push(row);
 				--limit;
 				if(limit == 0) {
 					break;
 				}
 			}
 		}
-		this._selectd = rows;
+		this._selectd = dst;
 		return this;
 	}
 	,selectWhenLessOrGreater: function(limit,LWithEqu,GWithEqu,LValue,GValue,colIndex) {
 		if(colIndex == null) {
 			colIndex = 0;
 		}
-		var rows = [];
+		var src = this._selectd;
+		if(src == null) {
+			src = this.body;
+		}
+		var dst = [];
 		var _g1 = 0;
-		var _g = this.body.length;
+		var _g = src.length;
 		while(_g1 < _g) {
 			var i = _g1++;
-			var row = this.body[i];
+			var row = src[i];
 			var rowVal = row[colIndex];
 			var v1 = rowVal < LValue || LWithEqu && rowVal == LValue;
 			var v2 = rowVal > GValue || GWithEqu && rowVal == GValue;
 			if(v1 || v2) {
-				rows.push(row);
+				dst.push(row);
 				--limit;
 				if(limit == 0) {
 					break;
 				}
 			}
 		}
-		this._selectd = rows;
+		this._selectd = dst;
 		return this;
 	}
 };

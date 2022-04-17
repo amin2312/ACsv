@@ -167,13 +167,17 @@ Besok juga hari yang baik"
 
 		P('[enhanced] select all [id2] > 25', _tab2.selectWhenG(0, false, 25, 1).toObjs());
 		P('[enhanced] select all [id2] >= 25', _tab2.selectWhenG(0, true, 25, 1).toObjs());
+		P('[enhanced] select all [id2] > 30', _tab2.selectWhenG(0, false, 30, 1).toObjs());
 		P('[enhanced] select all [id2] < 22', _tab2.selectWhenL(0, false, 22, 1).toObjs());
 		P('[enhanced] select all [id2] <= 22', _tab2.selectWhenL(0, true, 22, 1).toObjs());
+		P('[enhanced] select all [id2] < 20', _tab2.selectWhenL(0, true, 20, 1).toObjs());
         P('[enhanced] select all [id2] > 21 and [id2] < 24', _tab2.selectWhenGreaterAndLess(0, false, false, 21, 24, 1).toObjs());
         P('[enhanced] select all [id2] >= 21 and [id2] <= 24', _tab2.selectWhenGreaterAndLess(0, true, true, 21, 24, 1).toObjs());
         P('[enhanced] select all [id2] < 22 or [id2] > 25', _tab2.selectWhenLessOrGreater(0, false, false, 22, 25, 1).toObjs());
         P('[enhanced] select all [id2] <= 22 or [id2] >= 25', _tab2.selectWhenLessOrGreater(0, true, true, 22, 25, 1).toObjs());
         
+		P('[enhanced] select all [id3] = 100 and [id2] < 22', _tab2.selectWhenE(0, 100, 2).selectWhenL(0, false, 22, 1).toObjs());
+
         _tab2.createIndexAt(0);
 		P('[enhanced] 9th row name', _tab2.selectWhenE(1, 9).toObjs()[0].name);
 	}
