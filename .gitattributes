@@ -1,1 +1,3 @@
-release/docs/* linguist-vendored
+release/docs/* linguist-vendored=true
+release/docs/** linguist-vendored=true
+release/docs/*/* linguist-vendored=true
