@@ -170,5 +170,6 @@ function test_enhanced_csv_format()
 
     _tab2.createIndexAt(0);
     P('[enhanced] 9th row name', _tab2.selectWhenE(1, 9).toObjs()[0].name);
+    P('[enhanced] 99th row name', _tab2.selectWhenE(1, 99).toObjs());
 }
 main();

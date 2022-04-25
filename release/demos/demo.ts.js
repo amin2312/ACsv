@@ -128,5 +128,6 @@ function test_enhanced_csv_format() {
     P('[enhanced] multi select all [id3] = 100 and [id2] < 22', _tab2.selectWhenE(0, 100, 2).selectWhenL(0, false, 22, 1).toObjs());
     _tab2.createIndexAt(0);
     P('[enhanced] 9th row name', _tab2.selectWhenE(1, 9).toObjs()[0].name);
+    P('[enhanced] 99th row name', _tab2.selectWhenE(1, 99).toObjs());
 }
 main();

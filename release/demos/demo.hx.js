@@ -115,6 +115,7 @@ Demo.test_enhanced_csv_format = function() {
 	Demo.P("[enhanced] multi select all [id3] = 100 and [id2] < 22",Demo._tab2.selectWhenE(0,100,2).selectWhenL(0,false,22,1).toObjs());
 	Demo._tab2.createIndexAt(0);
 	Demo.P("[enhanced] 9th row name",Demo._tab2.selectWhenE(1,9).toObjs()[0].name);
+	Demo.P("[enhanced] 99th row name",Demo._tab2.selectWhenE(1,99).toObjs());
 };
 var StringTools = function() { };
 StringTools.replace = function(s,sub,by) {
@@ -123,10 +124,11 @@ StringTools.replace = function(s,sub,by) {
 var acsv_Field = $hx_exports["acsv"]["Field"] = function() {
 };
 var acsv_Table = $hx_exports["acsv"]["Table"] = function() {
-	this._selectd = null;
+	this._selected = null;
 	this._indexSet = { };
 	this.body = [];
 	this.head = [];
+	this.content = null;
 };
 acsv_Table.Parse = function(content) {
 	var table = acsv_Table.arrayToRows(acsv_Table.textToArray(content));
@@ -322,7 +324,7 @@ acsv_Table.prototype = {
 		}
 		this._indexSet[colIndex] = map;
 	}
-	,getColumnIndexBy: function(name) {
+	,getColIndexBy: function(name) {
 		var _g1 = 0;
 		var _g = this.head.length;
 		while(_g1 < _g) {
@@ -334,8 +336,35 @@ acsv_Table.prototype = {
 		}
 		return -1;
 	}
+	,orderBy: function(colIndex,sortType) {
+		var len = this._selected.length;
+		var _g1 = 0;
+		var _g = len;
+		while(_g1 < _g) {
+			var i = _g1++;
+			var _g3 = 0;
+			var _g2 = len - 1;
+			while(_g3 < _g2) {
+				var j = _g3++;
+				var ok = false;
+				var a = this._selected[j][colIndex];
+				var b = this._selected[j + 1][colIndex];
+				if(sortType == 0 && a > b) {
+					ok = true;
+				} else if(sortType == 1 && a < b) {
+					ok = true;
+				}
+				if(ok) {
+					var temp = this._selected[j];
+					this._selected[j] = this._selected[j + 1];
+					this._selected[j + 1] = temp;
+				}
+			}
+		}
+		return this;
+	}
 	,getCurrentSelectdData: function() {
-		return this._selectd;
+		return this._selected;
 	}
 	,fmtRow: function(row) {
 		var obj = [];
@@ -380,99 +409,135 @@ acsv_Table.prototype = {
 	}
 	,toFirstRow: function() {
 		var rzl = null;
-		if(this._selectd != null && this._selectd.length > 0) {
-			rzl = this.fmtRow(this._selectd[0]);
+		if(this._selected != null && this._selected.length > 0) {
+			rzl = this.fmtRow(this._selected[0]);
 		}
-		this._selectd = null;
+		this._selected = null;
 		return rzl;
 	}
 	,toLastRow: function() {
 		var rzl = null;
-		if(this._selectd != null && this._selectd.length > 0) {
-			rzl = this.fmtRow(this._selectd[this._selectd.length - 1]);
+		if(this._selected != null && this._selected.length > 0) {
+			rzl = this.fmtRow(this._selected[this._selected.length - 1]);
 		}
-		this._selectd = null;
+		this._selected = null;
 		return rzl;
 	}
 	,toRows: function() {
-		if(this._selectd == null) {
+		if(this._selected == null) {
 			return null;
 		}
-		var arr = [];
+		var dst = [];
 		var _g1 = 0;
-		var _g = this._selectd.length;
+		var _g = this._selected.length;
 		while(_g1 < _g) {
 			var i = _g1++;
-			var row = this._selectd[i];
-			arr.push(this.fmtRow(row));
+			var row = this._selected[i];
+			dst.push(this.fmtRow(row));
 		}
-		this._selectd = null;
-		return arr;
+		this._selected = null;
+		return dst;
 	}
 	,toFirstObj: function() {
 		var rzl = null;
-		if(this._selectd != null && this._selectd.length > 0) {
-			rzl = this.fmtObj(this._selectd[0]);
+		if(this._selected != null && this._selected.length > 0) {
+			rzl = this.fmtObj(this._selected[0]);
 		}
-		this._selectd = null;
+		this._selected = null;
 		return rzl;
 	}
 	,toLastObj: function() {
 		var rzl = null;
-		if(this._selectd != null && this._selectd.length > 0) {
-			rzl = this.fmtObj(this._selectd[this._selectd.length - 1]);
+		if(this._selected != null && this._selected.length > 0) {
+			rzl = this.fmtObj(this._selected[this._selected.length - 1]);
 		}
-		this._selectd = null;
+		this._selected = null;
 		return rzl;
 	}
 	,toObjs: function() {
-		if(this._selectd == null) {
+		if(this._selected == null) {
 			return null;
 		}
-		var arr = [];
+		var dst = [];
 		var _g1 = 0;
-		var _g = this._selectd.length;
+		var _g = this._selected.length;
 		while(_g1 < _g) {
 			var i = _g1++;
-			var row = this._selectd[i];
-			arr.push(this.fmtObj(row));
+			var row = this._selected[i];
+			dst.push(this.fmtObj(row));
 		}
-		this._selectd = null;
-		return arr;
+		this._selected = null;
+		return dst;
+	}
+	,toTable: function() {
+		if(this._selected == null) {
+			return null;
+		}
+		var t = new acsv_Table();
+		t.head = this.head.concat([]);
+		t.body = this._selected;
+		this._selected = null;
+		return t;
 	}
 	,selectAll: function() {
-		this._selectd = this.body;
+		this._selected = this.body;
 		return this;
 	}
 	,selectFirstRow: function() {
-		this._selectd = [this.body[0]];
+		this._selected = [this.body[0]];
 		return this;
 	}
 	,selectLastRow: function() {
-		this._selectd = [this.body[this.body.length - 1]];
+		this._selected = [this.body[this.body.length - 1]];
 		return this;
 	}
-	,selectWhenE: function(limit,value,colIndex) {
+	,selectAt: function(rowIndex) {
+		var dst = [];
+		if(rowIndex >= 0 && rowIndex < this.body.length) {
+			dst.push(this.body[rowIndex]);
+		}
+		this._selected = dst;
+		return this;
+	}
+	,selectWhenIn: function(limit,values,colIndex) {
 		if(colIndex == null) {
 			colIndex = 0;
+		}
+		var rows = [];
+		var _g1 = 0;
+		var _g = values.length;
+		while(_g1 < _g) {
+			var i = _g1++;
+			var value = values[i];
+			this.selectWhenE(limit,value,colIndex,rows);
+			this._selected = null;
+		}
+		this._selected = rows;
+		return this;
+	}
+	,selectWhenE: function(limit,value,colIndex,extraSelector) {
+		if(colIndex == null) {
+			colIndex = 0;
+		}
+		var dst = extraSelector;
+		if(dst == null) {
+			dst = [];
 		}
 		if(limit == 1) {
 			var map = this._indexSet[colIndex];
 			if(map != null) {
 				var val = map[value];
 				if(val != null) {
-					this._selectd = [val];
-				} else {
-					this._selectd = null;
+					dst.push(val);
 				}
+				this._selected = dst;
 				return this;
 			}
 		}
-		var src = this._selectd;
+		var src = this._selected;
 		if(src == null) {
 			src = this.body;
 		}
-		var dst = [];
 		var _g1 = 0;
 		var _g = src.length;
 		while(_g1 < _g) {
@@ -486,7 +551,7 @@ acsv_Table.prototype = {
 				}
 			}
 		}
-		this._selectd = dst;
+		this._selected = dst;
 		return this;
 	}
 	,selectWhenE2: function(limit,value1,value2,colIndex2,colIndex1) {
@@ -496,7 +561,7 @@ acsv_Table.prototype = {
 		if(colIndex2 == null) {
 			colIndex2 = 1;
 		}
-		var src = this._selectd;
+		var src = this._selected;
 		if(src == null) {
 			src = this.body;
 		}
@@ -514,7 +579,7 @@ acsv_Table.prototype = {
 				}
 			}
 		}
-		this._selectd = dst;
+		this._selected = dst;
 		return this;
 	}
 	,selectWhenE3: function(limit,value1,value2,value3,colIndex3,colIndex2,colIndex1) {
@@ -527,7 +592,7 @@ acsv_Table.prototype = {
 		if(colIndex3 == null) {
 			colIndex3 = 2;
 		}
-		var src = this._selectd;
+		var src = this._selected;
 		if(src == null) {
 			src = this.body;
 		}
@@ -545,14 +610,14 @@ acsv_Table.prototype = {
 				}
 			}
 		}
-		this._selectd = dst;
+		this._selected = dst;
 		return this;
 	}
 	,selectWhenG: function(limit,withEqu,value,colIndex) {
 		if(colIndex == null) {
 			colIndex = 0;
 		}
-		var src = this._selectd;
+		var src = this._selected;
 		if(src == null) {
 			src = this.body;
 		}
@@ -571,14 +636,14 @@ acsv_Table.prototype = {
 				}
 			}
 		}
-		this._selectd = dst;
+		this._selected = dst;
 		return this;
 	}
 	,selectWhenL: function(limit,withEqu,value,colIndex) {
 		if(colIndex == null) {
 			colIndex = 0;
 		}
-		var src = this._selectd;
+		var src = this._selected;
 		if(src == null) {
 			src = this.body;
 		}
@@ -597,14 +662,14 @@ acsv_Table.prototype = {
 				}
 			}
 		}
-		this._selectd = dst;
+		this._selected = dst;
 		return this;
 	}
 	,selectWhenGreaterAndLess: function(limit,GWithEqu,LWithEqu,GValue,LValue,colIndex) {
 		if(colIndex == null) {
 			colIndex = 0;
 		}
-		var src = this._selectd;
+		var src = this._selected;
 		if(src == null) {
 			src = this.body;
 		}
@@ -625,14 +690,14 @@ acsv_Table.prototype = {
 				}
 			}
 		}
-		this._selectd = dst;
+		this._selected = dst;
 		return this;
 	}
 	,selectWhenLessOrGreater: function(limit,LWithEqu,GWithEqu,LValue,GValue,colIndex) {
 		if(colIndex == null) {
 			colIndex = 0;
 		}
-		var src = this._selectd;
+		var src = this._selected;
 		if(src == null) {
 			src = this.body;
 		}
@@ -653,7 +718,7 @@ acsv_Table.prototype = {
 				}
 			}
 		}
-		this._selectd = dst;
+		this._selected = dst;
 		return this;
 	}
 };
