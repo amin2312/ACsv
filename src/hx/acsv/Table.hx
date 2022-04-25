@@ -17,7 +17,7 @@ class Table
     /**
 	 * The raw content.
 	 */
-    public var content:String;
+    public var content:String = null;
     /**
 	 * Parsed csv table Head.
 	 */
@@ -33,7 +33,7 @@ class Table
     /**
 	 * Selected data(for Method Chaining).
 	 **/
-    private var _selectd:Array<Dynamic> = null;
+    private var _selected:Array<Array<Dynamic>> = null;
     /**
 	 * Constructor.
 	 */
@@ -85,7 +85,7 @@ class Table
 	 * Get column index by specified field name.
 	 * @param name As name mean.
 	 */
-    public function getColumnIndexBy(name:String):Int
+    public function getColIndexBy(name:String):Int
     {
         for (i in 0...this.head.length)
         {
@@ -98,12 +98,46 @@ class Table
         return -1;
     }
     /**
+	 * Order by selected rows.
+     * @param colIndex specified column's index
+     * @param sortType 0: asc, 1: desc
+	 * @return Current THIS instance(Method Chaining), can call "to???" or "select???" function in next step.
+	 */
+    public function orderBy(colIndex:Int, sortType:Int):Table
+    {
+        var len = _selected.length;
+        for (i in 0...len)
+        {
+            for (j in 0...len - 1)
+            {
+                var ok = false;
+                var a = _selected[j][colIndex];
+                var b = _selected[j + 1][colIndex];
+                if (sortType == 0 && a > b)
+                {
+                    ok = true;
+                }
+                else if (sortType == 1 && a < b)
+                {
+                    ok = true;
+                }
+                if (ok)
+                {
+                    var temp = _selected[j];
+                    _selected[j] = _selected[j + 1];
+                    _selected[j + 1] = temp;
+                }
+            }
+        }
+        return this;
+    }
+    /**
 	 * Get current selected data.
 	 <br>It be assigned after call "select???" function
 	 */
     public function getCurrentSelectdData():Array<Dynamic>
     {
-        return _selectd;
+        return _selected;
     }
     /**
 	 * Format data to row.
@@ -168,11 +202,11 @@ class Table
     public function toFirstRow():Array<Dynamic>
     {
         var rzl = null;
-        if (_selectd != null && _selectd.length > 0)
+        if (_selected != null && _selected.length > 0)
         {
-            rzl = this.fmtRow(_selectd[0]);
+            rzl = this.fmtRow(_selected[0]);
         }
-        _selectd = null;
+        _selected = null;
         return rzl;
     }
     /**
@@ -181,11 +215,11 @@ class Table
     public function toLastRow():Array<Dynamic>
     {
         var rzl = null;
-        if (_selectd != null && _selectd.length > 0)
+        if (_selected != null && _selected.length > 0)
         {
-            rzl = this.fmtRow(_selectd[_selectd.length - 1]);
+            rzl = this.fmtRow(_selected[_selected.length - 1]);
         }
-        _selectd = null;
+        _selected = null;
         return rzl;
     }
     /**
@@ -193,17 +227,17 @@ class Table
 	 */
     public function toRows():Array<Array<Dynamic>>
     {
-        if (_selectd == null)
+        if (_selected == null)
         {
             return null;
         }
         var dst = new Array<Array<Dynamic>>();
-        for (i in 0..._selectd.length)
+        for (i in 0..._selected.length)
         {
-            var row:Array<Dynamic> = _selectd[i];
+            var row:Array<Dynamic> = _selected[i];
             dst.push(this.fmtRow(row));
         }
-        _selectd = null;
+        _selected = null;
         return dst;
     }
     /**
@@ -212,11 +246,11 @@ class Table
     public function toFirstObj():Dynamic
     {
         var rzl = null;
-        if (_selectd != null && _selectd.length > 0)
+        if (_selected != null && _selected.length > 0)
         {
-            rzl = this.fmtObj(_selectd[0]);
+            rzl = this.fmtObj(_selected[0]);
         }
-        _selectd = null;
+        _selected = null;
         return rzl;
     }
     /**
@@ -225,11 +259,11 @@ class Table
     public function toLastObj():Dynamic
     {
         var rzl = null;
-        if (_selectd != null && _selectd.length > 0)
+        if (_selected != null && _selected.length > 0)
         {
-            rzl = this.fmtObj(_selectd[_selectd.length - 1]);
+            rzl = this.fmtObj(_selected[_selected.length - 1]);
         }
-        _selectd = null;
+        _selected = null;
         return rzl;
     }
     /**
@@ -237,18 +271,33 @@ class Table
 	 */
     public function toObjs():Array<Dynamic>
     {
-        if (_selectd == null)
+        if (_selected == null)
         {
             return null;
         }
         var dst = new Array<Dynamic>();
-        for (i in 0..._selectd.length)
+        for (i in 0..._selected.length)
         {
-            var row:Array<Dynamic> = _selectd[i];
+            var row:Array<Dynamic> = _selected[i];
             dst.push(this.fmtObj(row));
         }
-        _selectd = null;
+        _selected = null;
         return dst;
+    }
+    /**
+	 * Fetch all selected results to a new table.
+	 */
+    public function toTable():Table
+    {
+        if (_selected == null)
+        {
+            return null;
+        }
+        var t = new Table();
+        t.head = this.head.concat([]);
+        t.body = this._selected;
+        _selected = null;
+        return t;
     }
     /**
 	 * Select all rows.
@@ -256,7 +305,7 @@ class Table
 	 */
     public function selectAll():Table
     {
-        _selectd = body;
+        _selected = body;
         return this;
     }
     /**
@@ -265,7 +314,7 @@ class Table
 	 */
     public function selectFirstRow():Table
     {
-        _selectd = [body[0]];
+        _selected = [body[0]];
         return this;
     }
     /**
@@ -274,7 +323,41 @@ class Table
 	 */
     public function selectLastRow():Table
     {
-        _selectd = [body[body.length - 1]];
+        _selected = [body[body.length - 1]];
+        return this;
+    }
+    /**
+     * Selects the specified row by index.
+     * @param rowIndex specified column's index
+     * @return Current THIS instance(Method Chaining), can call "to???" or "select???" function in next step.
+	 */
+    public function selectAt(rowIndex:Int):Table
+    {
+        var dst = new Array<Array<Dynamic>>();
+        if (rowIndex >= 0 && rowIndex < this.body.length)
+        {
+            dst.push(this.body[rowIndex]);
+        }
+        _selected = dst;
+        return this;
+    }
+    /**
+     * Select the rows when the column's value is equal to specified values of array.
+     * @param limit maximum length of every selected results (0 is infinite, if you only need 1 result, 1 is recommended, it will improve performance)
+     * @param values the specified values of array
+     * @param colIndex specified column's index
+     * @return Current THIS instance(Method Chaining), can call "to???" or "select???" function in next step.
+	 */
+    public function selectWhenIn(limit:Int, values:Array<Dynamic>, colIndex:Int = 0):Table
+    {
+        var rows = new Array<Array<Dynamic>>();
+        for (i in 0...values.length)
+        {
+            var value = values[i];
+            selectWhenE(limit, value, colIndex, rows);
+            _selected = null;
+        }
+        _selected = rows;
         return this;
     }
     /**
@@ -282,10 +365,16 @@ class Table
      * @param limit maximum length of selected results (0 is infinite, if you only need 1 result, 1 is recommended, it will improve performance)
      * @param value the specified value
      * @param colIndex specified column's index
+     * @param extraSelector extra selector, use it to save selected result
      * @return Current THIS instance(Method Chaining), can call "to???" or "select???" function in next step.
 	 */
-    public function selectWhenE(limit:Int, value:Dynamic, colIndex:Int = 0):Table
+    public function selectWhenE(limit:Int, value:Dynamic, colIndex:Int = 0, extraSelector:Array<Array<Dynamic>> = null):Table
     {
+        var dst:Array<Array<Dynamic>> = extraSelector;
+        if (dst == null)
+        {
+            dst = new Array<Array<Dynamic>>();
+        }
         // 1.check indexed set
         if (limit == 1)
         {
@@ -303,22 +392,18 @@ class Table
                 #end
                 if (val != null)
                 {
-                    _selectd = [val];
+                    dst.push(val);
                 }
-                else
-                {
-                    _selectd = null;
-                }
+                _selected = dst;
                 return this;
             }
         }
         // 2.line-by-line scan
-        var src = _selectd;
+        var src = _selected;
         if (src == null)
         {
             src = body;
         }
-        var dst = new Array<Dynamic>();
         for (i in 0...src.length)
         {
             var row:Array<Dynamic> = src[i];
@@ -332,7 +417,7 @@ class Table
                 }
             }
         }
-        _selectd = dst;
+        _selected = dst;
         return this;
     }
     /**
@@ -346,12 +431,12 @@ class Table
 	 */
     public function selectWhenE2(limit:Int, value1:Dynamic, value2:Dynamic, colIndex2:Int = 1, colIndex1:Int = 0):Table
     {
-        var src = _selectd;
+        var src = _selected;
         if (src == null)
         {
             src = body;
         }
-        var dst = new Array<Dynamic>();
+        var dst = new Array<Array<Dynamic>>();
         for (i in 0...src.length)
         {
             var row:Array<Dynamic> = src[i];
@@ -365,7 +450,7 @@ class Table
                 }
             }
         }
-        _selectd = dst;
+        _selected = dst;
         return this;
     }
     /**
@@ -381,12 +466,12 @@ class Table
 	 */
     public function selectWhenE3(limit:Int, value1:Dynamic, value2:Dynamic, value3:Dynamic, colIndex3:Int = 2, colIndex2:Int = 1, colIndex1:Int = 0):Table
     {
-        var src = _selectd;
+        var src = _selected;
         if (src == null)
         {
             src = body;
         }
-        var dst = new Array<Dynamic>();
+        var dst = new Array<Array<Dynamic>>();
         for (i in 0...src.length)
         {
             var row:Array<Dynamic> = src[i];
@@ -400,7 +485,7 @@ class Table
                 }
             }
         }
-        _selectd = dst;
+        _selected = dst;
         return this;
     }
     /**
@@ -413,12 +498,12 @@ class Table
 	 */
     public function selectWhenG(limit:Int, withEqu:Bool, value:Float, colIndex:Int = 0):Table
     {
-        var src = _selectd;
+        var src = _selected;
         if (src == null)
         {
             src = body;
         }
-        var dst = new Array<Dynamic>();
+        var dst = new Array<Array<Dynamic>>();
         for (i in 0...src.length)
         {
             var row:Array<Dynamic> = src[i];
@@ -433,7 +518,7 @@ class Table
                 }
             }
         }
-        _selectd = dst;
+        _selected = dst;
         return this;
     }
     /**
@@ -446,12 +531,12 @@ class Table
 	 */
     public function selectWhenL(limit:Int, withEqu:Bool, value:Float, colIndex:Int = 0):Table
     {
-        var src = _selectd;
+        var src = _selected;
         if (src == null)
         {
             src = body;
         }
-        var dst = new Array<Dynamic>();
+        var dst = new Array<Array<Dynamic>>();
         for (i in 0...src.length)
         {
             var row:Array<Dynamic> = src[i];
@@ -466,7 +551,7 @@ class Table
                 }
             }
         }
-        _selectd = dst;
+        _selected = dst;
         return this;
     }
     /**
@@ -481,12 +566,12 @@ class Table
 	 */
     public function selectWhenGreaterAndLess(limit:Int, GWithEqu:Bool, LWithEqu:Bool, GValue:Float, LValue:Float, colIndex:Int = 0):Table
     {
-        var src = _selectd;
+        var src = _selected;
         if (src == null)
         {
             src = body;
         }
-        var dst = new Array<Dynamic>();
+        var dst = new Array<Array<Dynamic>>();
         for (i in 0...src.length)
         {
             var row:Array<Dynamic> = src[i];
@@ -503,7 +588,7 @@ class Table
                 }
             }
         }
-        _selectd = dst;
+        _selected = dst;
         return this;
     }
     /**
@@ -518,12 +603,12 @@ class Table
 	 */
     public function selectWhenLessOrGreater(limit:Int, LWithEqu:Bool, GWithEqu:Bool, LValue:Float, GValue:Int, colIndex:Int = 0):Table
     {
-        var src = _selectd;
+        var src = _selected;
         if (src == null)
         {
             src = body;
         }
-        var dst = new Array<Dynamic>();
+        var dst = new Array<Array<Dynamic>>();
         for (i in 0...src.length)
         {
             var row:Array<Dynamic> = src[i];
@@ -540,7 +625,7 @@ class Table
                 }
             }
         }
-        _selectd = dst;
+        _selected = dst;
         return this;
     }
     /**
