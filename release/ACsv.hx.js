@@ -14,12 +14,25 @@ var acsv_Table = $hx_exports["acsv"]["Table"] = function() {
 	this.head = [];
 	this.content = null;
 };
-acsv_Table.Parse = function(content) {
-	var table = acsv_Table.arrayToRows(acsv_Table.textToArray(content));
+acsv_Table.Parse = function(content,filedSeparator,filedMultiLineDelimiter) {
+	if(filedMultiLineDelimiter == null) {
+		filedMultiLineDelimiter = "\"";
+	}
+	if(filedSeparator == null) {
+		filedSeparator = ",";
+	}
+	var table = acsv_Table.arrayToRows(acsv_Table.textToArray(content,filedSeparator,filedMultiLineDelimiter));
 	table.content = content;
 	return table;
 };
-acsv_Table.textToArray = function(text) {
+acsv_Table.textToArray = function(text,FS,FML) {
+	if(FML == null) {
+		FML = "\"";
+	}
+	if(FS == null) {
+		FS = ",";
+	}
+	var FMLs = FML + FML;
 	var array = [];
 	var maxLen = text.length;
 	var ptr = text;
@@ -42,7 +55,7 @@ acsv_Table.textToArray = function(text) {
 				cellIndexB += 2;
 				break;
 			}
-			if(chr == ",") {
+			if(chr == FS) {
 				cell = "";
 				var nextPos = ptrPos + cellIndexB + 1;
 				if(nextPos >= maxLen) {
@@ -50,7 +63,7 @@ acsv_Table.textToArray = function(text) {
 				} else {
 					chr = ptr.charAt(nextPos);
 				}
-				if(cellIndexA == 0 || chr == "," || chr == "\n" || chr == "\r\n") {
+				if(cellIndexA == 0 || chr == FS || chr == "\n" || chr == "\r\n") {
 					++cellIndexB;
 					cells.push("");
 				} else if(chr == "\r" && ptr.charAt(ptrPos + cellIndexB + 2) == "\n") {
@@ -59,27 +72,27 @@ acsv_Table.textToArray = function(text) {
 				} else {
 					++cellIndexB;
 				}
-			} else if(chr == "\"") {
+			} else if(chr == FML) {
 				++cellIndexB;
 				while(true) {
-					cellIndexB = ptr.indexOf("\"",ptrPos + cellIndexB);
+					cellIndexB = ptr.indexOf(FML,ptrPos + cellIndexB);
 					if(cellIndexB == -1) {
 						console.log("[ACsv] Invalid Double Quote");
 						return null;
 					}
 					cellIndexB -= ptrPos;
-					if(ptr.charAt(ptrPos + cellIndexB + 1) == "\"") {
+					if(ptr.charAt(ptrPos + cellIndexB + 1) == FML) {
 						cellIndexB += 2;
 						continue;
 					}
 					break;
 				}
 				cell = ptr.substring(ptrPos + cellIndexA + 1,ptrPos + cellIndexB);
-				cell = StringTools.replace(cell,"\"\"","\"");
+				cell = StringTools.replace(cell,FMLs,FML);
 				cells.push(cell);
 				++cellIndexB;
 			} else {
-				var indexA = ptr.indexOf(",",ptrPos + cellIndexB);
+				var indexA = ptr.indexOf(FS,ptrPos + cellIndexB);
 				if(indexA == -1) {
 					indexA = curLen;
 				} else {
@@ -220,7 +233,7 @@ acsv_Table.prototype = {
 		}
 		return -1;
 	}
-	,orderBy: function(colIndex,sortType) {
+	,sortBy: function(colIndex,sortType) {
 		var len = this._selected.length;
 		var _g1 = 0;
 		var _g = len;

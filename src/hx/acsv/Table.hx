@@ -83,7 +83,7 @@ class Table
     }
     /**
 	 * Get column index by specified field name.
-	 * @param name As name mean.
+	 * @param name As name mean
 	 */
     public function getColIndexBy(name:String):Int
     {
@@ -98,12 +98,12 @@ class Table
         return -1;
     }
     /**
-	 * Order by selected rows.
+	 * Sort by selected rows.
      * @param colIndex specified column's index
      * @param sortType 0: asc, 1: desc
-	 * @return Current THIS instance(Method Chaining), can call "to???" or "select???" function in next step.
+     * @return Current THIS instance(Method Chaining), can call "to???" or "select???" function in next step.
 	 */
-    public function orderBy(colIndex:Int, sortType:Int):Table
+    public function sortBy(colIndex:Int, sortType:Int):Table
     {
         var len = _selected.length;
         for (i in 0...len)
@@ -630,18 +630,22 @@ class Table
     }
     /**
 	 * Parse csv conent.
+     * @param content As name mean
+     * @param filedSeparator filed separator
+     * @param filedMultiLineDelimiter filed multi-line delimiter
 	 */
-    public static function Parse(content:String):Table
+    public static function Parse(content:String, filedSeparator:String = ",", filedMultiLineDelimiter:String = "\""):Table
     {
-        var table:Table = arrayToRows(textToArray(content));
+        var table:Table = arrayToRows(textToArray(content, filedSeparator, filedMultiLineDelimiter));
         table.content = content;
         return table;
     }
     /**
 	 * Convert text to array.
 	 */
-    static private function textToArray(text:String):Array<Array<Dynamic>>
+    static private function textToArray(text:String, FS:String = ",", FML:String = "\""):Array<Array<Dynamic>>
     {
+        var FMLs = FML + FML;
         var array:Array<Array<Dynamic>> = [];
         var maxLen:Int = text.length;
         var ptr:String = text;
@@ -668,7 +672,7 @@ class Table
                     cellIndexB += 2;
                     break;
                 }
-                if (chr == ",") // is separator
+                if (chr == FS) // is separator
                 {
                     cell = "";
                     var nextPos = ptrPos + cellIndexB + 1;
@@ -680,7 +684,7 @@ class Table
                     {
                         chr = ptr.charAt(nextPos);
                     }
-                    if (cellIndexA == 0 || chr == "," || chr == "\n" || chr == "\r\n") // is empty cell
+                    if (cellIndexA == 0 || chr == FS || chr == "\n" || chr == "\r\n") // is empty cell
                     {
                         cellIndexB += 1;
                         cells.push("");
@@ -695,21 +699,21 @@ class Table
                         cellIndexB += 1;
                     }
                 }
-                else if (chr == "\"") // is double quote
+                else if (chr == FML) // is double quote
                 {
                     // pass DQ
                     cellIndexB++;
                     // 1.find the nearest double quote
                     while (true)
                     {
-                        cellIndexB = ptr.indexOf("\"", ptrPos + cellIndexB);
+                        cellIndexB = ptr.indexOf(FML, ptrPos + cellIndexB);
                         if (cellIndexB == -1)
                         {
                             trace("[ACsv] Invalid Double Quote");
                             return null;
                         }
                         cellIndexB -= ptrPos;
-                        if (ptr.charAt(ptrPos + cellIndexB + 1) == "\"") // """" is normal double quote
+                        if (ptr.charAt(ptrPos + cellIndexB + 1) == FML) // """" is normal double quote
                         {
                             cellIndexB += 2; // pass """"
                             continue;
@@ -718,7 +722,7 @@ class Table
                     }
                     // 2.truncate the content of double quote
                     cell = ptr.substring(ptrPos + cellIndexA + 1, ptrPos + cellIndexB);
-                    cell = StringTools.replace(cell, "\"\"", "\""); // convert """" to ""
+                    cell = StringTools.replace(cell, FMLs, FML); // convert """" to ""
                     cells.push(cell);
                     // pass DQ
                     cellIndexB++;
@@ -726,7 +730,7 @@ class Table
                 else // is normal
                 {
                     // 1.find the nearest comma and LF
-                    var indexA:Int = ptr.indexOf(",", ptrPos + cellIndexB);
+                    var indexA:Int = ptr.indexOf(FS, ptrPos + cellIndexB);
                     if (indexA == -1)
                     {
                         indexA = curLen; // is last cell
@@ -863,7 +867,7 @@ class Table
                     }
                     else
                     {
-                        newVal = '["' + cell.split(',').join('","') + '"]';
+                        newVal = '["' + cell.split(',').join('\",\"') + '"]';
                     }
                 }
                 row[j] = newVal;

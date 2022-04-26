@@ -642,21 +642,28 @@
 			<c path="Array"><c path="String"/></c>
 			<haxe_doc>* Supported json field types.</haxe_doc>
 		</JSON_TYPES>
-		<Parse public="1" set="method" line="634" static="1">
-			<f a="content">
+		<Parse public="1" set="method" line="637" static="1">
+			<f a="content:?filedSeparator:?filedMultiLineDelimiter">
+				<c path="String"/>
+				<c path="String"/>
 				<c path="String"/>
 				<c path="acsv.Table"/>
 			</f>
-			<haxe_doc>* Parse csv conent.</haxe_doc>
+			<haxe_doc>* Parse csv conent.
+     * @param content As name mean
+     * @param filedSeparator filed separator
+     * @param filedMultiLineDelimiter filed multi-line delimiter</haxe_doc>
 		</Parse>
-		<textToArray set="method" line="643" static="1">
-			<f a="text">
+		<textToArray set="method" line="646" static="1">
+			<f a="text:?FS:?FML">
+				<c path="String"/>
+				<c path="String"/>
 				<c path="String"/>
 				<c path="Array"><c path="Array"><d/></c></c>
 			</f>
 			<haxe_doc>* Convert text to array.</haxe_doc>
 		</textToArray>
-		<arrayToRows set="method" line="778" static="1">
+		<arrayToRows set="method" line="782" static="1">
 			<f a="array">
 				<c path="Array"><c path="Array"><d/></c></c>
 				<c path="acsv.Table"/>
@@ -709,19 +716,19 @@
 				<x path="Int"/>
 			</f>
 			<haxe_doc>* Get column index by specified field name.
-	 * @param name As name mean.</haxe_doc>
+	 * @param name As name mean</haxe_doc>
 		</getColIndexBy>
-		<orderBy public="1" set="method" line="106">
+		<sortBy public="1" set="method" line="106">
 			<f a="colIndex:sortType">
 				<x path="Int"/>
 				<x path="Int"/>
 				<c path="acsv.Table"/>
 			</f>
-			<haxe_doc>* Order by selected rows.
+			<haxe_doc>* Sort by selected rows.
      * @param colIndex specified column's index
      * @param sortType 0: asc, 1: desc
-	 * @return Current THIS instance(Method Chaining), can call "to???" or "select???" function in next step.</haxe_doc>
-		</orderBy>
+     * @return Current THIS instance(Method Chaining), can call "to???" or "select???" function in next step.</haxe_doc>
+		</sortBy>
 		<getCurrentSelectdData public="1" set="method" line="138">
 			<f a=""><c path="Array"><d/></c></f>
 			<haxe_doc><![CDATA[* Get current selected data.

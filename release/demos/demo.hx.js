@@ -7,7 +7,7 @@ Demo.main = function() {
 	Demo._tab2 = acsv_Table.Parse(Demo.enhanced_format_text);
 	Demo.showTable("standard csv format",Demo._tab1);
 	Demo.test_standard_csv_format();
-	Demo.showTable("enhanced csv format",Demo._tab2);
+	Demo.showTable("[E] enhanced csv format",Demo._tab2);
 	Demo.test_enhanced_csv_format();
 };
 Demo.showTable = function(fileName,csvTable) {
@@ -59,7 +59,7 @@ Demo.P = function(cmd,o) {
 	var t = window.document.getElementById("output");
 	var div = window.document.createElement("div");
 	var span = window.document.createElement("span");
-	span.innerHTML = StringTools.replace(cmd,"[enhanced]","<span class=\"E\">[enhanced]</span>");
+	span.innerHTML = StringTools.replace(cmd,"[E]","<span class=\"E\">[E]</span>");
 	div.appendChild(span);
 	div.title = JSON.stringify(o,null,"\t");
 	div.innerHTML += JSON.stringify(o);
@@ -78,44 +78,42 @@ Demo.test_standard_csv_format = function() {
 	Demo.P("select first obj",Demo._tab1.selectFirstRow().toFirstObj());
 	Demo.P("select last row",Demo._tab1.selectLastRow().toFirstRow());
 	Demo.P("select last obj",Demo._tab1.selectLastRow().toFirstObj());
-	Demo.P("select [id] = \"2\"",Demo._tab1.selectWhenE(1,"2").toFirstObj());
-	Demo.P("select [id] = \"-1\"",Demo._tab1.selectWhenE(1,"-1").toFirstObj());
-	Demo.P("select [id] = \"3\" and [id2] = \"21\"",Demo._tab1.selectWhenE2(1,"3","21").toFirstObj());
-	Demo.P("select [id] = \"3\" and [id2] = \"-1\"",Demo._tab1.selectWhenE2(1,"3","-1").toFirstObj());
-	Demo.P("select [id] = \"4\" and [id2] = \"21\" and [id3] = \"200\"",Demo._tab1.selectWhenE3(1,"4","21","200").toFirstObj());
-	Demo.P("select [id] = \"4\" and [id2] = \"21\" and [id3] = \"-1\"",Demo._tab1.selectWhenE3(1,"4","21","-1").toFirstObj());
-	Demo.P("select all [id2] = \"20\"",Demo._tab1.selectWhenE(0,"20",1).toObjs());
-	Demo.P("select all [id2] = \"-1\"",Demo._tab1.selectWhenE(0,"-1",1).toObjs());
+	Demo.P("selectWhenE (id) = \"2\"",Demo._tab1.selectWhenE(1,"2").toFirstObj());
+	Demo.P("selectWhenE (id) = \"3\" and (id2) = \"21\"",Demo._tab1.selectWhenE2(1,"3","21").toFirstObj());
+	Demo.P("selectWhenE (id) = \"4\" and (id2) = \"21\" and (id3) = \"200\"",Demo._tab1.selectWhenE3(1,"4","21","200").toFirstObj());
+	Demo.P("selectWhenE all (id2) = \"20\"",Demo._tab1.selectWhenE(0,"20",1).toObjs());
 };
 Demo.test_enhanced_csv_format = function() {
-	Demo.P("[enhanced] select all to rows",Demo._tab2.selectAll().toRows());
-	Demo.P("[enhanced] select all to objs",Demo._tab2.selectAll().toObjs());
-	Demo.P("[enhanced] select first row",Demo._tab2.selectFirstRow().toFirstRow());
-	Demo.P("[enhanced] select first obj",Demo._tab2.selectFirstRow().toFirstObj());
-	Demo.P("[enhanced] select last row",Demo._tab2.selectLastRow().toFirstRow());
-	Demo.P("[enhanced] select last obj",Demo._tab2.selectLastRow().toFirstObj());
-	Demo.P("[enhanced] select [id] = 2",Demo._tab2.selectWhenE(1,2).toFirstObj());
-	Demo.P("[enhanced] select [id] = -1",Demo._tab2.selectWhenE(1,-1).toFirstObj());
-	Demo.P("[enhanced] select [id] = 3 and [id2] = 22",Demo._tab2.selectWhenE2(1,3,22).toFirstObj());
-	Demo.P("[enhanced] select [id] = 3 and [id2] = -1",Demo._tab2.selectWhenE2(1,3,-1).toFirstObj());
-	Demo.P("[enhanced] select [id] = 4 and [id2] = 22 and [id3] = 200",Demo._tab2.selectWhenE3(1,4,22,200).toFirstObj());
-	Demo.P("[enhanced] select [id] = 4 and [id2] = 22 and [id3] = -1",Demo._tab2.selectWhenE3(1,4,22,-1).toFirstObj());
-	Demo.P("[enhanced] select all [id2] = 21",Demo._tab2.selectWhenE(0,21,1).toObjs());
-	Demo.P("[enhanced] select all [id2] = -1",Demo._tab2.selectWhenE(0,-1,1).toObjs());
-	Demo.P("[enhanced] select all [id2] > 25",Demo._tab2.selectWhenG(0,false,25,1).toObjs());
-	Demo.P("[enhanced] select all [id2] >= 25",Demo._tab2.selectWhenG(0,true,25,1).toObjs());
-	Demo.P("[enhanced] select all [id2] > 30",Demo._tab2.selectWhenG(0,false,30,1).toObjs());
-	Demo.P("[enhanced] select all [id2] < 22",Demo._tab2.selectWhenL(0,false,22,1).toObjs());
-	Demo.P("[enhanced] select all [id2] <= 22",Demo._tab2.selectWhenL(0,true,22,1).toObjs());
-	Demo.P("[enhanced] select all [id2] < 20",Demo._tab2.selectWhenL(0,true,20,1).toObjs());
-	Demo.P("[enhanced] select all [id2] > 21 and [id2] < 24",Demo._tab2.selectWhenGreaterAndLess(0,false,false,21,24,1).toObjs());
-	Demo.P("[enhanced] select all [id2] >= 21 and [id2] <= 24",Demo._tab2.selectWhenGreaterAndLess(0,true,true,21,24,1).toObjs());
-	Demo.P("[enhanced] select all [id2] < 22 or [id2] > 25",Demo._tab2.selectWhenLessOrGreater(0,false,false,22,25,1).toObjs());
-	Demo.P("[enhanced] select all [id2] <= 22 or [id2] >= 25",Demo._tab2.selectWhenLessOrGreater(0,true,true,22,25,1).toObjs());
-	Demo.P("[enhanced] multi select all [id3] = 100 and [id2] < 22",Demo._tab2.selectWhenE(0,100,2).selectWhenL(0,false,22,1).toObjs());
+	Demo.P("[E] select all to rows",Demo._tab2.selectAll().toRows());
+	Demo.P("[E] select all to objs",Demo._tab2.selectAll().toObjs());
+	Demo.P("[E] select first row",Demo._tab2.selectFirstRow().toFirstRow());
+	Demo.P("[E] select first obj",Demo._tab2.selectFirstRow().toFirstObj());
+	Demo.P("[E] select last row",Demo._tab2.selectLastRow().toFirstRow());
+	Demo.P("[E] select last obj",Demo._tab2.selectLastRow().toFirstObj());
+	Demo.P("[E] selectWhenE (id) = 2",Demo._tab2.selectWhenE(1,2).toFirstObj());
+	Demo.P("[E] selectWhenE (id) = -1",Demo._tab2.selectWhenE(1,-1).toFirstObj());
+	Demo.P("[E] selectWhenE2 (id) = 3 and (id2) = 22",Demo._tab2.selectWhenE2(1,3,22).toFirstObj());
+	Demo.P("[E] selectWhenE2 (id) = 3 and (id2) = -1",Demo._tab2.selectWhenE2(1,3,-1).toFirstObj());
+	Demo.P("[E] selectWhenE3 (id) = 4 and (id2) = 22 and (id3) = 200",Demo._tab2.selectWhenE3(1,4,22,200).toFirstObj());
+	Demo.P("[E] selectWhenE3 (id) = 4 and (id2) = 22 and (id3) = -1",Demo._tab2.selectWhenE3(1,4,22,-1).toFirstObj());
+	Demo.P("[E] selectWhenE all (id2) = 21",Demo._tab2.selectWhenE(0,21,1).toObjs());
+	Demo.P("[E] selectWhenE all (id2) = -1",Demo._tab2.selectWhenE(0,-1,1).toObjs());
+	Demo.P("[E] selectWhenG all (id2) > 25",Demo._tab2.selectWhenG(0,false,25,1).toObjs());
+	Demo.P("[E] selectWhenG all (id2) >= 25",Demo._tab2.selectWhenG(0,true,25,1).toObjs());
+	Demo.P("[E] selectWhenG all (id2) > 30",Demo._tab2.selectWhenG(0,false,30,1).toObjs());
+	Demo.P("[E] selectWhenL all (id2) < 22",Demo._tab2.selectWhenL(0,false,22,1).toObjs());
+	Demo.P("[E] selectWhenL all (id2) <= 22",Demo._tab2.selectWhenL(0,true,22,1).toObjs());
+	Demo.P("[E] selectWhenL all (id2) < 20",Demo._tab2.selectWhenL(0,true,20,1).toObjs());
+	Demo.P("[E] selectWhenGreaterAndLess all (id2) > 21 and (id2) < 24",Demo._tab2.selectWhenGreaterAndLess(0,false,false,21,24,1).toObjs());
+	Demo.P("[E] selectWhenGreaterAndLess all (id2) >= 21 and (id2) <= 24",Demo._tab2.selectWhenGreaterAndLess(0,true,true,21,24,1).toObjs());
+	Demo.P("[E] selectWhenLessOrGreater all (id2) < 22 or (id2) > 25",Demo._tab2.selectWhenLessOrGreater(0,false,false,22,25,1).toObjs());
+	Demo.P("[E] selectWhenLessOrGreater all (id2) <= 22 or (id2) >= 25",Demo._tab2.selectWhenLessOrGreater(0,true,true,22,25,1).toObjs());
+	Demo.P("[E] selectWhenIn (id1) in 3,4,5",Demo._tab2.selectWhenIn(1,[3,4,5]).toObjs());
+	Demo.P("[E] multi selects (id3) = 100 and (id2) < 22",Demo._tab2.selectWhenE(0,100,2).selectWhenL(0,false,22,1).toObjs());
+	Demo.P("[E] sort by (id3) = 300 desc (id)",Demo._tab2.selectWhenE(0,300,2).sortBy(0,1).toObjs());
 	Demo._tab2.createIndexAt(0);
-	Demo.P("[enhanced] 9th row name",Demo._tab2.selectWhenE(1,9).toObjs()[0].name);
-	Demo.P("[enhanced] 99th row name",Demo._tab2.selectWhenE(1,99).toObjs());
+	Demo.P("[E] (indexed) Dwi's row",Demo._tab2.selectWhenE(1,"Dwi",Demo._tab2.getColIndexBy("name")).toObjs()[0].name);
+	Demo.P("[E] (indexed) 99th row",Demo._tab2.selectWhenE(1,99).toObjs());
 };
 var StringTools = function() { };
 StringTools.replace = function(s,sub,by) {
@@ -130,12 +128,25 @@ var acsv_Table = $hx_exports["acsv"]["Table"] = function() {
 	this.head = [];
 	this.content = null;
 };
-acsv_Table.Parse = function(content) {
-	var table = acsv_Table.arrayToRows(acsv_Table.textToArray(content));
+acsv_Table.Parse = function(content,filedSeparator,filedMultiLineDelimiter) {
+	if(filedMultiLineDelimiter == null) {
+		filedMultiLineDelimiter = "\"";
+	}
+	if(filedSeparator == null) {
+		filedSeparator = ",";
+	}
+	var table = acsv_Table.arrayToRows(acsv_Table.textToArray(content,filedSeparator,filedMultiLineDelimiter));
 	table.content = content;
 	return table;
 };
-acsv_Table.textToArray = function(text) {
+acsv_Table.textToArray = function(text,FS,FML) {
+	if(FML == null) {
+		FML = "\"";
+	}
+	if(FS == null) {
+		FS = ",";
+	}
+	var FMLs = FML + FML;
 	var array = [];
 	var maxLen = text.length;
 	var ptr = text;
@@ -158,7 +169,7 @@ acsv_Table.textToArray = function(text) {
 				cellIndexB += 2;
 				break;
 			}
-			if(chr == ",") {
+			if(chr == FS) {
 				cell = "";
 				var nextPos = ptrPos + cellIndexB + 1;
 				if(nextPos >= maxLen) {
@@ -166,7 +177,7 @@ acsv_Table.textToArray = function(text) {
 				} else {
 					chr = ptr.charAt(nextPos);
 				}
-				if(cellIndexA == 0 || chr == "," || chr == "\n" || chr == "\r\n") {
+				if(cellIndexA == 0 || chr == FS || chr == "\n" || chr == "\r\n") {
 					++cellIndexB;
 					cells.push("");
 				} else if(chr == "\r" && ptr.charAt(ptrPos + cellIndexB + 2) == "\n") {
@@ -175,27 +186,27 @@ acsv_Table.textToArray = function(text) {
 				} else {
 					++cellIndexB;
 				}
-			} else if(chr == "\"") {
+			} else if(chr == FML) {
 				++cellIndexB;
 				while(true) {
-					cellIndexB = ptr.indexOf("\"",ptrPos + cellIndexB);
+					cellIndexB = ptr.indexOf(FML,ptrPos + cellIndexB);
 					if(cellIndexB == -1) {
 						console.log("[ACsv] Invalid Double Quote");
 						return null;
 					}
 					cellIndexB -= ptrPos;
-					if(ptr.charAt(ptrPos + cellIndexB + 1) == "\"") {
+					if(ptr.charAt(ptrPos + cellIndexB + 1) == FML) {
 						cellIndexB += 2;
 						continue;
 					}
 					break;
 				}
 				cell = ptr.substring(ptrPos + cellIndexA + 1,ptrPos + cellIndexB);
-				cell = StringTools.replace(cell,"\"\"","\"");
+				cell = StringTools.replace(cell,FMLs,FML);
 				cells.push(cell);
 				++cellIndexB;
 			} else {
-				var indexA = ptr.indexOf(",",ptrPos + cellIndexB);
+				var indexA = ptr.indexOf(FS,ptrPos + cellIndexB);
 				if(indexA == -1) {
 					indexA = curLen;
 				} else {
@@ -336,7 +347,7 @@ acsv_Table.prototype = {
 		}
 		return -1;
 	}
-	,orderBy: function(colIndex,sortType) {
+	,sortBy: function(colIndex,sortType) {
 		var len = this._selected.length;
 		var _g1 = 0;
 		var _g = len;

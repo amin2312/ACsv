@@ -50,7 +50,14 @@ declare namespace acsv
          * Get column index by specified field name.
          * @param name As name mean.
          */
-        getColumnIndexBy(name: String): number;
+        getColIndexBy(name: String): number;
+        /**
+         * Sort by selected rows.
+         * @param colIndex specified column's index
+         * @param sortType 0: asc, 1: desc
+         * @return Current THIS instance(Method Chaining), can call "to???" or "select???" function in next step.
+         */
+        sortBy(colIndex: number, sortType: number): Table
         /**
          * Get current selected data.
          <br>It be assigned after call "select???" function
@@ -103,6 +110,20 @@ declare namespace acsv
          * @return Current THIS instance(Method Chaining), can call "to???" function to get result in next step.
          */
         selectLastRow(): Table
+        /**
+         * Selects the specified row by index.
+         * @param rowIndex specified column's index
+         * @return Current THIS instance(Method Chaining), can call "to???" or "select???" function in next step.
+         */
+        selectAt(rowIndex: number): Table
+        /**
+         * Select the rows when the column's value is equal to specified values of array.
+         * @param limit maximum length of every selected results (0 is infinite, if you only need 1 result, 1 is recommended, it will improve performance)
+         * @param values the specified values of array
+         * @param colIndex specified column's index
+         * @return Current THIS instance(Method Chaining), can call "to???" or "select???" function in next step.
+         */
+        selectWhenIn(limit: number, values: Array<any>, colIndex?: number): Table
         /**
          * Select the rows when the column's value is equal to specified value.
          * @param limit maximum length of selected results (0 is infinite, if you only need 1 result, 1 is recommended, it will improve performance)
