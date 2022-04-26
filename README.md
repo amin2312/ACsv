@@ -7,7 +7,7 @@ The features:
 * Tiny size - js version is only 6k
 * Easy to use - provide the example, demo and documentation
 * Fast speed - optimized code for high performance, it can works easy in older devices
-* Powerful - support enhanced csv format, you can declare the field type after field name <font color='yellow'>(like <b>width:int</b>, <b>name:string</b>)</font>, please see details from "release/csvs/enhanced_format_text.csv"  
+* Powerful - support enhanced csv format, you can declare the field type after field name (<b>like width<u>:int</u>, name<u>:string</u></b>), please see details from "release/csvs/enhanced_format_text.csv"  
 	> \* current supported field types: bool, int, number, json, strings
 * Cross platform - provide js, lua, python version 
   
