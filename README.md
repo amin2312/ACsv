@@ -24,8 +24,8 @@ table.selectWhenE(0, 100, 2).selectWhenL(0, false, 22, 1).toObjs();
 
 Demos 
 ----------------
-* [Javascript demo - via haxe code to compile](https://amin2312.github.io/ACsv/release/demos/demo.hx.html)
-* [Javascript demo - via ts code with library to compile](https://amin2312.github.io/ACsv/release/demos/demo.ts.html)
+* [Javascript demo - via Haxe code to compile](https://amin2312.github.io/ACsv/release/demos/demo.hx.html)
+* [Javascript demo - via Typescript code with library to compile](https://amin2312.github.io/ACsv/release/demos/demo.ts.html)
 
 Docs
 ----------------
