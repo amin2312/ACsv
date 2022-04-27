@@ -9,7 +9,7 @@ The features:
 * Fast speed - optimized code for high performance, it can works easy in older devices
 * Powerful - support enhanced csv format, you can declare the field type after field name ⭐(<b>like width<u>:int</u>, name<u>:string</u></b>), please see details from "release/csvs/enhanced_format_text.csv"  
 	> \* current supported field types: bool, int, number, json, strings
-* Cross platform - provide js, lua, python version 
+* Cross platform - provide <b>js</b>, <b>php</b> version (the lua, python version via Haxe)
   
 
 Example
