@@ -19,26 +19,26 @@ Example
 ```javascript
 // enhanced_csv_content
 //------------------------------------
-// id:int | name:string | weight:number | tags:json
-//    1   |   John      |   60          | ["young"]
-//    2   |   Mary      |   60          | ["thin"]
-//    3   |   Tom       |   70          | ["cool"]
+// id:int | name:string | age:int | weight:number | tags:json
+//    1   |   John      |   20    | 60.1          | ["cool"]
+//    2   |   Mary      |   20    | 60.2          | ["thin"]
+//    3   |   Tom       |   18    | 60.3          | ["young"]
 //------------------------------------
 
 var table = acsv.Table.Parse(enhanced_csv_content);
 table.selectWhenE(1, 3).toFirstObj();
-// {id: 3, name: "Tom", weight: 60, tags: ["cool"] }
+// {id: 3, name: "Tom",  age: 18, weight: 60.3, tags: ["young"] }
 
-table.selectWhenE(0, 60, 2).toObjs();
+table.selectWhenE(0, 20, 2).toObjs();
 // [ 
-//   {id: 1, name: "John", weight: 60, tags: ["young"] }, 
-//   {id: 2, name: "Mary", weight: 60, tags: ["thin"] }
+//   {id: 1, name: "John", age: 20, weight: 60.1, tags: ["cool"] }, 
+//   {id: 2, name: "Mary", age: 20, weight: 60.2, tags: ["thin"] }
 // ]
 
-// Method Chaining Usage - multi filter selected data
-table.selectWhenE(0, 60, 2).selectWhenL(0, false, 2).toObjs();
+// Method Chaining Usage
+table.selectWhenE(0, 20, 2).selectWhenL(0, false, 60.2).toObjs();
 // [ 
-//   {id: 1, name: "John", weight: 60, tags: ["young"] }
+//   {id: 1, name: "John",  age: 20, weight: 60.1, tags: ["cool"] }
 // ]
 ```
 
