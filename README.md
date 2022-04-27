@@ -18,12 +18,12 @@ Example
 ----------------
 ```javascript
 // enhanced_csv_content
-//------------------------------------
+//----------------------------------------------------------------
 // id:int | name:string | age:int | weight:number | tags:json
 //    1   |   John      |   20    | 60.1          | ["cool"]
 //    2   |   Mary      |   20    | 60.2          | ["thin"]
 //    3   |   Tom       |   18    | 60.3          | ["young"]
-//------------------------------------
+//----------------------------------------------------------------
 
 var table = acsv.Table.Parse(enhanced_csv_content);
 table.selectWhenE(1, 3).toFirstObj();
