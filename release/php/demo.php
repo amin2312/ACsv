@@ -106,7 +106,5 @@ function test_enhanced_csv_format()
     $_tab2->createIndexAt(0);
     P("[E] (indexed) 1st row name", $_tab2->selectWhenE(1, 'Dwi', $_tab2->getColIndexBy('name'))->toObjs()[0]['name']);
     P('[E] (indexed) 99th row', $_tab2->selectWhenE(1, 99)->toObjs());
-
-    
 }
 main();
