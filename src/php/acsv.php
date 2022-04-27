@@ -33,7 +33,7 @@ namespace acsv
         /**
          * Selected data(for Method Chaining).
          **/
-        private $_selected = null;
+        private $_selector = null;
         /**
          * Constructor.
          */
@@ -95,14 +95,14 @@ namespace acsv
          */
         public function sortBy($colIndex, $sortType)
         {
-            $len = count($this->_selected);
+            $len = count($this->_selector);
             for ($i = 0; $i < $len; $i++)
             {
                 for ($j = 0; $j < $len - 1; $j++)
                 {
                     $ok = false;
-                    $a = $this->_selected[$j][$colIndex];
-                    $b = $this->_selected[$j + 1][$colIndex];
+                    $a = $this->_selector[$j][$colIndex];
+                    $b = $this->_selector[$j + 1][$colIndex];
                     if ($sortType == 0 && $a > $b)
                     {
                         $ok = true;
@@ -113,9 +113,9 @@ namespace acsv
                     }
                     if ($ok)
                     {
-                        $temp = $this->_selected[$j];
-                        $this->_selected[$j] = $this->_selected[$j + 1];
-                        $this->_selected[$j + 1] = $temp;
+                        $temp = $this->_selector[$j];
+                        $this->_selector[$j] = $this->_selector[$j + 1];
+                        $this->_selector[$j + 1] = $temp;
                     }
                 }
             }
@@ -127,7 +127,7 @@ namespace acsv
          */
         public function getCurrentSelector()
         {
-            return $this->_selected;
+            return $this->_selector;
         }
         /**
          * Format data to row.
@@ -188,11 +188,11 @@ namespace acsv
         public function toFirstRow()
         {
             $rzl = null;
-            if ($this->_selected != null && count($this->_selected) > 0)
+            if ($this->_selector != null && count($this->_selector) > 0)
             {
-                $rzl = $this->fmtRow($this->_selected[0]);
+                $rzl = $this->fmtRow($this->_selector[0]);
             }
-            $this->_selected = null;
+            $this->_selector = null;
             return $rzl;
         }
         /**
@@ -201,15 +201,15 @@ namespace acsv
         public function toLastRow()
         {
             $rzl = null;
-            if ($this->_selected != null)
+            if ($this->_selector != null)
             {
-                $len = count($this->_selected);
+                $len = count($this->_selector);
                 if ($len > 0)
                 {
-                    $rzl = $this->fmtRow($this->_selected[$len - 1]);
+                    $rzl = $this->fmtRow($this->_selector[$len - 1]);
                 }
             }
-            $this->_selected = null;
+            $this->_selector = null;
             return $rzl;
         }
         /**
@@ -217,16 +217,16 @@ namespace acsv
          */
         public function toRows()
         {
-            if ($this->_selected == null)
+            if ($this->_selector == null)
             {
                 return null;
             }
             $dst = [];
-            foreach ($this->_selected as $i => $row)
+            foreach ($this->_selector as $i => $row)
             {
                 array_push($dst, $this->fmtRow($row));
             }
-            $this->_selected = null;
+            $this->_selector = null;
             return $dst;
         }
         /**
@@ -235,11 +235,11 @@ namespace acsv
         public function toFirstObj()
         {
             $rzl = null;
-            if ($this->_selected != null && count($this->_selected) > 0)
+            if ($this->_selector != null && count($this->_selector) > 0)
             {
-                $rzl = $this->fmtObj($this->_selected[0]);
+                $rzl = $this->fmtObj($this->_selector[0]);
             }
-            $this->_selected = null;
+            $this->_selector = null;
             return $rzl;
         }
         /**
@@ -248,15 +248,15 @@ namespace acsv
         public function toLastObj()
         {
             $rzl = null;
-            if ($this->_selected != null)
+            if ($this->_selector != null)
             {
-                $len = count($this->_selected);
+                $len = count($this->_selector);
                 if ($len > 0)
                 {
-                    $rzl = $this->fmtObj($this->_selected[$len - 1]);
+                    $rzl = $this->fmtObj($this->_selector[$len - 1]);
                 }
             }
-            $this->_selected = null;
+            $this->_selector = null;
             return $rzl;
         }
         /**
@@ -264,16 +264,16 @@ namespace acsv
          */
         public function toObjs()
         {
-            if ($this->_selected == null)
+            if ($this->_selector == null)
             {
                 return null;
             }
             $dst = [];
-            foreach ($this->_selected as $i => $row)
+            foreach ($this->_selector as $i => $row)
             {
                 array_push($dst, $this->fmtObj($row));
             }
-            $this->_selected = null;
+            $this->_selector = null;
             return $dst;
         }
         /**
@@ -281,14 +281,14 @@ namespace acsv
          */
         public function toTable(): Table
         {
-            if ($this->_selected == null)
+            if ($this->_selector == null)
             {
                 return null;
             }
             $t = new Table();
             $t->head = $this->head;
-            $t->body = $this->_selected;
-            $this->_selected = null;
+            $t->body = $this->_selector;
+            $this->_selector = null;
             return $t;
         }
         /**
@@ -297,7 +297,7 @@ namespace acsv
          */
         public function selectAll()
         {
-            $this->_selected = $this->body;
+            $this->_selector = $this->body;
             return $this;
         }
         /**
@@ -306,7 +306,7 @@ namespace acsv
          */
         public function selectFirstRow()
         {
-            $this->_selected = [$this->body[0]];
+            $this->_selector = [$this->body[0]];
             return $this;
         }
         /**
@@ -315,7 +315,7 @@ namespace acsv
          */
         public function selectLastRow()
         {
-            $this->_selected = [$this->body[count($this->body) - 1]];
+            $this->_selector = [$this->body[count($this->body) - 1]];
             return $this;
         }
         /**
@@ -334,7 +334,7 @@ namespace acsv
                     array_push($dst, $this->body[$rowIndex]);
                 }
             }
-            $this->_selected = $dst;
+            $this->_selector = $dst;
             return $this;
         }
         /**
@@ -350,9 +350,9 @@ namespace acsv
             foreach ($values as $i => $value)
             {
                 $this->selectWhenE($limit, $value, $colIndex, $rows);
-                $this->_selected = null;
+                $this->_selector = null;
             }
-            $this->_selected = $rows;
+            $this->_selector = $rows;
             return $this;
         }
         /**
@@ -385,14 +385,14 @@ namespace acsv
                             {
                                 array_push($dst, $val);
                             }
-                            $this->_selected = $dst;
+                            $this->_selector = $dst;
                             return $this;
                         }
                     }
                 }
             }
             // 2.line-by-line scan
-            $src = $this->_selected;
+            $src = $this->_selector;
             if ($src == null)
             {
                 $src = $this->body;
@@ -409,7 +409,7 @@ namespace acsv
                     }
                 }
             }
-            $this->_selected = $dst;
+            $this->_selector = $dst;
             return $this;
         }
         /**
@@ -423,7 +423,7 @@ namespace acsv
          */
         public function selectWhenE2($limit, $value1, $value2, $colIndex2 = 1, $colIndex1 = 0): Table
         {
-            $src = $this->_selected;
+            $src = $this->_selector;
             if ($src == null)
             {
                 $src = $this->body;
@@ -441,7 +441,7 @@ namespace acsv
                     }
                 }
             }
-            $this->_selected = $dst;
+            $this->_selector = $dst;
             return $this;
         }
         /**
@@ -457,7 +457,7 @@ namespace acsv
          */
         public function selectWhenE3($limit, $value1, $value2, $value3, $colIndex3 = 2, $colIndex2 = 1, $colIndex1 = 0): Table
         {
-            $src = $this->_selected;
+            $src = $this->_selector;
             if ($src == null)
             {
                 $src = $this->body;
@@ -475,7 +475,7 @@ namespace acsv
                     }
                 }
             }
-            $this->_selected = $dst;
+            $this->_selector = $dst;
             return $this;
         }
         /**
@@ -488,7 +488,7 @@ namespace acsv
          */
         public function selectWhenG($limit, $withEqu, $value, $colIndex = 0): Table
         {
-            $src = $this->_selected;
+            $src = $this->_selector;
             if ($src == null)
             {
                 $src = $this->body;
@@ -507,7 +507,7 @@ namespace acsv
                     }
                 }
             }
-            $this->_selected = $dst;
+            $this->_selector = $dst;
             return $this;
         }
         /**
@@ -520,7 +520,7 @@ namespace acsv
          */
         public function selectWhenL($limit, $withEqu, $value, $colIndex = 0): Table
         {
-            $src = $this->_selected;
+            $src = $this->_selector;
             if ($src == null)
             {
                 $src = $this->body;
@@ -539,7 +539,7 @@ namespace acsv
                     }
                 }
             }
-            $this->_selected = $dst;
+            $this->_selector = $dst;
             return $this;
         }
         /**
@@ -554,7 +554,7 @@ namespace acsv
          */
         public function selectWhenGreaterAndLess($limit, $GWithEqu, $LWithEqu, $GValue, $LValue, $colIndex = 0): Table
         {
-            $src = $this->_selected;
+            $src = $this->_selector;
             if ($src == null)
             {
                 $src = $this->body;
@@ -575,7 +575,7 @@ namespace acsv
                     }
                 }
             }
-            $this->_selected = $dst;
+            $this->_selector = $dst;
             return $this;
         }
         /**
@@ -590,7 +590,7 @@ namespace acsv
          */
         public function selectWhenLessOrGreater($limit, $LWithEqu, $GWithEqu, $LValue, $GValue, $colIndex = 0): Table
         {
-            $src = $this->_selected;
+            $src = $this->_selector;
             if ($src == null)
             {
                 $src = $this->body;
@@ -611,7 +611,7 @@ namespace acsv
                     }
                 }
             }
-            $this->_selected = $dst;
+            $this->_selector = $dst;
             return $this;
         }
         /**

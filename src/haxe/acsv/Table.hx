@@ -33,7 +33,7 @@ class Table
     /**
 	 * Selected data(for Method Chaining).
 	 **/
-    private var _selected:Array<Array<Dynamic>> = null;
+    private var _selector:Array<Array<Dynamic>> = null;
     /**
 	 * Constructor.
 	 */
@@ -107,14 +107,14 @@ class Table
 	 */
     public function sortBy(colIndex:Int, sortType:Int):Table
     {
-        var len = _selected.length;
+        var len = _selector.length;
         for (i in 0...len)
         {
             for (j in 0...len - 1)
             {
                 var ok = false;
-                var a = _selected[j][colIndex];
-                var b = _selected[j + 1][colIndex];
+                var a = _selector[j][colIndex];
+                var b = _selector[j + 1][colIndex];
                 if (sortType == 0 && a > b)
                 {
                     ok = true;
@@ -125,9 +125,9 @@ class Table
                 }
                 if (ok)
                 {
-                    var temp = _selected[j];
-                    _selected[j] = _selected[j + 1];
-                    _selected[j + 1] = temp;
+                    var temp = _selector[j];
+                    _selector[j] = _selector[j + 1];
+                    _selector[j + 1] = temp;
                 }
             }
         }
@@ -139,7 +139,7 @@ class Table
 	 */
     public function getCurrentSelector():Array<Dynamic>
     {
-        return _selected;
+        return _selector;
     }
     /**
 	 * Format data to row.
@@ -206,11 +206,11 @@ class Table
     public function toFirstRow():Array<Dynamic>
     {
         var rzl = null;
-        if (_selected != null && _selected.length > 0)
+        if (_selector != null && _selector.length > 0)
         {
-            rzl = this.fmtRow(_selected[0]);
+            rzl = this.fmtRow(_selector[0]);
         }
-        _selected = null;
+        _selector = null;
         return rzl;
     }
     /**
@@ -219,15 +219,15 @@ class Table
     public function toLastRow():Array<Dynamic>
     {
         var rzl = null;
-        if (_selected != null)
+        if (_selector != null)
         {
-            var len = _selected.length;
+            var len = _selector.length;
             if (len > 0)
             {
-                rzl = this.fmtRow(_selected[len - 1]);
+                rzl = this.fmtRow(_selector[len - 1]);
             }
         }
-        _selected = null;
+        _selector = null;
         return rzl;
     }
     /**
@@ -235,17 +235,17 @@ class Table
 	 */
     public function toRows():Array<Array<Dynamic>>
     {
-        if (_selected == null)
+        if (_selector == null)
         {
             return null;
         }
         var dst = new Array<Array<Dynamic>>();
-        for (i in 0..._selected.length)
+        for (i in 0..._selector.length)
         {
-            var row:Array<Dynamic> = _selected[i];
+            var row:Array<Dynamic> = _selector[i];
             dst.push(this.fmtRow(row));
         }
-        _selected = null;
+        _selector = null;
         return dst;
     }
     /**
@@ -254,11 +254,11 @@ class Table
     public function toFirstObj():Dynamic
     {
         var rzl = null;
-        if (_selected != null && _selected.length > 0)
+        if (_selector != null && _selector.length > 0)
         {
-            rzl = this.fmtObj(_selected[0]);
+            rzl = this.fmtObj(_selector[0]);
         }
-        _selected = null;
+        _selector = null;
         return rzl;
     }
     /**
@@ -267,15 +267,15 @@ class Table
     public function toLastObj():Dynamic
     {
         var rzl = null;
-        if (_selected != null)
+        if (_selector != null)
         {
-            var len = _selected.length;
+            var len = _selector.length;
             if (len > 0)
             {
-                rzl = this.fmtObj(_selected[len - 1]);
+                rzl = this.fmtObj(_selector[len - 1]);
             }
         }
-        _selected = null;
+        _selector = null;
         return rzl;
     }
     /**
@@ -283,17 +283,17 @@ class Table
 	 */
     public function toObjs():Array<Dynamic>
     {
-        if (_selected == null)
+        if (_selector == null)
         {
             return null;
         }
         var dst = new Array<Dynamic>();
-        for (i in 0..._selected.length)
+        for (i in 0..._selector.length)
         {
-            var row:Array<Dynamic> = _selected[i];
+            var row:Array<Dynamic> = _selector[i];
             dst.push(this.fmtObj(row));
         }
-        _selected = null;
+        _selector = null;
         return dst;
     }
     /**
@@ -301,14 +301,14 @@ class Table
 	 */
     public function toTable():Table
     {
-        if (_selected == null)
+        if (_selector == null)
         {
             return null;
         }
         var t = new Table();
         t.head = this.head.concat([]);
-        t.body = this._selected;
-        _selected = null;
+        t.body = this._selector;
+        _selector = null;
         return t;
     }
     /**
@@ -317,7 +317,7 @@ class Table
 	 */
     public function selectAll():Table
     {
-        _selected = body;
+        _selector = body;
         return this;
     }
     /**
@@ -326,7 +326,7 @@ class Table
 	 */
     public function selectFirstRow():Table
     {
-        _selected = [body[0]];
+        _selector = [body[0]];
         return this;
     }
     /**
@@ -335,7 +335,7 @@ class Table
 	 */
     public function selectLastRow():Table
     {
-        _selected = [body[body.length - 1]];
+        _selector = [body[body.length - 1]];
         return this;
     }
     /**
@@ -355,7 +355,7 @@ class Table
                 dst.push(this.body[rowIndex]);
             }
         }
-        _selected = dst;
+        _selector = dst;
         return this;
     }
     /**
@@ -372,9 +372,9 @@ class Table
         {
             var value = values[i];
             selectWhenE(limit, value, colIndex, rows);
-            _selected = null;
+            _selector = null;
         }
-        _selected = rows;
+        _selector = rows;
         return this;
     }
     /**
@@ -411,12 +411,12 @@ class Table
                 {
                     dst.push(val);
                 }
-                _selected = dst;
+                _selector = dst;
                 return this;
             }
         }
         // 2.line-by-line scan
-        var src = _selected;
+        var src = _selector;
         if (src == null)
         {
             src = body;
@@ -434,7 +434,7 @@ class Table
                 }
             }
         }
-        _selected = dst;
+        _selector = dst;
         return this;
     }
     /**
@@ -448,7 +448,7 @@ class Table
 	 */
     public function selectWhenE2(limit:Int, value1:Dynamic, value2:Dynamic, colIndex2:Int = 1, colIndex1:Int = 0):Table
     {
-        var src = _selected;
+        var src = _selector;
         if (src == null)
         {
             src = body;
@@ -467,7 +467,7 @@ class Table
                 }
             }
         }
-        _selected = dst;
+        _selector = dst;
         return this;
     }
     /**
@@ -483,7 +483,7 @@ class Table
 	 */
     public function selectWhenE3(limit:Int, value1:Dynamic, value2:Dynamic, value3:Dynamic, colIndex3:Int = 2, colIndex2:Int = 1, colIndex1:Int = 0):Table
     {
-        var src = _selected;
+        var src = _selector;
         if (src == null)
         {
             src = body;
@@ -502,7 +502,7 @@ class Table
                 }
             }
         }
-        _selected = dst;
+        _selector = dst;
         return this;
     }
     /**
@@ -515,7 +515,7 @@ class Table
 	 */
     public function selectWhenG(limit:Int, withEqu:Bool, value:Float, colIndex:Int = 0):Table
     {
-        var src = _selected;
+        var src = _selector;
         if (src == null)
         {
             src = body;
@@ -535,7 +535,7 @@ class Table
                 }
             }
         }
-        _selected = dst;
+        _selector = dst;
         return this;
     }
     /**
@@ -548,7 +548,7 @@ class Table
 	 */
     public function selectWhenL(limit:Int, withEqu:Bool, value:Float, colIndex:Int = 0):Table
     {
-        var src = _selected;
+        var src = _selector;
         if (src == null)
         {
             src = body;
@@ -568,7 +568,7 @@ class Table
                 }
             }
         }
-        _selected = dst;
+        _selector = dst;
         return this;
     }
     /**
@@ -583,7 +583,7 @@ class Table
 	 */
     public function selectWhenGreaterAndLess(limit:Int, GWithEqu:Bool, LWithEqu:Bool, GValue:Float, LValue:Float, colIndex:Int = 0):Table
     {
-        var src = _selected;
+        var src = _selector;
         if (src == null)
         {
             src = body;
@@ -605,7 +605,7 @@ class Table
                 }
             }
         }
-        _selected = dst;
+        _selector = dst;
         return this;
     }
     /**
@@ -620,7 +620,7 @@ class Table
 	 */
     public function selectWhenLessOrGreater(limit:Int, LWithEqu:Bool, GWithEqu:Bool, LValue:Float, GValue:Int, colIndex:Int = 0):Table
     {
-        var src = _selected;
+        var src = _selector;
         if (src == null)
         {
             src = body;
@@ -642,7 +642,7 @@ class Table
                 }
             }
         }
-        _selected = dst;
+        _selector = dst;
         return this;
     }
     /**
