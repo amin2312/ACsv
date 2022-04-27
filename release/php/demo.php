@@ -1,5 +1,5 @@
 <?php
-require dirname(__FILE__) . "/../../src/php/acsv.php";
+require dirname(__FILE__) . "/../../src/php/ACsv.php";
 use acsv\Table as Table;
 /**
  * Standard csv format text
