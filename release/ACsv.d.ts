@@ -55,14 +55,14 @@ declare namespace acsv
          * Sort by selected rows.
          * @param colIndex specified column's index
          * @param sortType 0: asc, 1: desc
-         * @return Current THIS instance(Method Chaining), can call "to???" or "select???" function in next step.
+         * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
          */
         sortBy(colIndex: number, sortType: number): Table
         /**
-         * Get current selected data.
-         <br>It be assigned after call "select???" function
+         * Get current selector(it includes all selected results).
+         <br>It be assigned after call "select..." function
          */
-        getCurrentSelectdData(): Array<any>;
+        getCurrentSelector(): Array<any>;
         /**
          * Format data to row.
          */
@@ -97,31 +97,31 @@ declare namespace acsv
         toObjs(): Array<any>
         /**
          * Select all rows.
-         * @return Current THIS instance(Method Chaining), can call "to???" function to get result in next step.
+         * @return THIS instance (for Method Chaining), can call "to..." function to get result in next step.
          */
         selectAll(): Table
         /**
          * Select the first row.
-         * @return Current THIS instance(Method Chaining), can call "to???" function to get result in next step.
+         * @return THIS instance (for Method Chaining), can call "to..." function to get result in next step.
          */
         selectFirstRow(): Table
         /**
          * Select the last row.
-         * @return Current THIS instance(Method Chaining), can call "to???" function to get result in next step.
+         * @return THIS instance (for Method Chaining), can call "to..." function to get result in next step.
          */
         selectLastRow(): Table
-        /**
-         * Selects the specified row by index.
-         * @param rowIndex specified column's index
-         * @return Current THIS instance(Method Chaining), can call "to???" or "select???" function in next step.
+         /**
+         * Selects the specified <b>rows</b> by indices.
+         * @param rowIndices specified row's indices
+         * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
          */
-        selectAt(rowIndex: number): Table
+        selectAt(rowIndices:Array<number>):Table
         /**
-         * Select the rows when the column's value is equal to specified values of array.
+         * Select the rows when the column's value is equal to any value of array.
          * @param limit maximum length of every selected results (0 is infinite, if you only need 1 result, 1 is recommended, it will improve performance)
          * @param values the specified values of array
          * @param colIndex specified column's index
-         * @return Current THIS instance(Method Chaining), can call "to???" or "select???" function in next step.
+         * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
          */
         selectWhenIn(limit: number, values: Array<any>, colIndex?: number): Table
         /**
@@ -129,7 +129,7 @@ declare namespace acsv
          * @param limit maximum length of selected results (0 is infinite, if you only need 1 result, 1 is recommended, it will improve performance)
          * @param value the specified value
          * @param colIndex specified column's index
-         * @return Current THIS instance(Method Chaining), can call "to???" function to get result in next step.
+         * @return THIS instance (for Method Chaining), can call "to..." function to get result in next step.
          */
         selectWhenE(limit: number, value: any, colIndex?: number): Table
         /**
@@ -139,7 +139,7 @@ declare namespace acsv
          * @param value2 second specified value
          * @param colIndex2 second specified column's index
          * @param colIndex1 first specified column's index
-         * @return Current THIS instance(Method Chaining), can call "to???" function to get result in next step.
+         * @return THIS instance (for Method Chaining), can call "to..." function to get result in next step.
          */
         selectWhenE2(limit: number, value1: any, value2: any, colIndex2?: number, colIndex1?: number): Table
         /**
@@ -151,7 +151,7 @@ declare namespace acsv
          * @param colIndex3 third specified column's index
          * @param colIndex2 second specified column's index
          * @param colIndex1 first specified column's index
-         * @return Current THIS instance(Method Chaining), can call "to???" function to get result in next step.
+         * @return THIS instance (for Method Chaining), can call "to..." function to get result in next step.
          */
         selectWhenE3(limit: number, value1: any, value2: any, value3: any, colIndex3?: number, colIndex2?: number, colIndex1?: number): Table
         /**
@@ -160,7 +160,7 @@ declare namespace acsv
          * @param withEqu whether include equation
          * @param value the specified value
          * @param colIndex specified column's index
-         * @return Current THIS instance(Method Chaining), can call "to???" function to get result in next step.
+         * @return THIS instance (for Method Chaining), can call "to..." function to get result in next step.
          */
         selectWhenG(limit: number, withEqu: boolean, value: number, colIndex?: number): Table
         /**
@@ -169,7 +169,7 @@ declare namespace acsv
          * @param withEqu whether include equation
          * @param value the specified value
          * @param colIndex specified column's index
-         * @return Current THIS instance(Method Chaining), can call "to???" function to get result in next step.
+         * @return THIS instance (for Method Chaining), can call "to..." function to get result in next step.
          */
         selectWhenL(limit: number, withEqu: boolean, value: number, colIndex?: number): Table
         /**
@@ -180,7 +180,7 @@ declare namespace acsv
          * @param GValue the specified greater value
          * @param LValue the specified less value
          * @param colIndex specified column's index
-         * @return Current THIS instance(Method Chaining), can call "to???" function to get result in next step.
+         * @return THIS instance (for Method Chaining), can call "to..." function to get result in next step.
          */
         selectWhenGreaterAndLess(limit: number, GWithEqu: boolean, LWithEqu: boolean, GValue: number, LValue: number, colIndex?: number): Table
         /**
@@ -191,7 +191,7 @@ declare namespace acsv
          * @param LValue the specified less value
          * @param GValue the specified greater value
          * @param colIndex specified column's index
-         * @return Current THIS instance(Method Chaining), can call "to???" function to get result in next step.
+         * @return THIS instance (for Method Chaining), can call "to..." function to get result in next step.
          */
         selectWhenLessOrGreater(limit: number, LWithEqu: boolean, GWithEqu: boolean, LValue: number, GValue: number, colIndex?: number): Table
     }

@@ -642,7 +642,7 @@
 			<c path="Array"><c path="String"/></c>
 			<haxe_doc>* Supported json field types.</haxe_doc>
 		</JSON_TYPES>
-		<Parse public="1" set="method" line="637" static="1">
+		<Parse public="1" set="method" line="641" static="1">
 			<f a="content:?filedSeparator:?filedMultiLineDelimiter">
 				<c path="String"/>
 				<c path="String"/>
@@ -654,7 +654,7 @@
      * @param filedSeparator filed separator
      * @param filedMultiLineDelimiter filed multi-line delimiter</haxe_doc>
 		</Parse>
-		<textToArray set="method" line="646" static="1">
+		<textToArray set="method" line="650" static="1">
 			<f a="text:?FS:?FML">
 				<c path="String"/>
 				<c path="String"/>
@@ -663,7 +663,7 @@
 			</f>
 			<haxe_doc>* Convert text to array.</haxe_doc>
 		</textToArray>
-		<arrayToRows set="method" line="782" static="1">
+		<arrayToRows set="method" line="786" static="1">
 			<f a="array">
 				<c path="Array"><c path="Array"><d/></c></c>
 				<c path="acsv.Table"/>
@@ -725,15 +725,15 @@
 				<c path="acsv.Table"/>
 			</f>
 			<haxe_doc>* Sort by selected rows.
-     * @param colIndex specified column's index
+     * @param colIndex the column index specified for sorting
      * @param sortType 0: asc, 1: desc
-     * @return Current THIS instance(Method Chaining), can call "to???" or "select???" function in next step.</haxe_doc>
+     * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.</haxe_doc>
 		</sortBy>
-		<getCurrentSelectdData public="1" set="method" line="138">
+		<getCurrentSelector public="1" set="method" line="138">
 			<f a=""><c path="Array"><d/></c></f>
-			<haxe_doc><![CDATA[* Get current selected data.
-	 <br>It be assigned after call "select???" function]]></haxe_doc>
-		</getCurrentSelectdData>
+			<haxe_doc><![CDATA[* Get current selector(it includes all selected results).
+	 * <br><b>Notice:</b> It be assigned after call "select..." function]]></haxe_doc>
+		</getCurrentSelector>
 		<fmtRow set="method" line="145">
 			<f a="row">
 				<c path="Array"><d/></c>
@@ -780,41 +780,41 @@
 		<selectAll public="1" set="method" line="306">
 			<f a=""><c path="acsv.Table"/></f>
 			<haxe_doc>* Select all rows.
-     * @return Current THIS instance(Method Chaining), can call "to???" or "select???" function in next step.</haxe_doc>
+     * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.</haxe_doc>
 		</selectAll>
 		<selectFirstRow public="1" set="method" line="315">
 			<f a=""><c path="acsv.Table"/></f>
 			<haxe_doc>* Select the first row.
-     * @return Current THIS instance(Method Chaining), can call "to???" or "select???" function in next step.</haxe_doc>
+     * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.</haxe_doc>
 		</selectFirstRow>
 		<selectLastRow public="1" set="method" line="324">
 			<f a=""><c path="acsv.Table"/></f>
 			<haxe_doc>* Select the last row.
-     * @return Current THIS instance(Method Chaining), can call "to???" or "select???" function in next step.</haxe_doc>
+     * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.</haxe_doc>
 		</selectLastRow>
 		<selectAt public="1" set="method" line="334">
-			<f a="rowIndex">
-				<x path="Int"/>
+			<f a="rowIndices">
+				<c path="Array"><x path="Int"/></c>
 				<c path="acsv.Table"/>
 			</f>
-			<haxe_doc>* Selects the specified row by index.
-     * @param rowIndex specified column's index
-     * @return Current THIS instance(Method Chaining), can call "to???" or "select???" function in next step.</haxe_doc>
+			<haxe_doc><![CDATA[* Selects the specified <b>rows</b> by indices.
+     * @param rowIndices specified row's indices
+     * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.]]></haxe_doc>
 		</selectAt>
-		<selectWhenIn public="1" set="method" line="351">
+		<selectWhenIn public="1" set="method" line="355">
 			<f a="limit:values:?colIndex">
 				<x path="Int"/>
 				<c path="Array"><d/></c>
 				<x path="Int"/>
 				<c path="acsv.Table"/>
 			</f>
-			<haxe_doc>* Select the rows when the column's value is equal to specified values of array.
+			<haxe_doc>* Select the rows when the column's value is equal to any value of array.
      * @param limit maximum length of every selected results (0 is infinite, if you only need 1 result, 1 is recommended, it will improve performance)
-     * @param values the specified values of array
-     * @param colIndex specified column's index
-     * @return Current THIS instance(Method Chaining), can call "to???" or "select???" function in next step.</haxe_doc>
+     * @param values the array of values
+     * @param colIndex specified column index
+     * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.</haxe_doc>
 		</selectWhenIn>
-		<selectWhenE public="1" set="method" line="371">
+		<selectWhenE public="1" set="method" line="375">
 			<f a="limit:value:?colIndex:?extraSelector">
 				<x path="Int"/>
 				<d/>
@@ -825,11 +825,11 @@
 			<haxe_doc>* Select the rows when the column's value is equal to specified value.
      * @param limit maximum length of selected results (0 is infinite, if you only need 1 result, 1 is recommended, it will improve performance)
      * @param value the specified value
-     * @param colIndex specified column's index
+     * @param colIndex specified column index
      * @param extraSelector extra selector, use it to save selected result
-     * @return Current THIS instance(Method Chaining), can call "to???" or "select???" function in next step.</haxe_doc>
+     * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.</haxe_doc>
 		</selectWhenE>
-		<selectWhenE2 public="1" set="method" line="432">
+		<selectWhenE2 public="1" set="method" line="436">
 			<f a="limit:value1:value2:?colIndex2:?colIndex1">
 				<x path="Int"/>
 				<d/>
@@ -842,11 +842,11 @@
      * @param limit maximum length of selected results (0 is infinite, if you only need 1 result, 1 is recommended, it will improve performance)
      * @param value1 first specified value
      * @param value2 second specified value
-     * @param colIndex2 second specified column's index
-     * @param colIndex1 first specified column's index
-     * @return Current THIS instance(Method Chaining), can call "to???" or "select???" function in next step.</haxe_doc>
+     * @param colIndex2 second specified column index
+     * @param colIndex1 first specified column index
+     * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.</haxe_doc>
 		</selectWhenE2>
-		<selectWhenE3 public="1" set="method" line="467">
+		<selectWhenE3 public="1" set="method" line="471">
 			<f a="limit:value1:value2:value3:?colIndex3:?colIndex2:?colIndex1">
 				<x path="Int"/>
 				<d/>
@@ -862,12 +862,12 @@
      * @param value1 first specified value
      * @param value2 second specified value
      * @param value3 third specified value
-     * @param colIndex3 third specified column's index
-     * @param colIndex2 second specified column's index
-     * @param colIndex1 first specified column's index
-     * @return Current THIS instance(Method Chaining), can call "to???" or "select???" function in next step.</haxe_doc>
+     * @param colIndex3 third specified column index
+     * @param colIndex2 second specified column index
+     * @param colIndex1 first specified column index
+     * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.</haxe_doc>
 		</selectWhenE3>
-		<selectWhenG public="1" set="method" line="499">
+		<selectWhenG public="1" set="method" line="503">
 			<f a="limit:withEqu:value:?colIndex">
 				<x path="Int"/>
 				<x path="Bool"/>
@@ -879,10 +879,10 @@
      * @param limit maximum length of selected results (0 is infinite, if you only need 1 result, 1 is recommended, it will improve performance)
      * @param withEqu whether include equation
      * @param value the specified value
-     * @param colIndex specified column's index
-     * @return Current THIS instance(Method Chaining), can call "to???" or "select???" function in next step.</haxe_doc>
+     * @param colIndex specified column index
+     * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.</haxe_doc>
 		</selectWhenG>
-		<selectWhenL public="1" set="method" line="532">
+		<selectWhenL public="1" set="method" line="536">
 			<f a="limit:withEqu:value:?colIndex">
 				<x path="Int"/>
 				<x path="Bool"/>
@@ -894,10 +894,10 @@
      * @param limit maximum length of selected results (0 is infinite, if you only need 1 result, 1 is recommended, it will improve performance)
      * @param withEqu whether include equation
      * @param value the specified value
-     * @param colIndex specified column's index
-     * @return Current THIS instance(Method Chaining), can call "to???" or "select???" function in next step.</haxe_doc>
+     * @param colIndex specified column index
+     * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.</haxe_doc>
 		</selectWhenL>
-		<selectWhenGreaterAndLess public="1" set="method" line="567">
+		<selectWhenGreaterAndLess public="1" set="method" line="571">
 			<f a="limit:GWithEqu:LWithEqu:GValue:LValue:?colIndex">
 				<x path="Int"/>
 				<x path="Bool"/>
@@ -913,10 +913,10 @@
      * @param LWithEqu whether less and equal
      * @param GValue the specified greater value
      * @param LValue the specified less value
-     * @param colIndex specified column's index
-     * @return Current THIS instance(Method Chaining), can call "to???" or "select???" function in next step.]]></haxe_doc>
+     * @param colIndex specified column index
+     * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.]]></haxe_doc>
 		</selectWhenGreaterAndLess>
-		<selectWhenLessOrGreater public="1" set="method" line="604">
+		<selectWhenLessOrGreater public="1" set="method" line="608">
 			<f a="limit:LWithEqu:GWithEqu:LValue:GValue:?colIndex">
 				<x path="Int"/>
 				<x path="Bool"/>
@@ -932,8 +932,8 @@
      * @param GWithEqu whether greater and equal
      * @param LValue the specified less value
      * @param GValue the specified greater value
-     * @param colIndex specified column's index
-     * @return Current THIS instance(Method Chaining), can call "to???" or "select???" function in next step.]]></haxe_doc>
+     * @param colIndex specified column index
+     * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.]]></haxe_doc>
 		</selectWhenLessOrGreater>
 		<new public="1" set="method" line="41">
 			<f a=""><x path="Void"/></f>

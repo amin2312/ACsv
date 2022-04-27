@@ -99,9 +99,9 @@ class Table
     }
     /**
 	 * Sort by selected rows.
-     * @param colIndex specified column's index
+     * @param colIndex the column index specified for sorting
      * @param sortType 0: asc, 1: desc
-     * @return Current THIS instance(Method Chaining), can call "to???" or "select???" function in next step.
+     * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
 	 */
     public function sortBy(colIndex:Int, sortType:Int):Table
     {
@@ -132,10 +132,10 @@ class Table
         return this;
     }
     /**
-	 * Get current selected data.
-	 <br>It be assigned after call "select???" function
+	 * Get current selector(it includes all selected results).
+	 * <br><b>Notice:</b> It be assigned after call "select..." function
 	 */
-    public function getCurrentSelectdData():Array<Dynamic>
+    public function getCurrentSelector():Array<Dynamic>
     {
         return _selected;
     }
@@ -301,7 +301,7 @@ class Table
     }
     /**
 	 * Select all rows.
-     * @return Current THIS instance(Method Chaining), can call "to???" or "select???" function in next step.
+     * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
 	 */
     public function selectAll():Table
     {
@@ -310,7 +310,7 @@ class Table
     }
     /**
 	 * Select the first row.
-     * @return Current THIS instance(Method Chaining), can call "to???" or "select???" function in next step.
+     * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
 	 */
     public function selectFirstRow():Table
     {
@@ -319,7 +319,7 @@ class Table
     }
     /**
 	 * Select the last row.
-     * @return Current THIS instance(Method Chaining), can call "to???" or "select???" function in next step.
+     * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
 	 */
     public function selectLastRow():Table
     {
@@ -327,26 +327,30 @@ class Table
         return this;
     }
     /**
-     * Selects the specified row by index.
-     * @param rowIndex specified column's index
-     * @return Current THIS instance(Method Chaining), can call "to???" or "select???" function in next step.
+     * Selects the specified <b>rows</b> by indices.
+     * @param rowIndices specified row's indices
+     * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
 	 */
-    public function selectAt(rowIndex:Int):Table
+    public function selectAt(rowIndices:Array<Int>):Table
     {
         var dst = new Array<Array<Dynamic>>();
-        if (rowIndex >= 0 && rowIndex < this.body.length)
+        for (i in 0...rowIndices.length)
         {
-            dst.push(this.body[rowIndex]);
+            var rowIndex = rowIndices[i];
+            if (rowIndex >= 0 && rowIndex < this.body.length)
+            {
+                dst.push(this.body[rowIndex]);
+            }
         }
         _selected = dst;
         return this;
     }
     /**
-     * Select the rows when the column's value is equal to specified values of array.
+     * Select the rows when the column's value is equal to any value of array.
      * @param limit maximum length of every selected results (0 is infinite, if you only need 1 result, 1 is recommended, it will improve performance)
-     * @param values the specified values of array
-     * @param colIndex specified column's index
-     * @return Current THIS instance(Method Chaining), can call "to???" or "select???" function in next step.
+     * @param values the array of values
+     * @param colIndex specified column index
+     * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
 	 */
     public function selectWhenIn(limit:Int, values:Array<Dynamic>, colIndex:Int = 0):Table
     {
@@ -364,9 +368,9 @@ class Table
      * Select the rows when the column's value is equal to specified value.
      * @param limit maximum length of selected results (0 is infinite, if you only need 1 result, 1 is recommended, it will improve performance)
      * @param value the specified value
-     * @param colIndex specified column's index
+     * @param colIndex specified column index
      * @param extraSelector extra selector, use it to save selected result
-     * @return Current THIS instance(Method Chaining), can call "to???" or "select???" function in next step.
+     * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
 	 */
     public function selectWhenE(limit:Int, value:Dynamic, colIndex:Int = 0, extraSelector:Array<Array<Dynamic>> = null):Table
     {
@@ -425,9 +429,9 @@ class Table
      * @param limit maximum length of selected results (0 is infinite, if you only need 1 result, 1 is recommended, it will improve performance)
      * @param value1 first specified value
      * @param value2 second specified value
-     * @param colIndex2 second specified column's index
-     * @param colIndex1 first specified column's index
-     * @return Current THIS instance(Method Chaining), can call "to???" or "select???" function in next step.
+     * @param colIndex2 second specified column index
+     * @param colIndex1 first specified column index
+     * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
 	 */
     public function selectWhenE2(limit:Int, value1:Dynamic, value2:Dynamic, colIndex2:Int = 1, colIndex1:Int = 0):Table
     {
@@ -459,10 +463,10 @@ class Table
      * @param value1 first specified value
      * @param value2 second specified value
      * @param value3 third specified value
-     * @param colIndex3 third specified column's index
-     * @param colIndex2 second specified column's index
-     * @param colIndex1 first specified column's index
-     * @return Current THIS instance(Method Chaining), can call "to???" or "select???" function in next step.
+     * @param colIndex3 third specified column index
+     * @param colIndex2 second specified column index
+     * @param colIndex1 first specified column index
+     * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
 	 */
     public function selectWhenE3(limit:Int, value1:Dynamic, value2:Dynamic, value3:Dynamic, colIndex3:Int = 2, colIndex2:Int = 1, colIndex1:Int = 0):Table
     {
@@ -493,8 +497,8 @@ class Table
      * @param limit maximum length of selected results (0 is infinite, if you only need 1 result, 1 is recommended, it will improve performance)
      * @param withEqu whether include equation
      * @param value the specified value
-     * @param colIndex specified column's index
-     * @return Current THIS instance(Method Chaining), can call "to???" or "select???" function in next step.
+     * @param colIndex specified column index
+     * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
 	 */
     public function selectWhenG(limit:Int, withEqu:Bool, value:Float, colIndex:Int = 0):Table
     {
@@ -526,8 +530,8 @@ class Table
      * @param limit maximum length of selected results (0 is infinite, if you only need 1 result, 1 is recommended, it will improve performance)
      * @param withEqu whether include equation
      * @param value the specified value
-     * @param colIndex specified column's index
-     * @return Current THIS instance(Method Chaining), can call "to???" or "select???" function in next step.
+     * @param colIndex specified column index
+     * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
 	 */
     public function selectWhenL(limit:Int, withEqu:Bool, value:Float, colIndex:Int = 0):Table
     {
@@ -561,8 +565,8 @@ class Table
      * @param LWithEqu whether less and equal
      * @param GValue the specified greater value
      * @param LValue the specified less value
-     * @param colIndex specified column's index
-     * @return Current THIS instance(Method Chaining), can call "to???" or "select???" function in next step.
+     * @param colIndex specified column index
+     * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
 	 */
     public function selectWhenGreaterAndLess(limit:Int, GWithEqu:Bool, LWithEqu:Bool, GValue:Float, LValue:Float, colIndex:Int = 0):Table
     {
@@ -598,8 +602,8 @@ class Table
      * @param GWithEqu whether greater and equal
      * @param LValue the specified less value
      * @param GValue the specified greater value
-     * @param colIndex specified column's index
-     * @return Current THIS instance(Method Chaining), can call "to???" or "select???" function in next step.
+     * @param colIndex specified column index
+     * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
 	 */
     public function selectWhenLessOrGreater(limit:Int, LWithEqu:Bool, GWithEqu:Bool, LValue:Float, GValue:Int, colIndex:Int = 0):Table
     {

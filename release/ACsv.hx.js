@@ -260,7 +260,7 @@ acsv_Table.prototype = {
 		}
 		return this;
 	}
-	,getCurrentSelectdData: function() {
+	,getCurrentSelector: function() {
 		return this._selected;
 	}
 	,fmtRow: function(row) {
@@ -388,10 +388,16 @@ acsv_Table.prototype = {
 		this._selected = [this.body[this.body.length - 1]];
 		return this;
 	}
-	,selectAt: function(rowIndex) {
+	,selectAt: function(rowIndices) {
 		var dst = [];
-		if(rowIndex >= 0 && rowIndex < this.body.length) {
-			dst.push(this.body[rowIndex]);
+		var _g1 = 0;
+		var _g = rowIndices.length;
+		while(_g1 < _g) {
+			var i = _g1++;
+			var rowIndex = rowIndices[i];
+			if(rowIndex >= 0 && rowIndex < this.body.length) {
+				dst.push(this.body[rowIndex]);
+			}
 		}
 		this._selected = dst;
 		return this;
