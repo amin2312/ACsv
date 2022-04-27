@@ -1,7 +1,7 @@
 -cp src/haxe
 acsv.Table
 acsv.Field
--xml release/ACsv.dox.xml
--js release/ACsv.hx.js
-#-lua release/ACsv.hx.lua
-#-python release/ACsv.hx.py
+-xml release/dox/ACsv.xml
+-js release/js/ACsv.js
+#-lua release/lua/ACsv.lua
+#-python release/py/ACsv.py

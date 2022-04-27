@@ -1,4 +1,4 @@
-/// <reference path="../../release/ACsv.d.ts" />
+/// <reference path="../../release/ts/ACsv.d.ts" />
 /**
  * Standard csv format text
  */

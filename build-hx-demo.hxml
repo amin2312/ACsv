@@ -1,5 +1,5 @@
 -cp src/haxe
 -main Demo
--js release/demos/demo.hx.js
-#-lua release/demos/demo.hx.lua
-#-python release/demos/demo.hx.py
+#-js release/js/demo.hx.js
+-lua release/lua/demo.hx.lua
+#-python release/py/demo.hx.py

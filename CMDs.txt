@@ -2,9 +2,9 @@
 // USE haxe dox to gen docs
 // Please install the tools first: haxelib install dox
 //
-haxelib run dox -i release/ACsv.dox.xml -o release/docs/hx --title "ACsv library" -ex \S+ -in acsv -in Array$ -in String$ -in Int$ -in Float$ -in Dynamic$
+haxelib run dox -i release/dox/ACsv.xml -o release/docs/hx --title "ACsv library" -ex \S+ -in acsv -in Array$ -in String$ -in Int$ -in Float$ -in Dynamic$
 //
 // USE uglify to compress js file
 // Please install the tools first: npm install gulp-uglify
 //
-uglifyjs release/ACsv.hx.js -m -o release/ACsv.min.js
+uglifyjs release/js/ACsv.js -m -o release/js/ACsv.min.js

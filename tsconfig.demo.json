@@ -7,10 +7,11 @@
     "target": "ES5",
     
     "rootDir": "src/typescript",
-    "outFile": "release/demos/demo.ts.js",
+    "outFile": "release/ts/demo.ts.js",
   },
   "exclude": [
-    "src/hx/*",
+    "src/haxe/*",
+    "src/javascript/*",
     "release/*"
   ]
 }
