@@ -1,4 +1,3 @@
 release/docs/* linguist-vendored=true
-release/docs/** linguist-vendored=true
 release/docs/*/* linguist-vendored=true
-*.hx linguist-language=Javascript
+*.hx$ linguist-language=Javascript
