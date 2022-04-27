@@ -111,12 +111,12 @@ declare namespace acsv
          * @return THIS instance (for Method Chaining), can call "to..." function to get result in next step.
          */
         selectLastRow(): Table
-         /**
-         * Selects the specified <b>rows</b> by indices.
-         * @param rowIndices specified row's indices
-         * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
-         */
-        selectAt(rowIndices:Array<number>):Table
+        /**
+        * Selects the specified <b>rows</b> by indices.
+        * @param rowIndices specified row's indices
+        * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
+        */
+        selectAt(rowIndices: Array<number>): Table
         /**
          * Select the rows when the column's value is equal to any value of array.
          * @param limit maximum length of every selected results (0 is infinite, if you only need 1 result, 1 is recommended, it will improve performance)
