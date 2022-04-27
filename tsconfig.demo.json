@@ -6,7 +6,7 @@
     "skipLibCheck": true,
     "target": "ES5",
     
-    "rootDir": "src/ts",
+    "rootDir": "src/typescript",
     "outFile": "release/demos/demo.ts.js",
   },
   "exclude": [

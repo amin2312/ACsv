@@ -1,4 +1,4 @@
--cp src/hx
+-cp src/haxe
 -main Demo
 -js release/demos/demo.hx.js
 #-lua release/demos/demo.hx.lua

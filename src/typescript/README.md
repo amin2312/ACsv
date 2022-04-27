@@ -1,4 +1,4 @@
-Typescript Version Explain
+Typescript Explain
 ================
 If you want to use typescript to develop project,  
 please reference "release/ACsv.d.ts" <b>declared file</b>  

@@ -58,7 +58,7 @@ Enum = _hx_e();
 local _hx_exports = _hx_exports or {}
 _hx_exports["acsv"] = _hx_exports["acsv"] or _hx_e()
 local Array = _hx_e()
-local Example = _hx_e()
+local Demo = _hx_e()
 local Math = _hx_e()
 local String = _hx_e()
 local Std = _hx_e()
@@ -178,66 +178,69 @@ Array.prototype = _hx_a(
   end
 )
 
-Example.new = {}
-Example.main = function() 
-  Example._tab1 = acsv.Table.Parse(Example.standard_format_text);
-  Example._tab2 = acsv.Table.Parse(Example.enhanced_format_text);
-  Example.showTable("standard csv format",Example._tab1);
-  Example.test_standard_csv_format();
-  Example.showTable("enhanced csv format",Example._tab2);
-  Example.test_enhanced_csv_format();
+Demo.new = {}
+Demo.main = function() 
+  Demo._tab1 = acsv.Table.Parse(Demo.standard_format_text);
+  Demo._tab2 = acsv.Table.Parse(Demo.enhanced_format_text);
+  Demo.showTable("standard csv format",Demo._tab1);
+  Demo.test_standard_csv_format();
+  Demo.showTable("[E] enhanced csv format",Demo._tab2);
+  Demo.test_enhanced_csv_format();
 end
-Example.showTable = function(fileName,csvTable) 
+Demo.showTable = function(fileName,csvTable) 
 end
-Example.P = function(cmd,o) 
-  haxe.Log.trace(cmd,_hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="Example.hx",lineNumber=120,className="Example",methodName="P"}));
+Demo.P = function(cmd,o) 
+  haxe.Log.trace(cmd,_hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="Demo.hx",lineNumber=120,className="Demo",methodName="P"}));
   if (o == nil) then 
-    haxe.Log.trace(nil,_hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="Example.hx",lineNumber=123,className="Example",methodName="P"}));
+    haxe.Log.trace(nil,_hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="Demo.hx",lineNumber=123,className="Demo",methodName="P"}));
   else
-    haxe.Log.trace(o,_hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="Example.hx",lineNumber=127,className="Example",methodName="P"}));
+    haxe.Log.trace(o,_hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="Demo.hx",lineNumber=127,className="Demo",methodName="P"}));
   end;
 end
-Example.test_standard_csv_format = function() 
-  Example.P("select all to rows",Example._tab1:selectAll():toRows());
-  Example.P("select all to objs",Example._tab1:selectAll():toObjs());
-  Example.P("select first row",Example._tab1:selectFirstRow():toFirstRow());
-  Example.P("select first obj",Example._tab1:selectFirstRow():toFirstObj());
-  Example.P("select last row",Example._tab1:selectLastRow():toFirstRow());
-  Example.P("select last obj",Example._tab1:selectLastRow():toFirstObj());
-  Example.P("select [id] = \"2\"",Example._tab1:selectWhenE(1,"2"):toFirstObj());
-  Example.P("select [id] = \"-1\"",Example._tab1:selectWhenE(1,"-1"):toFirstObj());
-  Example.P("select [id] = \"3\" and [id2] = \"21\"",Example._tab1:selectWhenE2(1,"3","21"):toFirstObj());
-  Example.P("select [id] = \"3\" and [id2] = \"-1\"",Example._tab1:selectWhenE2(1,"3","-1"):toFirstObj());
-  Example.P("select [id] = \"4\" and [id2] = \"21\" and [id3] = \"200\"",Example._tab1:selectWhenE3(1,"4","21","200"):toFirstObj());
-  Example.P("select [id] = \"4\" and [id2] = \"21\" and [id3] = \"-1\"",Example._tab1:selectWhenE3(1,"4","21","-1"):toFirstObj());
-  Example.P("select all [id2] = \"20\"",Example._tab1:selectWhenE(0,"20",1):toObjs());
-  Example.P("select all [id2] = \"-1\"",Example._tab1:selectWhenE(0,"-1",1):toObjs());
+Demo.test_standard_csv_format = function() 
+  Demo.P("select ALL to rows",Demo._tab1:selectAll():toRows());
+  Demo.P("select ALL to objs",Demo._tab1:selectAll():toObjs());
+  Demo.P("select first row",Demo._tab1:selectFirstRow():toFirstRow());
+  Demo.P("select first obj",Demo._tab1:selectFirstRow():toFirstObj());
+  Demo.P("select last row",Demo._tab1:selectLastRow():toFirstRow());
+  Demo.P("select last obj",Demo._tab1:selectLastRow():toFirstObj());
+  Demo.P("selectWhenE (id) = \"2\"",Demo._tab1:selectWhenE(1,"2"):toFirstObj());
+  Demo.P("selectWhenE (id) = \"3\" and (id2) = \"21\"",Demo._tab1:selectWhenE2(1,"3","21"):toFirstObj());
+  Demo.P("selectWhenE (id) = \"4\" and (id2) = \"21\" and (id3) = \"200\"",Demo._tab1:selectWhenE3(1,"4","21","200"):toFirstObj());
+  Demo.P("selectWhenE ALL (id2) = \"20\"",Demo._tab1:selectWhenE(0,"20",1):toObjs());
 end
-Example.test_enhanced_csv_format = function() 
-  Example.P("[enhanced] select all to rows",Example._tab2:selectAll():toRows());
-  Example.P("[enhanced] select all to objs",Example._tab2:selectAll():toObjs());
-  Example.P("[enhanced] select first row",Example._tab2:selectFirstRow():toFirstRow());
-  Example.P("[enhanced] select first obj",Example._tab2:selectFirstRow():toFirstObj());
-  Example.P("[enhanced] select last row",Example._tab2:selectLastRow():toFirstRow());
-  Example.P("[enhanced] select last obj",Example._tab2:selectLastRow():toFirstObj());
-  Example.P("[enhanced] select [id] = 2",Example._tab2:selectWhenE(1,2):toFirstObj());
-  Example.P("[enhanced] select [id] = -1",Example._tab2:selectWhenE(1,-1):toFirstObj());
-  Example.P("[enhanced] select [id] = 3 and [id2] = 22",Example._tab2:selectWhenE2(1,3,22):toFirstObj());
-  Example.P("[enhanced] select [id] = 3 and [id2] = -1",Example._tab2:selectWhenE2(1,3,-1):toFirstObj());
-  Example.P("[enhanced] select [id] = 4 and [id2] = 22 and [id3] = 200",Example._tab2:selectWhenE3(1,4,22,200):toFirstObj());
-  Example.P("[enhanced] select [id] = 4 and [id2] = 22 and [id3] = -1",Example._tab2:selectWhenE3(1,4,22,-1):toFirstObj());
-  Example.P("[enhanced] select all [id2] = 21",Example._tab2:selectWhenE(0,21,1):toObjs());
-  Example.P("[enhanced] select all [id2] = -1",Example._tab2:selectWhenE(0,-1,1):toObjs());
-  Example.P("[enhanced] select all [id2] > 25",Example._tab2:selectWhenG(0,false,25,1):toObjs());
-  Example.P("[enhanced] select all [id2] >= 25",Example._tab2:selectWhenG(0,true,25,1):toObjs());
-  Example.P("[enhanced] select all [id2] < 22",Example._tab2:selectWhenL(0,false,22,1):toObjs());
-  Example.P("[enhanced] select all [id2] <= 22",Example._tab2:selectWhenL(0,true,22,1):toObjs());
-  Example.P("[enhanced] select all [id2] > 21 and [id2] < 24",Example._tab2:selectWhenGreaterAndLess(0,false,false,21,24,1):toObjs());
-  Example.P("[enhanced] select all [id2] >= 21 and [id2] <= 24",Example._tab2:selectWhenGreaterAndLess(0,true,true,21,24,1):toObjs());
-  Example.P("[enhanced] select all [id2] < 22 or [id2] > 25",Example._tab2:selectWhenLessOrGreater(0,false,false,22,25,1):toObjs());
-  Example.P("[enhanced] select all [id2] <= 22 or [id2] >= 25",Example._tab2:selectWhenLessOrGreater(0,true,true,22,25,1):toObjs());
-  Example._tab2:createIndexAt(0);
-  Example.P("[enhanced] 9th row name",Example._tab2:selectWhenE(1,9):toObjs()[0].name);
+Demo.test_enhanced_csv_format = function() 
+  Demo.P("[E] select ALL to rows",Demo._tab2:selectAll():toRows());
+  Demo.P("[E] select ALL to objs",Demo._tab2:selectAll():toObjs());
+  Demo.P("[E] select first row",Demo._tab2:selectFirstRow():toFirstRow());
+  Demo.P("[E] select first obj",Demo._tab2:selectFirstRow():toFirstObj());
+  Demo.P("[E] select last row",Demo._tab2:selectLastRow():toFirstRow());
+  Demo.P("[E] select last obj",Demo._tab2:selectLastRow():toFirstObj());
+  Demo.P("[E] selectWhenE (id) = 2",Demo._tab2:selectWhenE(1,2):toFirstObj());
+  Demo.P("[E] selectWhenE (id) = -1",Demo._tab2:selectWhenE(1,-1):toFirstObj());
+  Demo.P("[E] selectWhenE2 (id) = 3 and (id2) = 22",Demo._tab2:selectWhenE2(1,3,22):toFirstObj());
+  Demo.P("[E] selectWhenE2 (id) = 3 and (id2) = -1",Demo._tab2:selectWhenE2(1,3,-1):toFirstObj());
+  Demo.P("[E] selectWhenE3 (id) = 4 and (id2) = 22 and (id3) = 200",Demo._tab2:selectWhenE3(1,4,22,200):toFirstObj());
+  Demo.P("[E] selectWhenE3 (id) = 4 and (id2) = 22 and (id3) = -1",Demo._tab2:selectWhenE3(1,4,22,-1):toFirstObj());
+  Demo.P("[E] selectWhenE ALL (id2) = 21",Demo._tab2:selectWhenE(0,21,1):toObjs());
+  Demo.P("[E] selectWhenE ALL (id2) = -1",Demo._tab2:selectWhenE(0,-1,1):toObjs());
+  Demo.P("[E] selectWhenG ALL (id2) > 25",Demo._tab2:selectWhenG(0,false,25,1):toObjs());
+  Demo.P("[E] selectWhenG ALL (id2) >= 25",Demo._tab2:selectWhenG(0,true,25,1):toObjs());
+  Demo.P("[E] selectWhenG ALL (id2) > 30",Demo._tab2:selectWhenG(0,false,30,1):toObjs());
+  Demo.P("[E] selectWhenL ALL (id2) < 22",Demo._tab2:selectWhenL(0,false,22,1):toObjs());
+  Demo.P("[E] selectWhenL ALL (id2) <= 22",Demo._tab2:selectWhenL(0,true,22,1):toObjs());
+  Demo.P("[E] selectWhenL ALL (id2) < 20",Demo._tab2:selectWhenL(0,true,20,1):toObjs());
+  Demo.P("[E] selectWhenGreaterAndLess ALL (id2) > 21 and (id2) < 24",Demo._tab2:selectWhenGreaterAndLess(0,false,false,21,24,1):toObjs());
+  Demo.P("[E] selectWhenGreaterAndLess ALL (id2) >= 21 and (id2) <= 24",Demo._tab2:selectWhenGreaterAndLess(0,true,true,21,24,1):toObjs());
+  Demo.P("[E] selectWhenLessOrGreater ALL (id2) < 22 or (id2) > 25",Demo._tab2:selectWhenLessOrGreater(0,false,false,22,25,1):toObjs());
+  Demo.P("[E] selectWhenLessOrGreater ALL (id2) <= 22 or (id2) >= 25",Demo._tab2:selectWhenLessOrGreater(0,true,true,22,25,1):toObjs());
+  Demo.P("[E] selectWhenIn (id) in 3,4,5",Demo._tab2:selectWhenIn(1,_hx_tab_array({[0]=3, 4, 5 }, 3)):toObjs());
+  Demo.P("[E] selectAt rows at 0,1,10",Demo._tab2:selectAt(_hx_tab_array({[0]=0, 1, 10 }, 3)):toObjs());
+  Demo.P("[E] multi selects (id3) = 100 and (id2) < 22",Demo._tab2:selectWhenE(0,100,2):selectWhenL(0,false,22,1):toObjs());
+  Demo.P("[E] sort by (id3) = 300 desc (id)",Demo._tab2:selectWhenE(0,300,2):sortBy(0,1):toObjs());
+  Demo._tab2:createIndexAt(0);
+  Demo.P("[E] (indexed) Dwi's row",Demo._tab2:selectWhenE(1,"Dwi",Demo._tab2:getColIndexBy("name")):toObjs()[0].name);
+  Demo.P("[E] (indexed) 99th row",Demo._tab2:selectWhenE(1,99):toObjs());
 end
 
 Math.new = {}
@@ -448,17 +451,32 @@ acsv.Table.new = function()
   return self
 end
 acsv.Table.super = function(self) 
+  self._selected = nil;
   self._indexSet = _hx_e();
   self.body = Array.new();
   self.head = Array.new();
+  self.content = nil;
 end
 _hx_exports["acsv"]["Table"] = acsv.Table
-acsv.Table.Parse = function(content) 
-  local table = acsv.Table.arrayToRows(acsv.Table.textToArray(content));
+acsv.Table.Parse = function(content,filedSeparator,filedMultiLineDelimiter) 
+  if (filedMultiLineDelimiter == nil) then 
+    filedMultiLineDelimiter = "\"";
+  end;
+  if (filedSeparator == nil) then 
+    filedSeparator = ",";
+  end;
+  local table = acsv.Table.arrayToRows(acsv.Table.textToArray(content,filedSeparator,filedMultiLineDelimiter));
   table.content = content;
   do return table end;
 end
-acsv.Table.textToArray = function(text) 
+acsv.Table.textToArray = function(text,FS,FML) 
+  if (FML == nil) then 
+    FML = "\"";
+  end;
+  if (FS == nil) then 
+    FS = ",";
+  end;
+  local FMLs = FML .. FML;
   local array = _hx_tab_array({ }, 0);
   local maxLen = text.length;
   local ptr = text;
@@ -481,7 +499,7 @@ acsv.Table.textToArray = function(text)
         cellIndexB = cellIndexB + 2;
         break;
       end;
-      if (chr == ",") then 
+      if (chr == FS) then 
         cell = "";
         local nextPos = (ptrPos + cellIndexB) + 1;
         if (nextPos >= maxLen) then 
@@ -489,7 +507,7 @@ acsv.Table.textToArray = function(text)
         else
           chr = ptr:charAt(nextPos);
         end;
-        if ((((cellIndexA == 0) or (chr == ",")) or (chr == "\n")) or (chr == "\r\n")) then 
+        if ((((cellIndexA == 0) or (chr == FS)) or (chr == "\n")) or (chr == "\r\n")) then 
           cellIndexB = cellIndexB + 1;
           cells:push("");
         else
@@ -501,18 +519,18 @@ acsv.Table.textToArray = function(text)
           end;
         end;
       else
-        if (chr == "\"") then 
+        if (chr == FML) then 
           cellIndexB = cellIndexB + 1;
           local _hx_break_2 = false;
           while (true) do 
             repeat 
-            cellIndexB = ptr:indexOf("\"",ptrPos + cellIndexB);
+            cellIndexB = ptr:indexOf(FML,ptrPos + cellIndexB);
             if (cellIndexB == -1) then 
-              haxe.Log.trace("[ACsv] Invalid Double Quote",_hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="Table.hx",lineNumber=579,className="acsv.Table",methodName="textToArray"}));
+              haxe.Log.trace("[ACsv] Invalid Double Quote",_hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="Table.hx",lineNumber=716,className="acsv.Table",methodName="textToArray"}));
               do return nil end;
             end;
             cellIndexB = cellIndexB - ptrPos;
-            if (ptr:charAt((ptrPos + cellIndexB) + 1) == "\"") then 
+            if (ptr:charAt((ptrPos + cellIndexB) + 1) == FML) then 
               cellIndexB = cellIndexB + 2;
               break;
             end;
@@ -522,11 +540,11 @@ acsv.Table.textToArray = function(text)
           if _hx_break_3 then _hx_break_3 = false; break; end
           end;
           cell = ptr:substring((ptrPos + cellIndexA) + 1,ptrPos + cellIndexB);
-          cell = StringTools.replace(cell,"\"\"","\"");
+          cell = StringTools.replace(cell,FMLs,FML);
           cells:push(cell);
           cellIndexB = cellIndexB + 1;
         else
-          local indexA = ptr:indexOf(",",ptrPos + cellIndexB);
+          local indexA = ptr:indexOf(FS,ptrPos + cellIndexB);
           if (indexA == -1) then 
             indexA = curLen;
           else
@@ -619,7 +637,7 @@ acsv.Table.arrayToRows = function(array)
               else
                 local chr0 = cell:charAt(0);
                 if (not ((chr0 == "[") or (chr0 == "{"))) then 
-                  haxe.Log.trace("[ACsv] Invalid json format:" .. fileds[j].name .. "," .. cell,_hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="Table.hx",lineNumber=723,className="acsv.Table",methodName="arrayToRows"}));
+                  haxe.Log.trace("[ACsv] Invalid json format:" .. fileds[j].name .. "," .. cell,_hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="Table.hx",lineNumber=860,className="acsv.Table",methodName="arrayToRows"}));
                   do return nil end;
                 end;
                 newVal = cell;
@@ -669,7 +687,7 @@ acsv.Table.prototype = _hx_a(
       end;
     self._indexSet[colIndex] = map;
   end,
-  'getColumnIndexBy', function(self,name) 
+  'getColIndexBy', function(self,name) 
     local _g1 = 0;
     local _g = self.head.length;
     while (_g1 < _g) do 
@@ -682,8 +700,39 @@ acsv.Table.prototype = _hx_a(
       end;
     do return -1 end
   end,
-  'getCurrentSelectdData', function(self) 
-    do return self._selectd end
+  'sortBy', function(self,colIndex,sortType) 
+    local len = self._selected.length;
+    local _g1 = 0;
+    local _g = len;
+    while (_g1 < _g) do 
+      _g1 = _g1 + 1;
+      local i = _g1 - 1;
+      local _g3 = 0;
+      local _g2 = len - 1;
+      while (_g3 < _g2) do 
+        _g3 = _g3 + 1;
+        local j = _g3 - 1;
+        local ok = false;
+        local a = self._selected[j][colIndex];
+        local b = self._selected[j + 1][colIndex];
+        if ((sortType == 0) and (a > b)) then 
+          ok = true;
+        else
+          if ((sortType == 1) and (a < b)) then 
+            ok = true;
+          end;
+        end;
+        if (ok) then 
+          local temp = self._selected[j];
+          self._selected[j] = self._selected[j + 1];
+          self._selected[j + 1] = temp;
+        end;
+        end;
+      end;
+    do return self end
+  end,
+  'getCurrentSelector', function(self) 
+    do return self._selected end
   end,
   'fmtRow', function(self,row) 
     local obj = _hx_tab_array({ }, 0);
@@ -729,103 +778,161 @@ acsv.Table.prototype = _hx_a(
     do return obj end
   end,
   'toFirstRow', function(self) 
-    if ((self._selectd == nil) or (self._selectd.length == 0)) then 
-      do return nil end;
+    local rzl = nil;
+    if ((self._selected ~= nil) and (self._selected.length > 0)) then 
+      rzl = self:fmtRow(self._selected[0]);
     end;
-    do return self:fmtRow(self._selectd[0]) end
+    self._selected = nil;
+    do return rzl end
   end,
   'toLastRow', function(self) 
-    if ((self._selectd == nil) or (self._selectd.length == 0)) then 
-      do return nil end;
+    local rzl = nil;
+    if ((self._selected ~= nil) and (self._selected.length > 0)) then 
+      rzl = self:fmtRow(self._selected[self._selected.length - 1]);
     end;
-    do return self:fmtRow(self._selectd[self._selectd.length - 1]) end
+    self._selected = nil;
+    do return rzl end
   end,
   'toRows', function(self) 
-    if (self._selectd == nil) then 
+    if (self._selected == nil) then 
       do return nil end;
     end;
-    local arr = Array.new();
+    local dst = Array.new();
     local _g1 = 0;
-    local _g = self._selectd.length;
+    local _g = self._selected.length;
     while (_g1 < _g) do 
       _g1 = _g1 + 1;
       local i = _g1 - 1;
-      local row = self._selectd[i];
-      arr:push(self:fmtRow(row));
+      local row = self._selected[i];
+      dst:push(self:fmtRow(row));
       end;
-    do return arr end
+    self._selected = nil;
+    do return dst end
   end,
   'toFirstObj', function(self) 
-    if ((self._selectd == nil) or (self._selectd.length == 0)) then 
-      do return nil end;
+    local rzl = nil;
+    if ((self._selected ~= nil) and (self._selected.length > 0)) then 
+      rzl = self:fmtObj(self._selected[0]);
     end;
-    do return self:fmtObj(self._selectd[0]) end
+    self._selected = nil;
+    do return rzl end
   end,
   'toLastObj', function(self) 
-    if ((self._selectd == nil) or (self._selectd.length == 0)) then 
-      do return nil end;
+    local rzl = nil;
+    if ((self._selected ~= nil) and (self._selected.length > 0)) then 
+      rzl = self:fmtObj(self._selected[self._selected.length - 1]);
     end;
-    do return self:fmtObj(self._selectd[self._selectd.length - 1]) end
+    self._selected = nil;
+    do return rzl end
   end,
   'toObjs', function(self) 
-    if (self._selectd == nil) then 
+    if (self._selected == nil) then 
       do return nil end;
     end;
-    local arr = Array.new();
+    local dst = Array.new();
     local _g1 = 0;
-    local _g = self._selectd.length;
+    local _g = self._selected.length;
     while (_g1 < _g) do 
       _g1 = _g1 + 1;
       local i = _g1 - 1;
-      local row = self._selectd[i];
-      arr:push(self:fmtObj(row));
+      local row = self._selected[i];
+      dst:push(self:fmtObj(row));
       end;
-    do return arr end
+    self._selected = nil;
+    do return dst end
+  end,
+  'toTable', function(self) 
+    if (self._selected == nil) then 
+      do return nil end;
+    end;
+    local t = acsv.Table.new();
+    t.head = self.head:concat(_hx_tab_array({ }, 0));
+    t.body = self._selected;
+    self._selected = nil;
+    do return t end
   end,
   'selectAll', function(self) 
-    self._selectd = self.body;
+    self._selected = self.body;
     do return self end
   end,
   'selectFirstRow', function(self) 
-    self._selectd = _hx_tab_array({[0]=self.body[0] }, 1);
+    self._selected = _hx_tab_array({[0]=self.body[0] }, 1);
     do return self end
   end,
   'selectLastRow', function(self) 
-    self._selectd = _hx_tab_array({[0]=self.body[self.body.length - 1] }, 1);
+    self._selected = _hx_tab_array({[0]=self.body[self.body.length - 1] }, 1);
     do return self end
   end,
-  'selectWhenE', function(self,limit,value,colIndex) 
+  'selectAt', function(self,rowIndices) 
+    local dst = Array.new();
+    local _g1 = 0;
+    local _g = rowIndices.length;
+    while (_g1 < _g) do 
+      _g1 = _g1 + 1;
+      local i = _g1 - 1;
+      local rowIndex = rowIndices[i];
+      if ((rowIndex >= 0) and (rowIndex < self.body.length)) then 
+        dst:push(self.body[rowIndex]);
+      end;
+      end;
+    self._selected = dst;
+    do return self end
+  end,
+  'selectWhenIn', function(self,limit,values,colIndex) 
     if (colIndex == nil) then 
       colIndex = 0;
+    end;
+    local rows = Array.new();
+    local _g1 = 0;
+    local _g = values.length;
+    while (_g1 < _g) do 
+      _g1 = _g1 + 1;
+      local i = _g1 - 1;
+      local value = values[i];
+      self:selectWhenE(limit,value,colIndex,rows);
+      self._selected = nil;
+      end;
+    self._selected = rows;
+    do return self end
+  end,
+  'selectWhenE', function(self,limit,value,colIndex,extraSelector) 
+    if (colIndex == nil) then 
+      colIndex = 0;
+    end;
+    local dst = extraSelector;
+    if (dst == nil) then 
+      dst = Array.new();
     end;
     if (limit == 1) then 
       local map = self._indexSet[colIndex];
       if (map ~= nil) then 
         local val = map[value];
         if (val ~= nil) then 
-          self._selectd = _hx_tab_array({[0]=val }, 1);
-        else
-          self._selectd = nil;
+          dst:push(val);
         end;
+        self._selected = dst;
         do return self end;
       end;
     end;
-    local rows = Array.new();
+    local src = self._selected;
+    if (src == nil) then 
+      src = self.body;
+    end;
     local _g1 = 0;
-    local _g = self.body.length;
+    local _g = src.length;
     while (_g1 < _g) do 
       _g1 = _g1 + 1;
       local i = _g1 - 1;
-      local row = self.body[i];
+      local row = src[i];
       if (row[colIndex] == value) then 
-        rows:push(row);
+        dst:push(row);
         limit = limit - 1;
         if (limit == 0) then 
           break;
         end;
       end;
       end;
-    self._selectd = rows;
+    self._selected = dst;
     do return self end
   end,
   'selectWhenE2', function(self,limit,value1,value2,colIndex2,colIndex1) 
@@ -835,22 +942,26 @@ acsv.Table.prototype = _hx_a(
     if (colIndex2 == nil) then 
       colIndex2 = 1;
     end;
-    local rows = Array.new();
+    local src = self._selected;
+    if (src == nil) then 
+      src = self.body;
+    end;
+    local dst = Array.new();
     local _g1 = 0;
-    local _g = self.body.length;
+    local _g = src.length;
     while (_g1 < _g) do 
       _g1 = _g1 + 1;
       local i = _g1 - 1;
-      local row = self.body[i];
+      local row = src[i];
       if ((row[colIndex1] == value1) and (row[colIndex2] == value2)) then 
-        rows:push(row);
+        dst:push(row);
         limit = limit - 1;
         if (limit == 0) then 
           break;
         end;
       end;
       end;
-    self._selectd = rows;
+    self._selected = dst;
     do return self end
   end,
   'selectWhenE3', function(self,limit,value1,value2,value3,colIndex3,colIndex2,colIndex1) 
@@ -863,118 +974,138 @@ acsv.Table.prototype = _hx_a(
     if (colIndex3 == nil) then 
       colIndex3 = 2;
     end;
-    local rows = Array.new();
+    local src = self._selected;
+    if (src == nil) then 
+      src = self.body;
+    end;
+    local dst = Array.new();
     local _g1 = 0;
-    local _g = self.body.length;
+    local _g = src.length;
     while (_g1 < _g) do 
       _g1 = _g1 + 1;
       local i = _g1 - 1;
-      local row = self.body[i];
+      local row = src[i];
       if (((row[colIndex1] == value1) and (row[colIndex2] == value2)) and (row[colIndex3] == value3)) then 
-        rows:push(row);
+        dst:push(row);
         limit = limit - 1;
         if (limit == 0) then 
           break;
         end;
       end;
       end;
-    self._selectd = rows;
+    self._selected = dst;
     do return self end
   end,
   'selectWhenG', function(self,limit,withEqu,value,colIndex) 
     if (colIndex == nil) then 
       colIndex = 0;
     end;
-    local rows = Array.new();
+    local src = self._selected;
+    if (src == nil) then 
+      src = self.body;
+    end;
+    local dst = Array.new();
     local _g1 = 0;
-    local _g = self.body.length;
+    local _g = src.length;
     while (_g1 < _g) do 
       _g1 = _g1 + 1;
       local i = _g1 - 1;
-      local row = self.body[i];
+      local row = src[i];
       local rowVal = row[colIndex];
       if ((rowVal > value) or (withEqu and (rowVal == value))) then 
-        rows:push(row);
+        dst:push(row);
         limit = limit - 1;
         if (limit == 0) then 
           break;
         end;
       end;
       end;
-    self._selectd = rows;
+    self._selected = dst;
     do return self end
   end,
   'selectWhenL', function(self,limit,withEqu,value,colIndex) 
     if (colIndex == nil) then 
       colIndex = 0;
     end;
-    local rows = Array.new();
+    local src = self._selected;
+    if (src == nil) then 
+      src = self.body;
+    end;
+    local dst = Array.new();
     local _g1 = 0;
-    local _g = self.body.length;
+    local _g = src.length;
     while (_g1 < _g) do 
       _g1 = _g1 + 1;
       local i = _g1 - 1;
-      local row = self.body[i];
+      local row = src[i];
       local rowVal = row[colIndex];
       if ((rowVal < value) or (withEqu and (rowVal == value))) then 
-        rows:push(row);
+        dst:push(row);
         limit = limit - 1;
         if (limit == 0) then 
           break;
         end;
       end;
       end;
-    self._selectd = rows;
+    self._selected = dst;
     do return self end
   end,
   'selectWhenGreaterAndLess', function(self,limit,GWithEqu,LWithEqu,GValue,LValue,colIndex) 
     if (colIndex == nil) then 
       colIndex = 0;
     end;
-    local rows = Array.new();
+    local src = self._selected;
+    if (src == nil) then 
+      src = self.body;
+    end;
+    local dst = Array.new();
     local _g1 = 0;
-    local _g = self.body.length;
+    local _g = src.length;
     while (_g1 < _g) do 
       _g1 = _g1 + 1;
       local i = _g1 - 1;
-      local row = self.body[i];
+      local row = src[i];
       local rowVal = row[colIndex];
       local v1 = (rowVal > GValue) or (GWithEqu and (rowVal == GValue));
       local v2 = (rowVal < LValue) or (LWithEqu and (rowVal == LValue));
       if (v1 and v2) then 
-        rows:push(row);
+        dst:push(row);
         limit = limit - 1;
         if (limit == 0) then 
           break;
         end;
       end;
       end;
-    self._selectd = rows;
+    self._selected = dst;
     do return self end
   end,
   'selectWhenLessOrGreater', function(self,limit,LWithEqu,GWithEqu,LValue,GValue,colIndex) 
     if (colIndex == nil) then 
       colIndex = 0;
     end;
-    local rows = Array.new();
+    local src = self._selected;
+    if (src == nil) then 
+      src = self.body;
+    end;
+    local dst = Array.new();
     local _g1 = 0;
-    local _g = self.body.length;
+    local _g = src.length;
     while (_g1 < _g) do 
       _g1 = _g1 + 1;
       local i = _g1 - 1;
-      local row = self.body[i];
+      local row = src[i];
       local rowVal = row[colIndex];
       local v1 = (rowVal < LValue) or (LWithEqu and (rowVal == LValue));
       local v2 = (rowVal > GValue) or (GWithEqu and (rowVal == GValue));
       if (v1 or v2) then 
-        rows:push(row);
+        dst:push(row);
         limit = limit - 1;
         if (limit == 0) then 
           break;
         end;
       end;
       end;
-    self._selectd = rows;
+    self._selected = dst;
     do return self end
   end
 )
@@ -1630,8 +1761,8 @@ _hx_string_mt.__concat = _hx_string_mt.__add
 _hx_array_mt.__index = Array.prototype
 
 local _hx_static_init = function()
-  Example.standard_format_text = "id,id2,id3,name,brief\r\n1,20,100,John,He is a googd man\r\n2,20,100,张三,\"他是一个好人\r\n我们都喜欢他\"\r\n3,21,100,море,\"Он хороший человек\r\nмы все любим его\r\nЕго девиз:\r\n\"\"доверяй себе\"\"\"\r\n4,21,200,الشمس,صباح الخير\r\n5,22,200,चंद्रमा,सुसंध्या\r\n6,22,200,ดาว,"
-  Example.enhanced_format_text = "id:int,id2:int,id3:int,name:string,weight:number,marry:bool,education:json,tags:strings,brief\r\n1,21,100,John,120.1,true,\"[\"\"AB\"\"]\",\"good,cool\",\"Today is good day\r\nTomorrow is good day too\"\r\n2,21,100,张三,121.2,false,\"[\"\"CD\"\",\"\"EF\"\"]\",good,今天是个好日子\r\n3,22,100,море,123.4,true,\"[\"\"GH\"\",\"\"AB\"\",\"\"CD\"\"]\",good,\"Сегодня хороший день\r\nЗавтра тоже хороший день\"\r\n4,22,200,الشمس,124.5,false,\"{\"\"AA\"\":12}\",strong,صباح الخير\r\n5,23,200,चंद्रमा,126.7,1,\"{\"\"BB\"\":12}\",strong,सुसंध्या\r\n6,23,200,Emilia,,0,\"{\"\"CC\"\":34,\"\"DD\"\":56}\",\"strong,cool\",Hoje é um bom dia\r\n7,24,300,Ayşe,128.9,0,\"{\"\"EE\"\":34,\"\"FF\"\":56}\",\"strong,cool\",Bugün güzel bir gün\r\n8,24,300,陽菜乃,129.01,,\"{\"\"AC\"\":78,\"\"BD\"\":[90,12]}\",\"height,strong\",今日はいい日です\r\n9,25,300,Dwi,130.12,1,\"{\"\"EF\"\":78,\"\"CF\"\":[90,12]}\",,\"Hari ini adalah hari yang baik\r\nBesok juga hari yang baik\"\r\n10,25,400,Bảo,131.23,1,\"[\"\"BC\"\",{\"\"AT\"\":34}]\",\"thin,good\",\r\n11,26,400,민준,132.34,0,\"[\"\"FG\"\",{\"\"AG\"\":34}]\",\"hot,thin,good\",오늘은 좋은 날이다\r\n12,26,400,ดาว,133.456,0,,,"
+  Demo.standard_format_text = "id,id2,id3,name,brief\r\n1,20,100,John,He is a googd man\r\n2,20,100,张三,\"他是一个好人\r\n我们都喜欢他\"\r\n3,21,100,море,\"Он хороший человек\r\nмы все любим его\r\nЕго девиз:\r\n\"\"доверяй себе\"\"\"\r\n4,21,200,الشمس,صباح الخير\r\n5,22,200,चंद्रमा,सुसंध्या\r\n6,22,200,ดาว,"
+  Demo.enhanced_format_text = "id:int,id2:int,id3:int,name:string,weight:number,marry:bool,education:json,tags:strings,brief\r\n1,21,100,John,120.1,true,\"[\"\"AB\"\"]\",\"good,cool\",\"Today is good day\r\nTomorrow is good day too\"\r\n2,21,100,张三,121.2,false,\"[\"\"CD\"\",\"\"EF\"\"]\",good,今天是个好日子\r\n3,22,100,море,123.4,true,\"[\"\"GH\"\",\"\"AB\"\",\"\"CD\"\"]\",good,\"Сегодня хороший день\r\nЗавтра тоже хороший день\"\r\n4,22,200,الشمس,124.5,false,\"{\"\"AA\"\":12}\",strong,صباح الخير\r\n5,23,200,चंद्रमा,126.7,1,\"{\"\"BB\"\":12}\",strong,सुसंध्या\r\n6,23,200,Emilia,,0,\"{\"\"CC\"\":34,\"\"DD\"\":56}\",\"strong,cool\",Hoje é um bom dia\r\n7,24,300,Ayşe,128.9,0,\"{\"\"EE\"\":34,\"\"FF\"\":56}\",\"strong,cool\",Bugün güzel bir gün\r\n8,24,300,陽菜乃,129.01,,\"{\"\"AC\"\":78,\"\"BD\"\":[90,12]}\",\"height,strong\",今日はいい日です\r\n9,25,300,Dwi,130.12,1,\"{\"\"EF\"\":78,\"\"CF\"\":[90,12]}\",,\"Hari ini adalah hari yang baik\r\nBesok juga hari yang baik\"\r\n10,25,400,Bảo,131.23,1,\"[\"\"BC\"\",{\"\"AT\"\":34}]\",\"thin,good\",\r\n11,26,400,민준,132.34,0,\"[\"\"FG\"\",{\"\"AG\"\":34}]\",\"hot,thin,good\",오늘은 좋은 날이다\r\n12,26,400,ดาว,133.456,0,,,"
   acsv.Table.JSON_TYPES = _hx_tab_array({[0]="json", "strings" }, 2)
   lua.Boot.hiddenFields = {__id__=true, hx__closures=true, super=true, prototype=true, __fields__=true, __ifields__=true, __class__=true, __properties__=true}
   
@@ -1639,5 +1770,5 @@ end
 
 _hx_print = print or (function() end)
 _hx_static_init();
-Example.main()
+Demo.main()
 return _hx_exports

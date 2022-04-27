@@ -1,4 +1,4 @@
-Javascript Version Explain
+Javascript Explain
 ================
 If you want to use javascript to develop project,  
 please load "release/ACsv.min.js" <b>library</b>  

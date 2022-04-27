@@ -1,4 +1,4 @@
--cp src/hx
+-cp src/haxe
 acsv.Table
 acsv.Field
 -xml release/ACsv.dox.xml

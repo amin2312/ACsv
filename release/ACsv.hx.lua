@@ -385,17 +385,32 @@ acsv.Table.new = function()
   return self
 end
 acsv.Table.super = function(self) 
+  self._selected = nil;
   self._indexSet = _hx_e();
   self.body = Array.new();
   self.head = Array.new();
+  self.content = nil;
 end
 _hx_exports["acsv"]["Table"] = acsv.Table
-acsv.Table.Parse = function(content) 
-  local table = acsv.Table.arrayToRows(acsv.Table.textToArray(content));
+acsv.Table.Parse = function(content,filedSeparator,filedMultiLineDelimiter) 
+  if (filedMultiLineDelimiter == nil) then 
+    filedMultiLineDelimiter = "\"";
+  end;
+  if (filedSeparator == nil) then 
+    filedSeparator = ",";
+  end;
+  local table = acsv.Table.arrayToRows(acsv.Table.textToArray(content,filedSeparator,filedMultiLineDelimiter));
   table.content = content;
   do return table end;
 end
-acsv.Table.textToArray = function(text) 
+acsv.Table.textToArray = function(text,FS,FML) 
+  if (FML == nil) then 
+    FML = "\"";
+  end;
+  if (FS == nil) then 
+    FS = ",";
+  end;
+  local FMLs = FML .. FML;
   local array = _hx_tab_array({ }, 0);
   local maxLen = text.length;
   local ptr = text;
@@ -418,7 +433,7 @@ acsv.Table.textToArray = function(text)
         cellIndexB = cellIndexB + 2;
         break;
       end;
-      if (chr == ",") then 
+      if (chr == FS) then 
         cell = "";
         local nextPos = (ptrPos + cellIndexB) + 1;
         if (nextPos >= maxLen) then 
@@ -426,7 +441,7 @@ acsv.Table.textToArray = function(text)
         else
           chr = ptr:charAt(nextPos);
         end;
-        if ((((cellIndexA == 0) or (chr == ",")) or (chr == "\n")) or (chr == "\r\n")) then 
+        if ((((cellIndexA == 0) or (chr == FS)) or (chr == "\n")) or (chr == "\r\n")) then 
           cellIndexB = cellIndexB + 1;
           cells:push("");
         else
@@ -438,18 +453,18 @@ acsv.Table.textToArray = function(text)
           end;
         end;
       else
-        if (chr == "\"") then 
+        if (chr == FML) then 
           cellIndexB = cellIndexB + 1;
           local _hx_break_2 = false;
           while (true) do 
             repeat 
-            cellIndexB = ptr:indexOf("\"",ptrPos + cellIndexB);
+            cellIndexB = ptr:indexOf(FML,ptrPos + cellIndexB);
             if (cellIndexB == -1) then 
-              haxe.Log.trace("[ACsv] Invalid Double Quote",_hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="Table.hx",lineNumber=579,className="acsv.Table",methodName="textToArray"}));
+              haxe.Log.trace("[ACsv] Invalid Double Quote",_hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="Table.hx",lineNumber=716,className="acsv.Table",methodName="textToArray"}));
               do return nil end;
             end;
             cellIndexB = cellIndexB - ptrPos;
-            if (ptr:charAt((ptrPos + cellIndexB) + 1) == "\"") then 
+            if (ptr:charAt((ptrPos + cellIndexB) + 1) == FML) then 
               cellIndexB = cellIndexB + 2;
               break;
             end;
@@ -459,11 +474,11 @@ acsv.Table.textToArray = function(text)
           if _hx_break_3 then _hx_break_3 = false; break; end
           end;
           cell = ptr:substring((ptrPos + cellIndexA) + 1,ptrPos + cellIndexB);
-          cell = StringTools.replace(cell,"\"\"","\"");
+          cell = StringTools.replace(cell,FMLs,FML);
           cells:push(cell);
           cellIndexB = cellIndexB + 1;
         else
-          local indexA = ptr:indexOf(",",ptrPos + cellIndexB);
+          local indexA = ptr:indexOf(FS,ptrPos + cellIndexB);
           if (indexA == -1) then 
             indexA = curLen;
           else
@@ -556,7 +571,7 @@ acsv.Table.arrayToRows = function(array)
               else
                 local chr0 = cell:charAt(0);
                 if (not ((chr0 == "[") or (chr0 == "{"))) then 
-                  haxe.Log.trace("[ACsv] Invalid json format:" .. fileds[j].name .. "," .. cell,_hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="Table.hx",lineNumber=723,className="acsv.Table",methodName="arrayToRows"}));
+                  haxe.Log.trace("[ACsv] Invalid json format:" .. fileds[j].name .. "," .. cell,_hx_o({__fields__={fileName=true,lineNumber=true,className=true,methodName=true},fileName="Table.hx",lineNumber=860,className="acsv.Table",methodName="arrayToRows"}));
                   do return nil end;
                 end;
                 newVal = cell;
@@ -606,7 +621,7 @@ acsv.Table.prototype = _hx_a(
       end;
     self._indexSet[colIndex] = map;
   end,
-  'getColumnIndexBy', function(self,name) 
+  'getColIndexBy', function(self,name) 
     local _g1 = 0;
     local _g = self.head.length;
     while (_g1 < _g) do 
@@ -619,8 +634,39 @@ acsv.Table.prototype = _hx_a(
       end;
     do return -1 end
   end,
-  'getCurrentSelectdData', function(self) 
-    do return self._selectd end
+  'sortBy', function(self,colIndex,sortType) 
+    local len = self._selected.length;
+    local _g1 = 0;
+    local _g = len;
+    while (_g1 < _g) do 
+      _g1 = _g1 + 1;
+      local i = _g1 - 1;
+      local _g3 = 0;
+      local _g2 = len - 1;
+      while (_g3 < _g2) do 
+        _g3 = _g3 + 1;
+        local j = _g3 - 1;
+        local ok = false;
+        local a = self._selected[j][colIndex];
+        local b = self._selected[j + 1][colIndex];
+        if ((sortType == 0) and (a > b)) then 
+          ok = true;
+        else
+          if ((sortType == 1) and (a < b)) then 
+            ok = true;
+          end;
+        end;
+        if (ok) then 
+          local temp = self._selected[j];
+          self._selected[j] = self._selected[j + 1];
+          self._selected[j + 1] = temp;
+        end;
+        end;
+      end;
+    do return self end
+  end,
+  'getCurrentSelector', function(self) 
+    do return self._selected end
   end,
   'fmtRow', function(self,row) 
     local obj = _hx_tab_array({ }, 0);
@@ -666,103 +712,161 @@ acsv.Table.prototype = _hx_a(
     do return obj end
   end,
   'toFirstRow', function(self) 
-    if ((self._selectd == nil) or (self._selectd.length == 0)) then 
-      do return nil end;
+    local rzl = nil;
+    if ((self._selected ~= nil) and (self._selected.length > 0)) then 
+      rzl = self:fmtRow(self._selected[0]);
     end;
-    do return self:fmtRow(self._selectd[0]) end
+    self._selected = nil;
+    do return rzl end
   end,
   'toLastRow', function(self) 
-    if ((self._selectd == nil) or (self._selectd.length == 0)) then 
-      do return nil end;
+    local rzl = nil;
+    if ((self._selected ~= nil) and (self._selected.length > 0)) then 
+      rzl = self:fmtRow(self._selected[self._selected.length - 1]);
     end;
-    do return self:fmtRow(self._selectd[self._selectd.length - 1]) end
+    self._selected = nil;
+    do return rzl end
   end,
   'toRows', function(self) 
-    if (self._selectd == nil) then 
+    if (self._selected == nil) then 
       do return nil end;
     end;
-    local arr = Array.new();
+    local dst = Array.new();
     local _g1 = 0;
-    local _g = self._selectd.length;
+    local _g = self._selected.length;
     while (_g1 < _g) do 
       _g1 = _g1 + 1;
       local i = _g1 - 1;
-      local row = self._selectd[i];
-      arr:push(self:fmtRow(row));
+      local row = self._selected[i];
+      dst:push(self:fmtRow(row));
       end;
-    do return arr end
+    self._selected = nil;
+    do return dst end
   end,
   'toFirstObj', function(self) 
-    if ((self._selectd == nil) or (self._selectd.length == 0)) then 
-      do return nil end;
+    local rzl = nil;
+    if ((self._selected ~= nil) and (self._selected.length > 0)) then 
+      rzl = self:fmtObj(self._selected[0]);
     end;
-    do return self:fmtObj(self._selectd[0]) end
+    self._selected = nil;
+    do return rzl end
   end,
   'toLastObj', function(self) 
-    if ((self._selectd == nil) or (self._selectd.length == 0)) then 
-      do return nil end;
+    local rzl = nil;
+    if ((self._selected ~= nil) and (self._selected.length > 0)) then 
+      rzl = self:fmtObj(self._selected[self._selected.length - 1]);
     end;
-    do return self:fmtObj(self._selectd[self._selectd.length - 1]) end
+    self._selected = nil;
+    do return rzl end
   end,
   'toObjs', function(self) 
-    if (self._selectd == nil) then 
+    if (self._selected == nil) then 
       do return nil end;
     end;
-    local arr = Array.new();
+    local dst = Array.new();
     local _g1 = 0;
-    local _g = self._selectd.length;
+    local _g = self._selected.length;
     while (_g1 < _g) do 
       _g1 = _g1 + 1;
       local i = _g1 - 1;
-      local row = self._selectd[i];
-      arr:push(self:fmtObj(row));
+      local row = self._selected[i];
+      dst:push(self:fmtObj(row));
       end;
-    do return arr end
+    self._selected = nil;
+    do return dst end
+  end,
+  'toTable', function(self) 
+    if (self._selected == nil) then 
+      do return nil end;
+    end;
+    local t = acsv.Table.new();
+    t.head = self.head:concat(_hx_tab_array({ }, 0));
+    t.body = self._selected;
+    self._selected = nil;
+    do return t end
   end,
   'selectAll', function(self) 
-    self._selectd = self.body;
+    self._selected = self.body;
     do return self end
   end,
   'selectFirstRow', function(self) 
-    self._selectd = _hx_tab_array({[0]=self.body[0] }, 1);
+    self._selected = _hx_tab_array({[0]=self.body[0] }, 1);
     do return self end
   end,
   'selectLastRow', function(self) 
-    self._selectd = _hx_tab_array({[0]=self.body[self.body.length - 1] }, 1);
+    self._selected = _hx_tab_array({[0]=self.body[self.body.length - 1] }, 1);
     do return self end
   end,
-  'selectWhenE', function(self,limit,value,colIndex) 
+  'selectAt', function(self,rowIndices) 
+    local dst = Array.new();
+    local _g1 = 0;
+    local _g = rowIndices.length;
+    while (_g1 < _g) do 
+      _g1 = _g1 + 1;
+      local i = _g1 - 1;
+      local rowIndex = rowIndices[i];
+      if ((rowIndex >= 0) and (rowIndex < self.body.length)) then 
+        dst:push(self.body[rowIndex]);
+      end;
+      end;
+    self._selected = dst;
+    do return self end
+  end,
+  'selectWhenIn', function(self,limit,values,colIndex) 
     if (colIndex == nil) then 
       colIndex = 0;
+    end;
+    local rows = Array.new();
+    local _g1 = 0;
+    local _g = values.length;
+    while (_g1 < _g) do 
+      _g1 = _g1 + 1;
+      local i = _g1 - 1;
+      local value = values[i];
+      self:selectWhenE(limit,value,colIndex,rows);
+      self._selected = nil;
+      end;
+    self._selected = rows;
+    do return self end
+  end,
+  'selectWhenE', function(self,limit,value,colIndex,extraSelector) 
+    if (colIndex == nil) then 
+      colIndex = 0;
+    end;
+    local dst = extraSelector;
+    if (dst == nil) then 
+      dst = Array.new();
     end;
     if (limit == 1) then 
       local map = self._indexSet[colIndex];
       if (map ~= nil) then 
         local val = map[value];
         if (val ~= nil) then 
-          self._selectd = _hx_tab_array({[0]=val }, 1);
-        else
-          self._selectd = nil;
+          dst:push(val);
         end;
+        self._selected = dst;
         do return self end;
       end;
     end;
-    local rows = Array.new();
+    local src = self._selected;
+    if (src == nil) then 
+      src = self.body;
+    end;
     local _g1 = 0;
-    local _g = self.body.length;
+    local _g = src.length;
     while (_g1 < _g) do 
       _g1 = _g1 + 1;
       local i = _g1 - 1;
-      local row = self.body[i];
+      local row = src[i];
       if (row[colIndex] == value) then 
-        rows:push(row);
+        dst:push(row);
         limit = limit - 1;
         if (limit == 0) then 
           break;
         end;
       end;
       end;
-    self._selectd = rows;
+    self._selected = dst;
     do return self end
   end,
   'selectWhenE2', function(self,limit,value1,value2,colIndex2,colIndex1) 
@@ -772,22 +876,26 @@ acsv.Table.prototype = _hx_a(
     if (colIndex2 == nil) then 
       colIndex2 = 1;
     end;
-    local rows = Array.new();
+    local src = self._selected;
+    if (src == nil) then 
+      src = self.body;
+    end;
+    local dst = Array.new();
     local _g1 = 0;
-    local _g = self.body.length;
+    local _g = src.length;
     while (_g1 < _g) do 
       _g1 = _g1 + 1;
       local i = _g1 - 1;
-      local row = self.body[i];
+      local row = src[i];
       if ((row[colIndex1] == value1) and (row[colIndex2] == value2)) then 
-        rows:push(row);
+        dst:push(row);
         limit = limit - 1;
         if (limit == 0) then 
           break;
         end;
       end;
       end;
-    self._selectd = rows;
+    self._selected = dst;
     do return self end
   end,
   'selectWhenE3', function(self,limit,value1,value2,value3,colIndex3,colIndex2,colIndex1) 
@@ -800,118 +908,138 @@ acsv.Table.prototype = _hx_a(
     if (colIndex3 == nil) then 
       colIndex3 = 2;
     end;
-    local rows = Array.new();
+    local src = self._selected;
+    if (src == nil) then 
+      src = self.body;
+    end;
+    local dst = Array.new();
     local _g1 = 0;
-    local _g = self.body.length;
+    local _g = src.length;
     while (_g1 < _g) do 
       _g1 = _g1 + 1;
       local i = _g1 - 1;
-      local row = self.body[i];
+      local row = src[i];
       if (((row[colIndex1] == value1) and (row[colIndex2] == value2)) and (row[colIndex3] == value3)) then 
-        rows:push(row);
+        dst:push(row);
         limit = limit - 1;
         if (limit == 0) then 
           break;
         end;
       end;
       end;
-    self._selectd = rows;
+    self._selected = dst;
     do return self end
   end,
   'selectWhenG', function(self,limit,withEqu,value,colIndex) 
     if (colIndex == nil) then 
       colIndex = 0;
     end;
-    local rows = Array.new();
+    local src = self._selected;
+    if (src == nil) then 
+      src = self.body;
+    end;
+    local dst = Array.new();
     local _g1 = 0;
-    local _g = self.body.length;
+    local _g = src.length;
     while (_g1 < _g) do 
       _g1 = _g1 + 1;
       local i = _g1 - 1;
-      local row = self.body[i];
+      local row = src[i];
       local rowVal = row[colIndex];
       if ((rowVal > value) or (withEqu and (rowVal == value))) then 
-        rows:push(row);
+        dst:push(row);
         limit = limit - 1;
         if (limit == 0) then 
           break;
         end;
       end;
       end;
-    self._selectd = rows;
+    self._selected = dst;
     do return self end
   end,
   'selectWhenL', function(self,limit,withEqu,value,colIndex) 
     if (colIndex == nil) then 
       colIndex = 0;
     end;
-    local rows = Array.new();
+    local src = self._selected;
+    if (src == nil) then 
+      src = self.body;
+    end;
+    local dst = Array.new();
     local _g1 = 0;
-    local _g = self.body.length;
+    local _g = src.length;
     while (_g1 < _g) do 
       _g1 = _g1 + 1;
       local i = _g1 - 1;
-      local row = self.body[i];
+      local row = src[i];
       local rowVal = row[colIndex];
       if ((rowVal < value) or (withEqu and (rowVal == value))) then 
-        rows:push(row);
+        dst:push(row);
         limit = limit - 1;
         if (limit == 0) then 
           break;
         end;
       end;
       end;
-    self._selectd = rows;
+    self._selected = dst;
     do return self end
   end,
   'selectWhenGreaterAndLess', function(self,limit,GWithEqu,LWithEqu,GValue,LValue,colIndex) 
     if (colIndex == nil) then 
       colIndex = 0;
     end;
-    local rows = Array.new();
+    local src = self._selected;
+    if (src == nil) then 
+      src = self.body;
+    end;
+    local dst = Array.new();
     local _g1 = 0;
-    local _g = self.body.length;
+    local _g = src.length;
     while (_g1 < _g) do 
       _g1 = _g1 + 1;
       local i = _g1 - 1;
-      local row = self.body[i];
+      local row = src[i];
       local rowVal = row[colIndex];
       local v1 = (rowVal > GValue) or (GWithEqu and (rowVal == GValue));
       local v2 = (rowVal < LValue) or (LWithEqu and (rowVal == LValue));
       if (v1 and v2) then 
-        rows:push(row);
+        dst:push(row);
         limit = limit - 1;
         if (limit == 0) then 
           break;
         end;
       end;
       end;
-    self._selectd = rows;
+    self._selected = dst;
     do return self end
   end,
   'selectWhenLessOrGreater', function(self,limit,LWithEqu,GWithEqu,LValue,GValue,colIndex) 
     if (colIndex == nil) then 
       colIndex = 0;
     end;
-    local rows = Array.new();
+    local src = self._selected;
+    if (src == nil) then 
+      src = self.body;
+    end;
+    local dst = Array.new();
     local _g1 = 0;
-    local _g = self.body.length;
+    local _g = src.length;
     while (_g1 < _g) do 
       _g1 = _g1 + 1;
       local i = _g1 - 1;
-      local row = self.body[i];
+      local row = src[i];
       local rowVal = row[colIndex];
       local v1 = (rowVal < LValue) or (LWithEqu and (rowVal == LValue));
       local v2 = (rowVal > GValue) or (GWithEqu and (rowVal == GValue));
       if (v1 or v2) then 
-        rows:push(row);
+        dst:push(row);
         limit = limit - 1;
         if (limit == 0) then 
           break;
         end;
       end;
       end;
-    self._selectd = rows;
+    self._selected = dst;
     do return self end
   end
 )

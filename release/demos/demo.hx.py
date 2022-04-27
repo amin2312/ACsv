@@ -34,8 +34,8 @@ class Enum:
 
 
 
-class Example:
-    _hx_class_name = "Example"
+class Demo:
+    _hx_class_name = "Demo"
     __slots__ = ()
     _hx_statics = ["standard_format_text", "enhanced_format_text", "_tab1", "_tab2", "main", "showTable", "P", "test_standard_csv_format", "test_enhanced_csv_format"]
     _tab1 = None
@@ -43,12 +43,12 @@ class Example:
 
     @staticmethod
     def main():
-        Example._tab1 = acsv_Table.Parse(Example.standard_format_text)
-        Example._tab2 = acsv_Table.Parse(Example.enhanced_format_text)
-        Example.showTable("standard csv format",Example._tab1)
-        Example.test_standard_csv_format()
-        Example.showTable("enhanced csv format",Example._tab2)
-        Example.test_enhanced_csv_format()
+        Demo._tab1 = acsv_Table.Parse(Demo.standard_format_text)
+        Demo._tab2 = acsv_Table.Parse(Demo.enhanced_format_text)
+        Demo.showTable("standard csv format",Demo._tab1)
+        Demo.test_standard_csv_format()
+        Demo.showTable("[E] enhanced csv format",Demo._tab2)
+        Demo.test_enhanced_csv_format()
 
     @staticmethod
     def showTable(fileName,csvTable):
@@ -64,47 +64,50 @@ class Example:
 
     @staticmethod
     def test_standard_csv_format():
-        Example.P("select all to rows",Example._tab1.selectAll().toRows())
-        Example.P("select all to objs",Example._tab1.selectAll().toObjs())
-        Example.P("select first row",Example._tab1.selectFirstRow().toFirstRow())
-        Example.P("select first obj",Example._tab1.selectFirstRow().toFirstObj())
-        Example.P("select last row",Example._tab1.selectLastRow().toFirstRow())
-        Example.P("select last obj",Example._tab1.selectLastRow().toFirstObj())
-        Example.P("select [id] = \"2\"",Example._tab1.selectWhenE(1,"2").toFirstObj())
-        Example.P("select [id] = \"-1\"",Example._tab1.selectWhenE(1,"-1").toFirstObj())
-        Example.P("select [id] = \"3\" and [id2] = \"21\"",Example._tab1.selectWhenE2(1,"3","21").toFirstObj())
-        Example.P("select [id] = \"3\" and [id2] = \"-1\"",Example._tab1.selectWhenE2(1,"3","-1").toFirstObj())
-        Example.P("select [id] = \"4\" and [id2] = \"21\" and [id3] = \"200\"",Example._tab1.selectWhenE3(1,"4","21","200").toFirstObj())
-        Example.P("select [id] = \"4\" and [id2] = \"21\" and [id3] = \"-1\"",Example._tab1.selectWhenE3(1,"4","21","-1").toFirstObj())
-        Example.P("select all [id2] = \"20\"",Example._tab1.selectWhenE(0,"20",1).toObjs())
-        Example.P("select all [id2] = \"-1\"",Example._tab1.selectWhenE(0,"-1",1).toObjs())
+        Demo.P("select ALL to rows",Demo._tab1.selectAll().toRows())
+        Demo.P("select ALL to objs",Demo._tab1.selectAll().toObjs())
+        Demo.P("select first row",Demo._tab1.selectFirstRow().toFirstRow())
+        Demo.P("select first obj",Demo._tab1.selectFirstRow().toFirstObj())
+        Demo.P("select last row",Demo._tab1.selectLastRow().toFirstRow())
+        Demo.P("select last obj",Demo._tab1.selectLastRow().toFirstObj())
+        Demo.P("selectWhenE (id) = \"2\"",Demo._tab1.selectWhenE(1,"2").toFirstObj())
+        Demo.P("selectWhenE (id) = \"3\" and (id2) = \"21\"",Demo._tab1.selectWhenE2(1,"3","21").toFirstObj())
+        Demo.P("selectWhenE (id) = \"4\" and (id2) = \"21\" and (id3) = \"200\"",Demo._tab1.selectWhenE3(1,"4","21","200").toFirstObj())
+        Demo.P("selectWhenE ALL (id2) = \"20\"",Demo._tab1.selectWhenE(0,"20",1).toObjs())
 
     @staticmethod
     def test_enhanced_csv_format():
-        Example.P("[enhanced] select all to rows",Example._tab2.selectAll().toRows())
-        Example.P("[enhanced] select all to objs",Example._tab2.selectAll().toObjs())
-        Example.P("[enhanced] select first row",Example._tab2.selectFirstRow().toFirstRow())
-        Example.P("[enhanced] select first obj",Example._tab2.selectFirstRow().toFirstObj())
-        Example.P("[enhanced] select last row",Example._tab2.selectLastRow().toFirstRow())
-        Example.P("[enhanced] select last obj",Example._tab2.selectLastRow().toFirstObj())
-        Example.P("[enhanced] select [id] = 2",Example._tab2.selectWhenE(1,2).toFirstObj())
-        Example.P("[enhanced] select [id] = -1",Example._tab2.selectWhenE(1,-1).toFirstObj())
-        Example.P("[enhanced] select [id] = 3 and [id2] = 22",Example._tab2.selectWhenE2(1,3,22).toFirstObj())
-        Example.P("[enhanced] select [id] = 3 and [id2] = -1",Example._tab2.selectWhenE2(1,3,-1).toFirstObj())
-        Example.P("[enhanced] select [id] = 4 and [id2] = 22 and [id3] = 200",Example._tab2.selectWhenE3(1,4,22,200).toFirstObj())
-        Example.P("[enhanced] select [id] = 4 and [id2] = 22 and [id3] = -1",Example._tab2.selectWhenE3(1,4,22,-1).toFirstObj())
-        Example.P("[enhanced] select all [id2] = 21",Example._tab2.selectWhenE(0,21,1).toObjs())
-        Example.P("[enhanced] select all [id2] = -1",Example._tab2.selectWhenE(0,-1,1).toObjs())
-        Example.P("[enhanced] select all [id2] > 25",Example._tab2.selectWhenG(0,False,25,1).toObjs())
-        Example.P("[enhanced] select all [id2] >= 25",Example._tab2.selectWhenG(0,True,25,1).toObjs())
-        Example.P("[enhanced] select all [id2] < 22",Example._tab2.selectWhenL(0,False,22,1).toObjs())
-        Example.P("[enhanced] select all [id2] <= 22",Example._tab2.selectWhenL(0,True,22,1).toObjs())
-        Example.P("[enhanced] select all [id2] > 21 and [id2] < 24",Example._tab2.selectWhenGreaterAndLess(0,False,False,21,24,1).toObjs())
-        Example.P("[enhanced] select all [id2] >= 21 and [id2] <= 24",Example._tab2.selectWhenGreaterAndLess(0,True,True,21,24,1).toObjs())
-        Example.P("[enhanced] select all [id2] < 22 or [id2] > 25",Example._tab2.selectWhenLessOrGreater(0,False,False,22,25,1).toObjs())
-        Example.P("[enhanced] select all [id2] <= 22 or [id2] >= 25",Example._tab2.selectWhenLessOrGreater(0,True,True,22,25,1).toObjs())
-        Example._tab2.createIndexAt(0)
-        Example.P("[enhanced] 9th row name",Reflect.field(python_internal_ArrayImpl._get(Example._tab2.selectWhenE(1,9).toObjs(), 0),"name"))
+        Demo.P("[E] select ALL to rows",Demo._tab2.selectAll().toRows())
+        Demo.P("[E] select ALL to objs",Demo._tab2.selectAll().toObjs())
+        Demo.P("[E] select first row",Demo._tab2.selectFirstRow().toFirstRow())
+        Demo.P("[E] select first obj",Demo._tab2.selectFirstRow().toFirstObj())
+        Demo.P("[E] select last row",Demo._tab2.selectLastRow().toFirstRow())
+        Demo.P("[E] select last obj",Demo._tab2.selectLastRow().toFirstObj())
+        Demo.P("[E] selectWhenE (id) = 2",Demo._tab2.selectWhenE(1,2).toFirstObj())
+        Demo.P("[E] selectWhenE (id) = -1",Demo._tab2.selectWhenE(1,-1).toFirstObj())
+        Demo.P("[E] selectWhenE2 (id) = 3 and (id2) = 22",Demo._tab2.selectWhenE2(1,3,22).toFirstObj())
+        Demo.P("[E] selectWhenE2 (id) = 3 and (id2) = -1",Demo._tab2.selectWhenE2(1,3,-1).toFirstObj())
+        Demo.P("[E] selectWhenE3 (id) = 4 and (id2) = 22 and (id3) = 200",Demo._tab2.selectWhenE3(1,4,22,200).toFirstObj())
+        Demo.P("[E] selectWhenE3 (id) = 4 and (id2) = 22 and (id3) = -1",Demo._tab2.selectWhenE3(1,4,22,-1).toFirstObj())
+        Demo.P("[E] selectWhenE ALL (id2) = 21",Demo._tab2.selectWhenE(0,21,1).toObjs())
+        Demo.P("[E] selectWhenE ALL (id2) = -1",Demo._tab2.selectWhenE(0,-1,1).toObjs())
+        Demo.P("[E] selectWhenG ALL (id2) > 25",Demo._tab2.selectWhenG(0,False,25,1).toObjs())
+        Demo.P("[E] selectWhenG ALL (id2) >= 25",Demo._tab2.selectWhenG(0,True,25,1).toObjs())
+        Demo.P("[E] selectWhenG ALL (id2) > 30",Demo._tab2.selectWhenG(0,False,30,1).toObjs())
+        Demo.P("[E] selectWhenL ALL (id2) < 22",Demo._tab2.selectWhenL(0,False,22,1).toObjs())
+        Demo.P("[E] selectWhenL ALL (id2) <= 22",Demo._tab2.selectWhenL(0,True,22,1).toObjs())
+        Demo.P("[E] selectWhenL ALL (id2) < 20",Demo._tab2.selectWhenL(0,True,20,1).toObjs())
+        Demo.P("[E] selectWhenGreaterAndLess ALL (id2) > 21 and (id2) < 24",Demo._tab2.selectWhenGreaterAndLess(0,False,False,21,24,1).toObjs())
+        Demo.P("[E] selectWhenGreaterAndLess ALL (id2) >= 21 and (id2) <= 24",Demo._tab2.selectWhenGreaterAndLess(0,True,True,21,24,1).toObjs())
+        Demo.P("[E] selectWhenLessOrGreater ALL (id2) < 22 or (id2) > 25",Demo._tab2.selectWhenLessOrGreater(0,False,False,22,25,1).toObjs())
+        Demo.P("[E] selectWhenLessOrGreater ALL (id2) <= 22 or (id2) >= 25",Demo._tab2.selectWhenLessOrGreater(0,True,True,22,25,1).toObjs())
+        Demo.P("[E] selectWhenIn (id) in 3,4,5",Demo._tab2.selectWhenIn(1,[3, 4, 5]).toObjs())
+        Demo.P("[E] selectAt rows at 0,1,10",Demo._tab2.selectAt([0, 1, 10]).toObjs())
+        Demo.P("[E] multi selects (id3) = 100 and (id2) < 22",Demo._tab2.selectWhenE(0,100,2).selectWhenL(0,False,22,1).toObjs())
+        Demo.P("[E] sort by (id3) = 300 desc (id)",Demo._tab2.selectWhenE(0,300,2).sortBy(0,1).toObjs())
+        Demo._tab2.createIndexAt(0)
+        Demo.P("[E] (indexed) Dwi's row",Reflect.field(python_internal_ArrayImpl._get(Demo._tab2.selectWhenE(1,"Dwi",Demo._tab2.getColIndexBy("name")).toObjs(), 0),"name"))
+        Demo.P("[E] (indexed) 99th row",Demo._tab2.selectWhenE(1,99).toObjs())
 
 
 class Reflect:
@@ -242,17 +245,17 @@ class acsv_Field:
 
 class acsv_Table:
     _hx_class_name = "acsv.Table"
-    __slots__ = ("content", "head", "body", "_indexSet", "_selectd")
-    _hx_fields = ["content", "head", "body", "_indexSet", "_selectd"]
-    _hx_methods = ["merge", "createIndexAt", "getColumnIndexBy", "getCurrentSelectdData", "fmtRow", "fmtObj", "toFirstRow", "toLastRow", "toRows", "toFirstObj", "toLastObj", "toObjs", "selectAll", "selectFirstRow", "selectLastRow", "selectWhenE", "selectWhenE2", "selectWhenE3", "selectWhenG", "selectWhenL", "selectWhenGreaterAndLess", "selectWhenLessOrGreater"]
+    __slots__ = ("content", "head", "body", "_indexSet", "_selected")
+    _hx_fields = ["content", "head", "body", "_indexSet", "_selected"]
+    _hx_methods = ["merge", "createIndexAt", "getColIndexBy", "sortBy", "getCurrentSelector", "fmtRow", "fmtObj", "toFirstRow", "toLastRow", "toRows", "toFirstObj", "toLastObj", "toObjs", "toTable", "selectAll", "selectFirstRow", "selectLastRow", "selectAt", "selectWhenIn", "selectWhenE", "selectWhenE2", "selectWhenE3", "selectWhenG", "selectWhenL", "selectWhenGreaterAndLess", "selectWhenLessOrGreater"]
     _hx_statics = ["JSON_TYPES", "Parse", "textToArray", "arrayToRows"]
 
     def __init__(self):
-        self._selectd = None
-        self.content = None
+        self._selected = None
         self._indexSet = _hx_AnonObject({})
         self.body = list()
         self.head = list()
+        self.content = None
 
     def merge(self,b):
         self.body = (self.body + b.body)
@@ -279,7 +282,7 @@ class acsv_Table:
             Reflect.setProperty(_hx_map,(Std.string(key) + ""),row)
         Reflect.setProperty(self._indexSet,(Std.string(colIndex) + ""),_hx_map)
 
-    def getColumnIndexBy(self,name):
+    def getColIndexBy(self,name):
         _g1 = 0
         _g = len(self.head)
         while (_g1 < _g):
@@ -290,8 +293,33 @@ class acsv_Table:
                 return i
         return -1
 
-    def getCurrentSelectdData(self):
-        return self._selectd
+    def sortBy(self,colIndex,sortType):
+        _hx_len = len(self._selected)
+        _g1 = 0
+        _g = _hx_len
+        while (_g1 < _g):
+            i = _g1
+            _g1 = (_g1 + 1)
+            _g3 = 0
+            _g2 = (_hx_len - 1)
+            while (_g3 < _g2):
+                j = _g3
+                _g3 = (_g3 + 1)
+                ok = False
+                a = python_internal_ArrayImpl._get((self._selected[j] if j >= 0 and j < len(self._selected) else None), colIndex)
+                b = python_internal_ArrayImpl._get(python_internal_ArrayImpl._get(self._selected, (j + 1)), colIndex)
+                if ((sortType == 0) and ((a > b))):
+                    ok = True
+                elif ((sortType == 1) and ((a < b))):
+                    ok = True
+                if ok:
+                    temp = (self._selected[j] if j >= 0 and j < len(self._selected) else None)
+                    python_internal_ArrayImpl._set(self._selected, j, python_internal_ArrayImpl._get(self._selected, (j + 1)))
+                    python_internal_ArrayImpl._set(self._selected, (j + 1), temp)
+        return self
+
+    def getCurrentSelector(self):
+        return self._selected
 
     def fmtRow(self,row):
         obj = []
@@ -331,90 +359,142 @@ class acsv_Table:
         return obj
 
     def toFirstRow(self):
-        if ((self._selectd is None) or ((len(self._selectd) == 0))):
-            return None
-        return self.fmtRow((self._selectd[0] if 0 < len(self._selectd) else None))
+        rzl = None
+        if ((self._selected is not None) and ((len(self._selected) > 0))):
+            rzl = self.fmtRow((self._selected[0] if 0 < len(self._selected) else None))
+        self._selected = None
+        return rzl
 
     def toLastRow(self):
-        if ((self._selectd is None) or ((len(self._selectd) == 0))):
-            return None
-        return self.fmtRow(python_internal_ArrayImpl._get(self._selectd, (len(self._selectd) - 1)))
+        rzl = None
+        if ((self._selected is not None) and ((len(self._selected) > 0))):
+            rzl = self.fmtRow(python_internal_ArrayImpl._get(self._selected, (len(self._selected) - 1)))
+        self._selected = None
+        return rzl
 
     def toRows(self):
-        if (self._selectd is None):
+        if (self._selected is None):
             return None
-        arr = list()
+        dst = list()
         _g1 = 0
-        _g = len(self._selectd)
+        _g = len(self._selected)
         while (_g1 < _g):
             i = _g1
             _g1 = (_g1 + 1)
-            row = (self._selectd[i] if i >= 0 and i < len(self._selectd) else None)
+            row = (self._selected[i] if i >= 0 and i < len(self._selected) else None)
             x = self.fmtRow(row)
-            arr.append(x)
-        return arr
+            dst.append(x)
+        self._selected = None
+        return dst
 
     def toFirstObj(self):
-        if ((self._selectd is None) or ((len(self._selectd) == 0))):
-            return None
-        return self.fmtObj((self._selectd[0] if 0 < len(self._selectd) else None))
+        rzl = None
+        if ((self._selected is not None) and ((len(self._selected) > 0))):
+            rzl = self.fmtObj((self._selected[0] if 0 < len(self._selected) else None))
+        self._selected = None
+        return rzl
 
     def toLastObj(self):
-        if ((self._selectd is None) or ((len(self._selectd) == 0))):
-            return None
-        return self.fmtObj(python_internal_ArrayImpl._get(self._selectd, (len(self._selectd) - 1)))
+        rzl = None
+        if ((self._selected is not None) and ((len(self._selected) > 0))):
+            rzl = self.fmtObj(python_internal_ArrayImpl._get(self._selected, (len(self._selected) - 1)))
+        self._selected = None
+        return rzl
 
     def toObjs(self):
-        if (self._selectd is None):
+        if (self._selected is None):
             return None
-        arr = list()
+        dst = list()
         _g1 = 0
-        _g = len(self._selectd)
+        _g = len(self._selected)
         while (_g1 < _g):
             i = _g1
             _g1 = (_g1 + 1)
-            row = (self._selectd[i] if i >= 0 and i < len(self._selectd) else None)
+            row = (self._selected[i] if i >= 0 and i < len(self._selected) else None)
             x = self.fmtObj(row)
-            arr.append(x)
-        return arr
+            dst.append(x)
+        self._selected = None
+        return dst
+
+    def toTable(self):
+        if (self._selected is None):
+            return None
+        t = acsv_Table()
+        t.head = (self.head + [])
+        t.body = self._selected
+        self._selected = None
+        return t
 
     def selectAll(self):
-        self._selectd = self.body
+        self._selected = self.body
         return self
 
     def selectFirstRow(self):
-        self._selectd = [(self.body[0] if 0 < len(self.body) else None)]
+        self._selected = [(self.body[0] if 0 < len(self.body) else None)]
         return self
 
     def selectLastRow(self):
-        self._selectd = [python_internal_ArrayImpl._get(self.body, (len(self.body) - 1))]
+        self._selected = [python_internal_ArrayImpl._get(self.body, (len(self.body) - 1))]
         return self
 
-    def selectWhenE(self,limit,value,colIndex = 0):
+    def selectAt(self,rowIndices):
+        dst = list()
+        _g1 = 0
+        _g = len(rowIndices)
+        while (_g1 < _g):
+            i = _g1
+            _g1 = (_g1 + 1)
+            rowIndex = (rowIndices[i] if i >= 0 and i < len(rowIndices) else None)
+            if ((rowIndex >= 0) and ((rowIndex < len(self.body)))):
+                x = (self.body[rowIndex] if rowIndex >= 0 and rowIndex < len(self.body) else None)
+                dst.append(x)
+        self._selected = dst
+        return self
+
+    def selectWhenIn(self,limit,values,colIndex = 0):
         if (colIndex is None):
             colIndex = 0
+        rows = list()
+        _g1 = 0
+        _g = len(values)
+        while (_g1 < _g):
+            i = _g1
+            _g1 = (_g1 + 1)
+            value = (values[i] if i >= 0 and i < len(values) else None)
+            self.selectWhenE(limit,value,colIndex,rows)
+            self._selected = None
+        self._selected = rows
+        return self
+
+    def selectWhenE(self,limit,value,colIndex = 0,extraSelector = None):
+        if (colIndex is None):
+            colIndex = 0
+        dst = extraSelector
+        if (dst is None):
+            dst = list()
         if (limit == 1):
             _hx_map = Reflect.getProperty(self._indexSet,(Std.string(colIndex) + ""))
             if (_hx_map is not None):
                 val = Reflect.getProperty(_hx_map,(Std.string(value) + ""))
                 if (val is not None):
-                    self._selectd = [val]
-                else:
-                    self._selectd = None
+                    dst.append(val)
+                self._selected = dst
                 return self
-        rows = list()
+        src = self._selected
+        if (src is None):
+            src = self.body
         _g1 = 0
-        _g = len(self.body)
+        _g = len(src)
         while (_g1 < _g):
             i = _g1
             _g1 = (_g1 + 1)
-            row = (self.body[i] if i >= 0 and i < len(self.body) else None)
+            row = (src[i] if i >= 0 and i < len(src) else None)
             if HxOverrides.eq((row[colIndex] if colIndex >= 0 and colIndex < len(row) else None),value):
-                rows.append(row)
+                dst.append(row)
                 limit = (limit - 1)
                 if (limit == 0):
                     break
-        self._selectd = rows
+        self._selected = dst
         return self
 
     def selectWhenE2(self,limit,value1,value2,colIndex2 = 1,colIndex1 = 0):
@@ -422,19 +502,22 @@ class acsv_Table:
             colIndex2 = 1
         if (colIndex1 is None):
             colIndex1 = 0
-        rows = list()
+        src = self._selected
+        if (src is None):
+            src = self.body
+        dst = list()
         _g1 = 0
-        _g = len(self.body)
+        _g = len(src)
         while (_g1 < _g):
             i = _g1
             _g1 = (_g1 + 1)
-            row = (self.body[i] if i >= 0 and i < len(self.body) else None)
+            row = (src[i] if i >= 0 and i < len(src) else None)
             if (HxOverrides.eq((row[colIndex1] if colIndex1 >= 0 and colIndex1 < len(row) else None),value1) and (HxOverrides.eq((row[colIndex2] if colIndex2 >= 0 and colIndex2 < len(row) else None),value2))):
-                rows.append(row)
+                dst.append(row)
                 limit = (limit - 1)
                 if (limit == 0):
                     break
-        self._selectd = rows
+        self._selected = dst
         return self
 
     def selectWhenE3(self,limit,value1,value2,value3,colIndex3 = 2,colIndex2 = 1,colIndex1 = 0):
@@ -444,109 +527,133 @@ class acsv_Table:
             colIndex2 = 1
         if (colIndex1 is None):
             colIndex1 = 0
-        rows = list()
+        src = self._selected
+        if (src is None):
+            src = self.body
+        dst = list()
         _g1 = 0
-        _g = len(self.body)
+        _g = len(src)
         while (_g1 < _g):
             i = _g1
             _g1 = (_g1 + 1)
-            row = (self.body[i] if i >= 0 and i < len(self.body) else None)
+            row = (src[i] if i >= 0 and i < len(src) else None)
             if ((HxOverrides.eq((row[colIndex1] if colIndex1 >= 0 and colIndex1 < len(row) else None),value1) and (HxOverrides.eq((row[colIndex2] if colIndex2 >= 0 and colIndex2 < len(row) else None),value2))) and (HxOverrides.eq((row[colIndex3] if colIndex3 >= 0 and colIndex3 < len(row) else None),value3))):
-                rows.append(row)
+                dst.append(row)
                 limit = (limit - 1)
                 if (limit == 0):
                     break
-        self._selectd = rows
+        self._selected = dst
         return self
 
     def selectWhenG(self,limit,withEqu,value,colIndex = 0):
         if (colIndex is None):
             colIndex = 0
-        rows = list()
+        src = self._selected
+        if (src is None):
+            src = self.body
+        dst = list()
         _g1 = 0
-        _g = len(self.body)
+        _g = len(src)
         while (_g1 < _g):
             i = _g1
             _g1 = (_g1 + 1)
-            row = (self.body[i] if i >= 0 and i < len(self.body) else None)
+            row = (src[i] if i >= 0 and i < len(src) else None)
             rowVal = (row[colIndex] if colIndex >= 0 and colIndex < len(row) else None)
             if ((rowVal > value) or ((withEqu and ((rowVal == value))))):
-                rows.append(row)
+                dst.append(row)
                 limit = (limit - 1)
                 if (limit == 0):
                     break
-        self._selectd = rows
+        self._selected = dst
         return self
 
     def selectWhenL(self,limit,withEqu,value,colIndex = 0):
         if (colIndex is None):
             colIndex = 0
-        rows = list()
+        src = self._selected
+        if (src is None):
+            src = self.body
+        dst = list()
         _g1 = 0
-        _g = len(self.body)
+        _g = len(src)
         while (_g1 < _g):
             i = _g1
             _g1 = (_g1 + 1)
-            row = (self.body[i] if i >= 0 and i < len(self.body) else None)
+            row = (src[i] if i >= 0 and i < len(src) else None)
             rowVal = (row[colIndex] if colIndex >= 0 and colIndex < len(row) else None)
             if ((rowVal < value) or ((withEqu and ((rowVal == value))))):
-                rows.append(row)
+                dst.append(row)
                 limit = (limit - 1)
                 if (limit == 0):
                     break
-        self._selectd = rows
+        self._selected = dst
         return self
 
     def selectWhenGreaterAndLess(self,limit,GWithEqu,LWithEqu,GValue,LValue,colIndex = 0):
         if (colIndex is None):
             colIndex = 0
-        rows = list()
+        src = self._selected
+        if (src is None):
+            src = self.body
+        dst = list()
         _g1 = 0
-        _g = len(self.body)
+        _g = len(src)
         while (_g1 < _g):
             i = _g1
             _g1 = (_g1 + 1)
-            row = (self.body[i] if i >= 0 and i < len(self.body) else None)
+            row = (src[i] if i >= 0 and i < len(src) else None)
             rowVal = (row[colIndex] if colIndex >= 0 and colIndex < len(row) else None)
             v1 = ((rowVal > GValue) or ((GWithEqu and ((rowVal == GValue)))))
             v2 = ((rowVal < LValue) or ((LWithEqu and ((rowVal == LValue)))))
             if (v1 and v2):
-                rows.append(row)
+                dst.append(row)
                 limit = (limit - 1)
                 if (limit == 0):
                     break
-        self._selectd = rows
+        self._selected = dst
         return self
 
     def selectWhenLessOrGreater(self,limit,LWithEqu,GWithEqu,LValue,GValue,colIndex = 0):
         if (colIndex is None):
             colIndex = 0
-        rows = list()
+        src = self._selected
+        if (src is None):
+            src = self.body
+        dst = list()
         _g1 = 0
-        _g = len(self.body)
+        _g = len(src)
         while (_g1 < _g):
             i = _g1
             _g1 = (_g1 + 1)
-            row = (self.body[i] if i >= 0 and i < len(self.body) else None)
+            row = (src[i] if i >= 0 and i < len(src) else None)
             rowVal = (row[colIndex] if colIndex >= 0 and colIndex < len(row) else None)
             v1 = ((rowVal < LValue) or ((LWithEqu and ((rowVal == LValue)))))
             v2 = ((rowVal > GValue) or ((GWithEqu and ((rowVal == GValue)))))
             if (v1 or v2):
-                rows.append(row)
+                dst.append(row)
                 limit = (limit - 1)
                 if (limit == 0):
                     break
-        self._selectd = rows
+        self._selected = dst
         return self
 
     @staticmethod
-    def Parse(content):
-        table = acsv_Table.arrayToRows(acsv_Table.textToArray(content))
+    def Parse(content,filedSeparator = ",",filedMultiLineDelimiter = "\""):
+        if (filedSeparator is None):
+            filedSeparator = ","
+        if (filedMultiLineDelimiter is None):
+            filedMultiLineDelimiter = "\""
+        table = acsv_Table.arrayToRows(acsv_Table.textToArray(content,filedSeparator,filedMultiLineDelimiter))
         table.content = content
         return table
 
     @staticmethod
-    def textToArray(text):
+    def textToArray(text,FS = ",",FML = "\""):
+        if (FS is None):
+            FS = ","
+        if (FML is None):
+            FML = "\""
+        FMLs = (("null" if FML is None else FML) + ("null" if FML is None else FML))
         array = []
         maxLen = len(text)
         ptr = text
@@ -577,7 +684,7 @@ class acsv_Table:
                 if tmp:
                     cellIndexB = (cellIndexB + 2)
                     break
-                if (_hx_chr == ","):
+                if (_hx_chr == FS):
                     cell = ""
                     nextPos = ((ptrPos + cellIndexB) + 1)
                     if (nextPos >= maxLen):
@@ -586,7 +693,7 @@ class acsv_Table:
                         _hx_chr = ""
                     else:
                         _hx_chr = ptr[nextPos]
-                    if ((((cellIndexA == 0) or ((_hx_chr == ","))) or ((_hx_chr == "\n"))) or ((_hx_chr == "\r\n"))):
+                    if ((((cellIndexA == 0) or ((_hx_chr == FS))) or ((_hx_chr == "\n"))) or ((_hx_chr == "\r\n"))):
                         cellIndexB = (cellIndexB + 1)
                         cells.append("")
                     else:
@@ -601,27 +708,27 @@ class acsv_Table:
                             cells.append("")
                         else:
                             cellIndexB = (cellIndexB + 1)
-                elif (_hx_chr == "\""):
+                elif (_hx_chr == FML):
                     cellIndexB = (cellIndexB + 1)
                     while True:
                         startIndex = (ptrPos + cellIndexB)
-                        cellIndexB = (ptr.find("\"") if ((startIndex is None)) else ptr.find("\"", startIndex))
+                        cellIndexB = (ptr.find(FML) if ((startIndex is None)) else ptr.find(FML, startIndex))
                         if (cellIndexB == -1):
                             print("[ACsv] Invalid Double Quote")
                             return None
                         cellIndexB = (cellIndexB - ptrPos)
                         index3 = ((ptrPos + cellIndexB) + 1)
-                        if ((("" if (((index3 < 0) or ((index3 >= len(ptr))))) else ptr[index3])) == "\""):
+                        if ((("" if (((index3 < 0) or ((index3 >= len(ptr))))) else ptr[index3])) == FML):
                             cellIndexB = (cellIndexB + 2)
                             continue
                         break
                     cell = HxString.substring(ptr,((ptrPos + cellIndexA) + 1),(ptrPos + cellIndexB))
-                    cell = StringTools.replace(cell,"\"\"","\"")
+                    cell = StringTools.replace(cell,FMLs,FML)
                     cells.append(cell)
                     cellIndexB = (cellIndexB + 1)
                 else:
                     startIndex1 = (ptrPos + cellIndexB)
-                    indexA = (ptr.find(",") if ((startIndex1 is None)) else ptr.find(",", startIndex1))
+                    indexA = (ptr.find(FS) if ((startIndex1 is None)) else ptr.find(FS, startIndex1))
                     if (indexA == -1):
                         indexA = curLen
                     else:
@@ -1479,10 +1586,10 @@ Math.POSITIVE_INFINITY = float("inf")
 Math.NaN = float("nan")
 Math.PI = python_lib_Math.pi
 
-Example.standard_format_text = "id,id2,id3,name,brief\r\n1,20,100,John,He is a googd man\r\n2,20,100,张三,\"他是一个好人\r\n我们都喜欢他\"\r\n3,21,100,море,\"Он хороший человек\r\nмы все любим его\r\nЕго девиз:\r\n\"\"доверяй себе\"\"\"\r\n4,21,200,الشمس,صباح الخير\r\n5,22,200,चंद्रमा,सुसंध्या\r\n6,22,200,ดาว,"
-Example.enhanced_format_text = "id:int,id2:int,id3:int,name:string,weight:number,marry:bool,education:json,tags:strings,brief\r\n1,21,100,John,120.1,true,\"[\"\"AB\"\"]\",\"good,cool\",\"Today is good day\r\nTomorrow is good day too\"\r\n2,21,100,张三,121.2,false,\"[\"\"CD\"\",\"\"EF\"\"]\",good,今天是个好日子\r\n3,22,100,море,123.4,true,\"[\"\"GH\"\",\"\"AB\"\",\"\"CD\"\"]\",good,\"Сегодня хороший день\r\nЗавтра тоже хороший день\"\r\n4,22,200,الشمس,124.5,false,\"{\"\"AA\"\":12}\",strong,صباح الخير\r\n5,23,200,चंद्रमा,126.7,1,\"{\"\"BB\"\":12}\",strong,सुसंध्या\r\n6,23,200,Emilia,,0,\"{\"\"CC\"\":34,\"\"DD\"\":56}\",\"strong,cool\",Hoje é um bom dia\r\n7,24,300,Ayşe,128.9,0,\"{\"\"EE\"\":34,\"\"FF\"\":56}\",\"strong,cool\",Bugün güzel bir gün\r\n8,24,300,陽菜乃,129.01,,\"{\"\"AC\"\":78,\"\"BD\"\":[90,12]}\",\"height,strong\",今日はいい日です\r\n9,25,300,Dwi,130.12,1,\"{\"\"EF\"\":78,\"\"CF\"\":[90,12]}\",,\"Hari ini adalah hari yang baik\r\nBesok juga hari yang baik\"\r\n10,25,400,Bảo,131.23,1,\"[\"\"BC\"\",{\"\"AT\"\":34}]\",\"thin,good\",\r\n11,26,400,민준,132.34,0,\"[\"\"FG\"\",{\"\"AG\"\":34}]\",\"hot,thin,good\",오늘은 좋은 날이다\r\n12,26,400,ดาว,133.456,0,,,"
+Demo.standard_format_text = "id,id2,id3,name,brief\r\n1,20,100,John,He is a googd man\r\n2,20,100,张三,\"他是一个好人\r\n我们都喜欢他\"\r\n3,21,100,море,\"Он хороший человек\r\nмы все любим его\r\nЕго девиз:\r\n\"\"доверяй себе\"\"\"\r\n4,21,200,الشمس,صباح الخير\r\n5,22,200,चंद्रमा,सुसंध्या\r\n6,22,200,ดาว,"
+Demo.enhanced_format_text = "id:int,id2:int,id3:int,name:string,weight:number,marry:bool,education:json,tags:strings,brief\r\n1,21,100,John,120.1,true,\"[\"\"AB\"\"]\",\"good,cool\",\"Today is good day\r\nTomorrow is good day too\"\r\n2,21,100,张三,121.2,false,\"[\"\"CD\"\",\"\"EF\"\"]\",good,今天是个好日子\r\n3,22,100,море,123.4,true,\"[\"\"GH\"\",\"\"AB\"\",\"\"CD\"\"]\",good,\"Сегодня хороший день\r\nЗавтра тоже хороший день\"\r\n4,22,200,الشمس,124.5,false,\"{\"\"AA\"\":12}\",strong,صباح الخير\r\n5,23,200,चंद्रमा,126.7,1,\"{\"\"BB\"\":12}\",strong,सुसंध्या\r\n6,23,200,Emilia,,0,\"{\"\"CC\"\":34,\"\"DD\"\":56}\",\"strong,cool\",Hoje é um bom dia\r\n7,24,300,Ayşe,128.9,0,\"{\"\"EE\"\":34,\"\"FF\"\":56}\",\"strong,cool\",Bugün güzel bir gün\r\n8,24,300,陽菜乃,129.01,,\"{\"\"AC\"\":78,\"\"BD\"\":[90,12]}\",\"height,strong\",今日はいい日です\r\n9,25,300,Dwi,130.12,1,\"{\"\"EF\"\":78,\"\"CF\"\":[90,12]}\",,\"Hari ini adalah hari yang baik\r\nBesok juga hari yang baik\"\r\n10,25,400,Bảo,131.23,1,\"[\"\"BC\"\",{\"\"AT\"\":34}]\",\"thin,good\",\r\n11,26,400,민준,132.34,0,\"[\"\"FG\"\",{\"\"AG\"\":34}]\",\"hot,thin,good\",오늘은 좋은 날이다\r\n12,26,400,ดาว,133.456,0,,,"
 acsv_Table.JSON_TYPES = ["json", "strings"]
 python_Boot.keywords = set(["and", "del", "from", "not", "with", "as", "elif", "global", "or", "yield", "assert", "else", "if", "pass", "None", "break", "except", "import", "raise", "True", "class", "exec", "in", "return", "False", "continue", "finally", "is", "try", "def", "for", "lambda", "while"])
 python_Boot.prefixLength = len("_hx_")
 
-Example.main()
+Demo.main()
