@@ -7,7 +7,9 @@ The features:
 * Tiny size - js version is only 6k
 * Easy to use - provide the example, demo and documentation
 * Fast speed - optimized code for high performance, it can works easy in older devices
-* Powerful - support enhanced csv format, you can declare the field type after field name ⭐(<b>like width<u>:int</u>, name<u>:string</u></b>), please see details from "release/csvs/enhanced_format_text.csv"  
+* Powerful - support enhanced csv format,  
+  you can declare the field type after field name (like width<b>:int</b>, name<b>:string</b>),  
+  please see details from "release/csvs/enhanced_format_text.csv"  
 	> \* current supported field types: bool, int, number, json, strings
 * Cross platform - provide <b>js</b>, <b>php</b> version (the lua, python version via Haxe)
   
@@ -15,11 +17,29 @@ The features:
 Example
 ----------------
 ```javascript
-var table = acsv.Table.Parse(csv_content);
-table.selectWhenE(1, 1).toObj();
-table.selectWhenE2(1, 21, 2).toObjs();
+// enhanced_csv_content
+//------------------------------------
+// id:int | name:string | weight:number | tags:json
+//    1   |   John      |   60          | ["young"]
+//    2   |   Mary      |   60          | ["thin"]
+//    3   |   Tom       |   70          | ["cool"]
+//------------------------------------
+
+var table = acsv.Table.Parse(enhanced_csv_content);
+table.selectWhenE(1, 3).toFirstObj();
+// {id: 3, name: "Tom", weight: 60, tags: ["cool"] }
+
+table.selectWhenE(0, 60, 2).toObjs();
+// [ 
+//   {id: 1, name: "John", weight: 60, tags: ["young"] }, 
+//   {id: 2, name: "Mary", weight: 60, tags: ["thin"] }
+// ]
+
 // Method Chaining Usage - multi filter selected data
-table.selectWhenE(0, 100, 2).selectWhenL(0, false, 22, 1).toObjs();
+table.selectWhenE(0, 60, 2).selectWhenL(0, false, 2).toObjs();
+// [ 
+//   {id: 1, name: "John", weight: 60, tags: ["young"] }
+// ]
 ```
 
 Demos 
