@@ -7,7 +7,7 @@ The features:
 * Tiny size - js version is only 6k
 * Easy to use - provide the example, demo and documentation
 * Fast speed - optimized code for high performance, it can works easy in older devices
-* Powerful - support enhanced csv format,  
+* Powerful - support <b>enhanced</b> csv format,  
 &emsp;&emsp;you can declare the field type after field name (like width<b>:int</b>, name<b>:string</b>),  
 &emsp;&emsp;please see details from "release/csvs/enhanced_format_text.csv"  
 &emsp;&emsp;\* current supported field types: bool, int, number, json, strings
