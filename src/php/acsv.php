@@ -75,6 +75,7 @@ namespace acsv
         /**
          * Get column index by specified field name.
          * @param name As name mean
+         * @return the column index
          */
         public function getColIndexBy($name)
         {
@@ -279,7 +280,7 @@ namespace acsv
         /**
          * Fetch all selected results to a new table.
          */
-        public function toTable(): Table
+        public function toTable()
         {
             if ($this->_selector == null)
             {
@@ -323,7 +324,7 @@ namespace acsv
          * @param rowIndices specified row's indices
          * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
          */
-        public function selectAt($rowIndices): Table
+        public function selectAt($rowIndices)
         {
             $dst = [];
             $len = count($this->body);
@@ -344,7 +345,7 @@ namespace acsv
          * @param colIndex specified column index
          * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
          */
-        public function selectWhenIn($limit, $values, $colIndex = 0): Table
+        public function selectWhenIn($limit, $values, $colIndex = 0)
         {
             $rows = [];
             foreach ($values as $i => $value)
@@ -363,7 +364,7 @@ namespace acsv
          * @param extraSelector extra selector, use it to save selected result
          * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
          */
-        public function selectWhenE($limit, $value, $colIndex = 0, &$extraSelector = null): Table
+        public function selectWhenE($limit, $value, $colIndex = 0, &$extraSelector = null)
         {
             $dst = &$extraSelector;
             if ($dst == null)
@@ -421,7 +422,7 @@ namespace acsv
          * @param colIndex1 first specified column index
          * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
          */
-        public function selectWhenE2($limit, $value1, $value2, $colIndex2 = 1, $colIndex1 = 0): Table
+        public function selectWhenE2($limit, $value1, $value2, $colIndex2 = 1, $colIndex1 = 0)
         {
             $src = $this->_selector;
             if ($src == null)
@@ -455,7 +456,7 @@ namespace acsv
          * @param colIndex1 first specified column index
          * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
          */
-        public function selectWhenE3($limit, $value1, $value2, $value3, $colIndex3 = 2, $colIndex2 = 1, $colIndex1 = 0): Table
+        public function selectWhenE3($limit, $value1, $value2, $value3, $colIndex3 = 2, $colIndex2 = 1, $colIndex1 = 0)
         {
             $src = $this->_selector;
             if ($src == null)
@@ -486,7 +487,7 @@ namespace acsv
          * @param colIndex specified column index
          * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
          */
-        public function selectWhenG($limit, $withEqu, $value, $colIndex = 0): Table
+        public function selectWhenG($limit, $withEqu, $value, $colIndex = 0)
         {
             $src = $this->_selector;
             if ($src == null)
@@ -518,7 +519,7 @@ namespace acsv
          * @param colIndex specified column index
          * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
          */
-        public function selectWhenL($limit, $withEqu, $value, $colIndex = 0): Table
+        public function selectWhenL($limit, $withEqu, $value, $colIndex = 0)
         {
             $src = $this->_selector;
             if ($src == null)
@@ -552,7 +553,7 @@ namespace acsv
          * @param colIndex specified column index
          * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
          */
-        public function selectWhenGreaterAndLess($limit, $GWithEqu, $LWithEqu, $GValue, $LValue, $colIndex = 0): Table
+        public function selectWhenGreaterAndLess($limit, $GWithEqu, $LWithEqu, $GValue, $LValue, $colIndex = 0)
         {
             $src = $this->_selector;
             if ($src == null)
@@ -588,7 +589,7 @@ namespace acsv
          * @param colIndex specified column index
          * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
          */
-        public function selectWhenLessOrGreater($limit, $LWithEqu, $GWithEqu, $LValue, $GValue, $colIndex = 0): Table
+        public function selectWhenLessOrGreater($limit, $LWithEqu, $GWithEqu, $LValue, $GValue, $colIndex = 0)
         {
             $src = $this->_selector;
             if ($src == null)
@@ -620,7 +621,7 @@ namespace acsv
          * @param filedSeparator filed separator
          * @param filedMultiLineDelimiter filed multi-line delimiter
          */
-        public static function Parse($content, $filedSeparator = ",", $filedMultiLineDelimiter = "\""): Table
+        public static function Parse($content, $filedSeparator = ",", $filedMultiLineDelimiter = "\"")
         {
             $table = self::arrayToRows(self::textToArray($content, $filedSeparator, $filedMultiLineDelimiter));
             $table->content = $content;
@@ -765,7 +766,7 @@ namespace acsv
         /**
          * Convert array to rows.
          */
-        private static function arrayToRows($arr): Table
+        private static function arrayToRows($arr)
         {
             $head = array_shift($arr);
             $body = $arr;
