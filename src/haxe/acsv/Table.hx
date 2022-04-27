@@ -44,8 +44,9 @@ class Table
 	 * Merge a table.
 	 * <br/><b>Notice:</b> two tables' structure must be same.
 	 * @param b source table
+     * @return THIS instance
 	 */
-    public function merge(b:Table):Void
+    public function merge(b:Table):Table
     {
         this.body = this.body.concat(b.body);
         var index = b.content.indexOf('\r\n');
@@ -55,6 +56,7 @@ class Table
         }
         var c = b.content.substring(index);
         this.content += c;
+        return this;
     }
     /**
 	 * Create index for the specified column.
@@ -147,7 +149,8 @@ class Table
         var obj:Array<Dynamic> = [];
         for (i in 0...this.head.length)
         {
-            var type = this.head[i].type;
+            var filed = this.head[i];
+            var type = filed.type;
             var val0 = row[i];
             var val1:Dynamic = null;
             if (type != null && type != '' && Table.JSON_TYPES.indexOf(type) != -1)
@@ -173,8 +176,9 @@ class Table
         var obj:Dynamic = {};
         for (i in 0...this.head.length)
         {
-            var name = this.head[i].name;
-            var type = this.head[i].type;
+            var field = this.head[i];
+            var name = field.name;
+            var type = field.type;
             var val0 = row[i];
             var val1:Dynamic = null;
             if (type != null && type != '' && Table.JSON_TYPES.indexOf(type) != -1)
@@ -215,9 +219,13 @@ class Table
     public function toLastRow():Array<Dynamic>
     {
         var rzl = null;
-        if (_selected != null && _selected.length > 0)
+        if (_selected != null)
         {
-            rzl = this.fmtRow(_selected[_selected.length - 1]);
+            var len = _selected.length;
+            if (len > 0)
+            {
+                rzl = this.fmtRow(_selected[len - 1]);
+            }
         }
         _selected = null;
         return rzl;
@@ -259,9 +267,13 @@ class Table
     public function toLastObj():Dynamic
     {
         var rzl = null;
-        if (_selected != null && _selected.length > 0)
+        if (_selected != null)
         {
-            rzl = this.fmtObj(_selected[_selected.length - 1]);
+            var len = _selected.length;
+            if (len > 0)
+            {
+                rzl = this.fmtObj(_selected[len - 1]);
+            }
         }
         _selected = null;
         return rzl;
@@ -334,10 +346,11 @@ class Table
     public function selectAt(rowIndices:Array<Int>):Table
     {
         var dst = new Array<Array<Dynamic>>();
+        var len = this.body.length;
         for (i in 0...rowIndices.length)
         {
             var rowIndex = rowIndices[i];
-            if (rowIndex >= 0 && rowIndex < this.body.length)
+            if (rowIndex >= 0 && rowIndex < len)
             {
                 dst.push(this.body[rowIndex]);
             }
@@ -650,7 +663,7 @@ class Table
     static private function textToArray(text:String, FS:String = ",", FML:String = "\""):Array<Array<Dynamic>>
     {
         var FMLs = FML + FML;
-        var array:Array<Array<Dynamic>> = [];
+        var arr:Array<Array<Dynamic>> = [];
         var maxLen:Int = text.length;
         var ptr:String = text;
         var ptrPos:Int = 0;
@@ -660,8 +673,8 @@ class Table
             var cellIndexA:Int = 0;
             var cellIndexB:Int = 0;
             var cells:Array<Dynamic> = [];
-            var cell:String;
-            var chr:String;
+            var cell:String = null;
+            var chr:String = null;
             while (cellIndexB < curLen)
             {
                 cellIndexA = cellIndexB;
@@ -770,7 +783,7 @@ class Table
                     cells.push(cell);
                 }
             }
-            array.push(cells);
+            arr.push(cells);
             // move to next position
             ptrPos += cellIndexB;
             if (ptrPos >= maxLen)
@@ -778,15 +791,15 @@ class Table
                 break;
             }
         }
-        return array;
+        return arr;
     }
     /**
 	 * Convert array to rows.
 	 */
-    static private function arrayToRows(array:Array<Array<Dynamic>>):Table
+    static private function arrayToRows(arr:Array<Array<Dynamic>>):Table
     {
-        var head:Array<Dynamic> = array.shift();
-        var body:Array<Array<Dynamic>> = array;
+        var head:Array<Dynamic> = arr.shift();
+        var body:Array<Array<Dynamic>> = arr;
         // parse head
         var fileds:Array<Field> = new Array<Field>();
         for (i in 0...head.length)
@@ -805,10 +818,10 @@ class Table
             var row:Array<Dynamic> = body[i];
             for (j in 0...row.length)
             {
-                var type:String = fileds[j].type;
                 var cell:String = row[j];
                 var newVal:Dynamic = cell;
                 var isEmptyCell = (cell == null || cell == '');
+                var type:String = fileds[j].type;
                 if (type == "bool")
                 {
                     if (isEmptyCell || cell == "false" || cell == '0')

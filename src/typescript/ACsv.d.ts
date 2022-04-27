@@ -37,8 +37,9 @@ declare namespace acsv
          * Merge a table.
          * <br/><b>Notice:</b> two tables' structure must be same.
          * @param b source table
+         * @return THIS instance
          */
-        merge(b: Table);
+        merge(b: Table): Table
         /**
          * Create index for the specified column.
          * <br>This function is only valid for "selectWhenE" and "limit" param is 1.

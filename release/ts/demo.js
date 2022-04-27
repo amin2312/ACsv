@@ -1,5 +1,5 @@
 "use strict";
-/// <reference path="../../release/ts/ACsv.d.ts" />
+/// <reference path="ACsv.d.ts" />
 /**
  * Standard csv format text
  */
@@ -95,6 +95,7 @@ function test_standard_csv_format() {
     P('selectWhenE (id) = "3" and (id2) = "21"', _tab1.selectWhenE2(1, "3", "21").toFirstObj());
     P('selectWhenE (id) = "4" and (id2) = "21" and (id3) = "200"', _tab1.selectWhenE3(1, "4", "21", "200").toFirstObj());
     P('selectWhenE ALL (id2) = "20"', _tab1.selectWhenE(0, "20", 1).toObjs());
+    P('merge tables', _tab1.merge(_tab1).selectAll().toRows());
 }
 function test_enhanced_csv_format() {
     P('[E] select ALL to rows', _tab2.selectAll().toRows());
@@ -126,7 +127,7 @@ function test_enhanced_csv_format() {
     P('[E] multi selects (id3) = 100 and (id2) < 22', _tab2.selectWhenE(0, 100, 2).selectWhenL(0, false, 22, 1).toObjs());
     P('[E] sort by (id3) = 300 desc (id)', _tab2.selectWhenE(0, 300, 2).sortBy(0, 1).toObjs());
     _tab2.createIndexAt(0);
-    P("[E] (indexed) Dwi's row", _tab2.selectWhenE(1, 'Dwi', _tab2.getColIndexBy('name')).toObjs()[0].name);
+    P("[E] (indexed) 1st row name", _tab2.selectWhenE(1, 'Dwi', _tab2.getColIndexBy('name')).toObjs()[0].name);
     P('[E] (indexed) 99th row', _tab2.selectWhenE(1, 99).toObjs());
 }
 main();

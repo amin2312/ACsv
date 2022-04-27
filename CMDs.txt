@@ -7,4 +7,4 @@ haxelib run dox -i release/dox/ACsv.xml -o release/docs/hx --title "ACsv library
 // USE uglify to compress js file
 // Please install the tools first: npm install gulp-uglify
 //
-uglifyjs release/js/ACsv.js -m -o release/js/ACsv.min.js
+uglifyjs src/javascript/ACsv.js -m -o src/javascript/ACsv.min.js
