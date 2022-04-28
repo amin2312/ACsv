@@ -115,6 +115,7 @@ Demo.test_enhanced_csv_format = function() {
 	Demo.P("[E] sort by (id3) = 300 desc (id)",Demo._tab2.selectWhenE(0,300,2).sortBy(0,1).toObjs());
 	Demo._tab2.createIndexAt(0);
 	Demo.P("[E] (indexed) 1st row name",Demo._tab2.selectWhenE(1,"Dwi",Demo._tab2.getColIndexBy("name")).toObjs()[0].name);
+	Demo.P("[E] (indexed) id=2 row name",Demo._tab2.id(2).name);
 	Demo.P("[E] (indexed) 99th row",Demo._tab2.selectWhenE(1,99).toObjs());
 };
 var StringTools = function() { };
@@ -124,7 +125,7 @@ StringTools.replace = function(s,sub,by) {
 var acsv_Field = $hx_exports["acsv"]["Field"] = function() {
 };
 var acsv_Table = $hx_exports["acsv"]["Table"] = function() {
-	this._selected = null;
+	this._selector = null;
 	this._indexSet = { };
 	this.body = [];
 	this.head = [];
@@ -350,8 +351,14 @@ acsv_Table.prototype = {
 		}
 		return -1;
 	}
+	,id: function(value,colIndex) {
+		if(colIndex == null) {
+			colIndex = 0;
+		}
+		return this.selectWhenE(1,value,colIndex).toFirstObj();
+	}
 	,sortBy: function(colIndex,sortType) {
-		var len = this._selected.length;
+		var len = this._selector.length;
 		var _g1 = 0;
 		var _g = len;
 		while(_g1 < _g) {
@@ -361,24 +368,24 @@ acsv_Table.prototype = {
 			while(_g3 < _g2) {
 				var j = _g3++;
 				var ok = false;
-				var a = this._selected[j][colIndex];
-				var b = this._selected[j + 1][colIndex];
+				var a = this._selector[j][colIndex];
+				var b = this._selector[j + 1][colIndex];
 				if(sortType == 0 && a > b) {
 					ok = true;
 				} else if(sortType == 1 && a < b) {
 					ok = true;
 				}
 				if(ok) {
-					var temp = this._selected[j];
-					this._selected[j] = this._selected[j + 1];
-					this._selected[j + 1] = temp;
+					var temp = this._selector[j];
+					this._selector[j] = this._selector[j + 1];
+					this._selector[j + 1] = temp;
 				}
 			}
 		}
 		return this;
 	}
 	,getCurrentSelector: function() {
-		return this._selected;
+		return this._selector;
 	}
 	,fmtRow: function(row) {
 		var obj = [];
@@ -425,92 +432,92 @@ acsv_Table.prototype = {
 	}
 	,toFirstRow: function() {
 		var rzl = null;
-		if(this._selected != null && this._selected.length > 0) {
-			rzl = this.fmtRow(this._selected[0]);
+		if(this._selector != null && this._selector.length > 0) {
+			rzl = this.fmtRow(this._selector[0]);
 		}
-		this._selected = null;
+		this._selector = null;
 		return rzl;
 	}
 	,toLastRow: function() {
 		var rzl = null;
-		if(this._selected != null) {
-			var len = this._selected.length;
+		if(this._selector != null) {
+			var len = this._selector.length;
 			if(len > 0) {
-				rzl = this.fmtRow(this._selected[len - 1]);
+				rzl = this.fmtRow(this._selector[len - 1]);
 			}
 		}
-		this._selected = null;
+		this._selector = null;
 		return rzl;
 	}
 	,toRows: function() {
-		if(this._selected == null) {
+		if(this._selector == null) {
 			return null;
 		}
 		var dst = [];
 		var _g1 = 0;
-		var _g = this._selected.length;
+		var _g = this._selector.length;
 		while(_g1 < _g) {
 			var i = _g1++;
-			var row = this._selected[i];
+			var row = this._selector[i];
 			dst.push(this.fmtRow(row));
 		}
-		this._selected = null;
+		this._selector = null;
 		return dst;
 	}
 	,toFirstObj: function() {
 		var rzl = null;
-		if(this._selected != null && this._selected.length > 0) {
-			rzl = this.fmtObj(this._selected[0]);
+		if(this._selector != null && this._selector.length > 0) {
+			rzl = this.fmtObj(this._selector[0]);
 		}
-		this._selected = null;
+		this._selector = null;
 		return rzl;
 	}
 	,toLastObj: function() {
 		var rzl = null;
-		if(this._selected != null) {
-			var len = this._selected.length;
+		if(this._selector != null) {
+			var len = this._selector.length;
 			if(len > 0) {
-				rzl = this.fmtObj(this._selected[len - 1]);
+				rzl = this.fmtObj(this._selector[len - 1]);
 			}
 		}
-		this._selected = null;
+		this._selector = null;
 		return rzl;
 	}
 	,toObjs: function() {
-		if(this._selected == null) {
+		if(this._selector == null) {
 			return null;
 		}
 		var dst = [];
 		var _g1 = 0;
-		var _g = this._selected.length;
+		var _g = this._selector.length;
 		while(_g1 < _g) {
 			var i = _g1++;
-			var row = this._selected[i];
+			var row = this._selector[i];
 			dst.push(this.fmtObj(row));
 		}
-		this._selected = null;
+		this._selector = null;
 		return dst;
 	}
 	,toTable: function() {
-		if(this._selected == null) {
+		if(this._selector == null) {
 			return null;
 		}
 		var t = new acsv_Table();
 		t.head = this.head.concat([]);
-		t.body = this._selected;
-		this._selected = null;
+		t.body = this._selector;
+		this._selector = null;
 		return t;
 	}
 	,selectAll: function() {
-		this._selected = this.body;
+		this._selector = this.body;
 		return this;
 	}
 	,selectFirstRow: function() {
-		this._selected = [this.body[0]];
+		this._selector = [this.body[0]];
 		return this;
 	}
 	,selectLastRow: function() {
-		this._selected = [this.body[this.body.length - 1]];
+		this._selector = [this.body[this.body.length - 1]];
 		return this;
 	}
 	,selectAt: function(rowIndices) {
@@ -525,7 +532,7 @@ acsv_Table.prototype = {
 				dst.push(this.body[rowIndex]);
 			}
 		}
-		this._selected = dst;
+		this._selector = dst;
 		return this;
 	}
 	,selectWhenIn: function(limit,values,colIndex) {
@@ -539,9 +546,9 @@ acsv_Table.prototype = {
 			var i = _g1++;
 			var value = values[i];
 			this.selectWhenE(limit,value,colIndex,rows);
-			this._selected = null;
+			this._selector = null;
 		}
-		this._selected = rows;
+		this._selector = rows;
 		return this;
 	}
 	,selectWhenE: function(limit,value,colIndex,extraSelector) {
@@ -559,11 +566,11 @@ acsv_Table.prototype = {
 				if(val != null) {
 					dst.push(val);
 				}
-				this._selected = dst;
+				this._selector = dst;
 				return this;
 			}
 		}
-		var src = this._selected;
+		var src = this._selector;
 		if(src == null) {
 			src = this.body;
 		}
@@ -580,7 +587,7 @@ acsv_Table.prototype = {
 				}
 			}
 		}
-		this._selected = dst;
+		this._selector = dst;
 		return this;
 	}
 	,selectWhenE2: function(limit,value1,value2,colIndex2,colIndex1) {
@@ -590,7 +597,7 @@ acsv_Table.prototype = {
 		if(colIndex2 == null) {
 			colIndex2 = 1;
 		}
-		var src = this._selected;
+		var src = this._selector;
 		if(src == null) {
 			src = this.body;
 		}
@@ -608,7 +615,7 @@ acsv_Table.prototype = {
 				}
 			}
 		}
-		this._selected = dst;
+		this._selector = dst;
 		return this;
 	}
 	,selectWhenE3: function(limit,value1,value2,value3,colIndex3,colIndex2,colIndex1) {
@@ -621,7 +628,7 @@ acsv_Table.prototype = {
 		if(colIndex3 == null) {
 			colIndex3 = 2;
 		}
-		var src = this._selected;
+		var src = this._selector;
 		if(src == null) {
 			src = this.body;
 		}
@@ -639,14 +646,14 @@ acsv_Table.prototype = {
 				}
 			}
 		}
-		this._selected = dst;
+		this._selector = dst;
 		return this;
 	}
 	,selectWhenG: function(limit,withEqu,value,colIndex) {
 		if(colIndex == null) {
 			colIndex = 0;
 		}
-		var src = this._selected;
+		var src = this._selector;
 		if(src == null) {
 			src = this.body;
 		}
@@ -665,14 +672,14 @@ acsv_Table.prototype = {
 				}
 			}
 		}
-		this._selected = dst;
+		this._selector = dst;
 		return this;
 	}
 	,selectWhenL: function(limit,withEqu,value,colIndex) {
 		if(colIndex == null) {
 			colIndex = 0;
 		}
-		var src = this._selected;
+		var src = this._selector;
 		if(src == null) {
 			src = this.body;
 		}
@@ -691,14 +698,14 @@ acsv_Table.prototype = {
 				}
 			}
 		}
-		this._selected = dst;
+		this._selector = dst;
 		return this;
 	}
 	,selectWhenGreaterAndLess: function(limit,GWithEqu,LWithEqu,GValue,LValue,colIndex) {
 		if(colIndex == null) {
 			colIndex = 0;
 		}
-		var src = this._selected;
+		var src = this._selector;
 		if(src == null) {
 			src = this.body;
 		}
@@ -719,14 +726,14 @@ acsv_Table.prototype = {
 				}
 			}
 		}
-		this._selected = dst;
+		this._selector = dst;
 		return this;
 	}
 	,selectWhenLessOrGreater: function(limit,LWithEqu,GWithEqu,LValue,GValue,colIndex) {
 		if(colIndex == null) {
 			colIndex = 0;
 		}
-		var src = this._selected;
+		var src = this._selector;
 		if(src == null) {
 			src = this.body;
 		}
@@ -747,7 +754,7 @@ acsv_Table.prototype = {
 				}
 			}
 		}
-		this._selected = dst;
+		this._selector = dst;
 		return this;
 	}
 };

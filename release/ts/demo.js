@@ -128,6 +128,7 @@ function test_enhanced_csv_format() {
     P('[E] sort by (id3) = 300 desc (id)', _tab2.selectWhenE(0, 300, 2).sortBy(0, 1).toObjs());
     _tab2.createIndexAt(0);
     P("[E] (indexed) 1st row name", _tab2.selectWhenE(1, 'Dwi', _tab2.getColIndexBy('name')).toObjs()[0].name);
+    P("[E] (indexed) id=2 row name", _tab2.id(2).name);
     P('[E] (indexed) 99th row', _tab2.selectWhenE(1, 99).toObjs());
 }
 main();

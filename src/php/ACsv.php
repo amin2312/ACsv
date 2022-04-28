@@ -41,8 +41,8 @@ namespace acsv
         /**
          * Merge a table.
          * <br/><b>Notice:</b> two tables' structure must be same.
-         * @param b source table
-         * @return THIS instance
+         * @param Table $b source table
+         * @return Table THIS instance
          */
         public function merge($b)
         {
@@ -60,7 +60,8 @@ namespace acsv
          * Create index for the specified column.
          * <br>This function is only valid for "selectWhenE" and "limit" param is 1.
          * <br>It will improve performance.
-         * @param colIndex column index
+         * @param int $colIndex column index
+         * @return void
          */
         public function createIndexAt($colIndex)
         {
@@ -74,8 +75,8 @@ namespace acsv
         }
         /**
          * Get column index by specified field name.
-         * @param name As name mean
-         * @return the column index
+         * @param string $name As name mean
+         * @return int column index
          */
         public function getColIndexBy($name)
         {
@@ -89,10 +90,20 @@ namespace acsv
             return -1;
         }
         /**
+         * Fetch a row object when the column's value is equal to the id value
+         * @param mixed $values the specified value
+         * @param int $colIndex specified column index
+         * @return object selected row object
+         */
+        public function id($value, $colIndex = 0)
+        {
+            return $this->selectWhenE(1, $value, $colIndex)->toFirstObj();
+        }
+        /**
          * Sort by selected rows.
-         * @param colIndex the column index specified for sorting
-         * @param sortType 0: asc, 1: desc
-         * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
+         * @param int $colIndex the column index specified for sorting
+         * @param int $sortType 0: asc, 1: desc
+         * @return Table THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
          */
         public function sortBy($colIndex, $sortType)
         {
@@ -125,6 +136,7 @@ namespace acsv
         /**
          * Get current selector(it includes all selected results).
          * <br><b>Notice:</b> It be assigned after call "select..." function
+         * @return array current selector
          */
         public function getCurrentSelector()
         {
@@ -185,6 +197,7 @@ namespace acsv
         }
         /**
          * Fetch first selected result to a row and return it.
+         * @return array first selected row data
          */
         public function toFirstRow()
         {
@@ -198,6 +211,7 @@ namespace acsv
         }
         /**
          * Fetch last selected result to a row and return it.
+         * @return array last selected row data
          */
         public function toLastRow()
         {
@@ -215,6 +229,7 @@ namespace acsv
         }
         /**
          * Fetch all selected results to the rows and return it.
+         * @return array[] a array of row data
          */
         public function toRows()
         {
@@ -232,6 +247,7 @@ namespace acsv
         }
         /**
          * Fetch first selected result to a object and return it.
+         * @return object first selected row object
          */
         public function toFirstObj()
         {
@@ -245,6 +261,7 @@ namespace acsv
         }
         /**
          * Fetch last selected result to a object and return it.
+         * @return object last selected row object
          */
         public function toLastObj()
         {
@@ -262,6 +279,7 @@ namespace acsv
         }
         /**
          * Fetch all selected results to the objects and return it.
+         * @return array[] a array of row object
          */
         public function toObjs()
         {
@@ -279,6 +297,7 @@ namespace acsv
         }
         /**
          * Fetch all selected results to a new table.
+         * @return Table a new table instance
          */
         public function toTable()
         {
@@ -294,7 +313,7 @@ namespace acsv
         }
         /**
          * Select all rows.
-         * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
+         * @return Table THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
          */
         public function selectAll()
         {
@@ -303,7 +322,7 @@ namespace acsv
         }
         /**
          * Select the first row.
-         * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
+         * @return Table THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
          */
         public function selectFirstRow()
         {
@@ -312,7 +331,7 @@ namespace acsv
         }
         /**
          * Select the last row.
-         * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
+         * @return Table THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
          */
         public function selectLastRow()
         {
@@ -321,8 +340,8 @@ namespace acsv
         }
         /**
          * Selects the specified <b>rows</b> by indices.
-         * @param rowIndices specified row's indices
-         * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
+         * @param int[] $rowIndices specified row's indices
+         * @return Table THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
          */
         public function selectAt($rowIndices)
         {
@@ -340,10 +359,10 @@ namespace acsv
         }
         /**
          * Select the rows when the column's value is equal to any value of array.
-         * @param limit maximum length of every selected results (0 is infinite, if you only need 1 result, 1 is recommended, it will improve performance)
-         * @param values the array of values
-         * @param colIndex specified column index
-         * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
+         * @param int $limit maximum length of every selected results (0 is infinite, if you only need 1 result, 1 is recommended, it will improve performance)
+         * @param array $values the array of values
+         * @param int $colIndex specified column index
+         * @return Table THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
          */
         public function selectWhenIn($limit, $values, $colIndex = 0)
         {
@@ -358,11 +377,11 @@ namespace acsv
         }
         /**
          * Select the rows when the column's value is equal to specified value.
-         * @param limit maximum length of selected results (0 is infinite, if you only need 1 result, 1 is recommended, it will improve performance)
-         * @param value the specified value
-         * @param colIndex specified column index
-         * @param extraSelector extra selector, use it to save selected result
-         * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
+         * @param int $limit maximum length of selected results (0 is infinite, if you only need 1 result, 1 is recommended, it will improve performance)
+         * @param mixed $value the specified value
+         * @param int $colIndex specified column index
+         * @param array $extraSelector extra selector, use it to save selected result
+         * @return Table THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
          */
         public function selectWhenE($limit, $value, $colIndex = 0, &$extraSelector = null)
         {
@@ -415,12 +434,12 @@ namespace acsv
         }
         /**
          * Select the rows when the column's values are equal to specified values.
-         * @param limit maximum length of selected results (0 is infinite, if you only need 1 result, 1 is recommended, it will improve performance)
-         * @param value1 first specified value
-         * @param value2 second specified value
-         * @param colIndex2 second specified column index
-         * @param colIndex1 first specified column index
-         * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
+         * @param int $limit maximum length of selected results (0 is infinite, if you only need 1 result, 1 is recommended, it will improve performance)
+         * @param mixed $value1 first specified value
+         * @param mixed $value2 second specified value
+         * @param int $colIndex2 second specified column index
+         * @param int $colIndex1 first specified column index
+         * @return Table THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
          */
         public function selectWhenE2($limit, $value1, $value2, $colIndex2 = 1, $colIndex1 = 0)
         {
@@ -447,14 +466,14 @@ namespace acsv
         }
         /**
          * Select the rows when the column's values are equal to specified values.
-         * @param limit maximum length of selected results (0 is infinite, if you only need 1 result, 1 is recommended, it will improve performance)
-         * @param value1 first specified value
-         * @param value2 second specified value
-         * @param value3 third specified value
-         * @param colIndex3 third specified column index
-         * @param colIndex2 second specified column index
-         * @param colIndex1 first specified column index
-         * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
+         * @param int $limit maximum length of selected results (0 is infinite, if you only need 1 result, 1 is recommended, it will improve performance)
+         * @param mixed $value1 first specified value
+         * @param mixed $value2 second specified value
+         * @param mixed $value3 third specified value
+         * @param int $colIndex3 third specified column index
+         * @param int $colIndex2 second specified column index
+         * @param int $colIndex1 first specified column index
+         * @return Table THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
          */
         public function selectWhenE3($limit, $value1, $value2, $value3, $colIndex3 = 2, $colIndex2 = 1, $colIndex1 = 0)
         {
@@ -481,11 +500,11 @@ namespace acsv
         }
         /**
          * Select the rows when the column's value is greater than specified value.
-         * @param limit maximum length of selected results (0 is infinite, if you only need 1 result, 1 is recommended, it will improve performance)
-         * @param withEqu whether include equation
-         * @param value the specified value
-         * @param colIndex specified column index
-         * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
+         * @param int $limit maximum length of selected results (0 is infinite, if you only need 1 result, 1 is recommended, it will improve performance)
+         * @param bool $withEqu whether include equation
+         * @param float $value the specified value
+         * @param int $colIndex specified column index
+         * @return Table THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
          */
         public function selectWhenG($limit, $withEqu, $value, $colIndex = 0)
         {
@@ -513,11 +532,11 @@ namespace acsv
         }
         /**
          * Select the rows when the column's value is less than specified values.
-         * @param limit maximum length of selected results (0 is infinite, if you only need 1 result, 1 is recommended, it will improve performance)
-         * @param withEqu whether include equation
-         * @param value the specified value
-         * @param colIndex specified column index
-         * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
+         * @param int $limit maximum length of selected results (0 is infinite, if you only need 1 result, 1 is recommended, it will improve performance)
+         * @param bool $withEqu whether include equation
+         * @param float $value the specified value
+         * @param int $colIndex specified column index
+         * @return Table THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
          */
         public function selectWhenL($limit, $withEqu, $value, $colIndex = 0)
         {
@@ -545,13 +564,13 @@ namespace acsv
         }
         /**
          * Select the rows when the column's value is greater than specified value <b>and</b> less than specified value.
-         * @param limit maximum length of selected results (0 is infinite, if you only need 1 result, 1 is recommended, it will improve performance)
-         * @param GWithEqu whether greater and equal
-         * @param LWithEqu whether less and equal
-         * @param GValue the specified greater value
-         * @param LValue the specified less value
-         * @param colIndex specified column index
-         * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
+         * @param int $limit maximum length of selected results (0 is infinite, if you only need 1 result, 1 is recommended, it will improve performance)
+         * @param bool $GWithEqu whether greater and equal
+         * @param bool $LWithEqu whether less and equal
+         * @param float $GValue the specified greater value
+         * @param float $LValue the specified less value
+         * @param int $colIndex specified column index
+         * @return Table THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
          */
         public function selectWhenGreaterAndLess($limit, $GWithEqu, $LWithEqu, $GValue, $LValue, $colIndex = 0)
         {
@@ -581,13 +600,13 @@ namespace acsv
         }
         /**
          * Select the rows when the column's value is less than specified value <b>or</b> greater than specified value.
-         * @param limit maximum length of selected results (0 is infinite, if you only need 1 result, 1 is recommended, it will improve performance)
-         * @param LWithEqu whether less and equal
-         * @param GWithEqu whether greater and equal
-         * @param LValue the specified less value
-         * @param GValue the specified greater value
-         * @param colIndex specified column index
-         * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
+         * @param int $limit maximum length of selected results (0 is infinite, if you only need 1 result, 1 is recommended, it will improve performance)
+         * @param bool $LWithEqu whether less and equal
+         * @param bool $GWithEqu whether greater and equal
+         * @param float $LValue the specified less value
+         * @param float $GValue the specified greater value
+         * @param int $colIndex specified column index
+         * @return Table THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
          */
         public function selectWhenLessOrGreater($limit, $LWithEqu, $GWithEqu, $LValue, $GValue, $colIndex = 0)
         {
@@ -617,9 +636,10 @@ namespace acsv
         }
         /**
          * Parse csv conent.
-         * @param content As name mean
-         * @param filedSeparator filed separator
-         * @param filedMultiLineDelimiter filed multi-line delimiter
+         * @param strintg $content As name mean
+         * @param strintg $filedSeparator filed separator
+         * @param strintg $filedMultiLineDelimiter filed multi-line delimiter
+         * @return Table a table instance
          */
         public static function Parse($content, $filedSeparator = ",", $filedMultiLineDelimiter = "\"")
         {

@@ -11,7 +11,7 @@ The features:
 &emsp;&emsp;allow field type to be declared after field name (like width:**int**, name:**string**),  
 &emsp;&emsp;supported field types: **bool, int, number, json, strings**  
 &emsp;&emsp;see details in "release/csvs/enhanced_format_text.csv"   
-* Cross platform - provide **haxe**, **js**, **php** version (the lua, python version via Haxe)
+* Cross platform - provide **haxe**, **js**, **ts**, **php** version (the lua, python version via Haxe)
   
 
 Example
@@ -45,7 +45,7 @@ table.selectWhenE(0, 20, 2).selectWhenL(0, false, 60.2).toObjs();
 Demos 
 ----------------
 * [Javascript demo - via Haxe code to compile](https://amin2312.github.io/ACsv/release/js/demo.html)
-* [Javascript demo - via Typescript code with library to compile](https://amin2312.github.io/ACsv/release/ts/demo.html)
+* [Javascript demo - via Typescript code to compile](https://amin2312.github.io/ACsv/release/ts/demo.html)
 
 Docs
 ----------------

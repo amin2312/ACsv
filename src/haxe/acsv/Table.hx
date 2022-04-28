@@ -11,41 +11,41 @@ package acsv;
 class Table
 {
     /**
-	 * Supported json field types.
-	 */
+     * Supported json field types.
+     */
     private static var JSON_TYPES:Array<String> = ["json", "strings"];
     /**
-	 * The raw content.
-	 */
+     * The raw content.
+     */
     public var content:String = null;
     /**
-	 * Parsed csv table Head.
-	 */
+     * Parsed csv table Head.
+     */
     public var head = new Array<Field>();
     /**
-	 * Parsed csv table Body.
-	 */
+     * Parsed csv table Body.
+     */
     public var body = new Array<Array<Dynamic>>();
     /**
-	 * Index Set(optimize for read).
-	 */
+     * Index Set(optimize for read).
+     */
     private var _indexSet:Dynamic = {};
     /**
-	 * Selected data(for Method Chaining).
-	 **/
+     * Selected data(for Method Chaining).
+     **/
     private var _selector:Array<Array<Dynamic>> = null;
     /**
-	 * Constructor.
-	 */
+     * Constructor.
+     */
     @:dox(hide)
     public function new()
     {}
     /**
-	 * Merge a table.
-	 * <br/><b>Notice:</b> two tables' structure must be same.
-	 * @param b source table
+     * Merge a table.
+     * <br/><b>Notice:</b> two tables' structure must be same.
+     * @param b source table
      * @return THIS instance
-	 */
+     */
     public function merge(b:Table):Table
     {
         this.body = this.body.concat(b.body);
@@ -59,11 +59,11 @@ class Table
         return this;
     }
     /**
-	 * Create index for the specified column.
-	 * <br>This function is only valid for "selectWhenE" and "limit" param is 1.
-	 * <br>It will improve performance.
-	 * @param colIndex column index
-	 */
+     * Create index for the specified column.
+     * <br>This function is only valid for "selectWhenE" and "limit" param is 1.
+     * <br>It will improve performance.
+     * @param colIndex column index
+     */
     public function createIndexAt(colIndex:Int):Void
     {
         var map:Dynamic = {};
@@ -84,9 +84,10 @@ class Table
         #end
     }
     /**
-	 * Get column index by specified field name.
-	 * @param name As name mean
-	 */
+     * Get column index by specified field name.
+     * @param name As name mean
+     * @return column index
+     */
     public function getColIndexBy(name:String):Int
     {
         for (i in 0...this.head.length)
@@ -100,11 +101,21 @@ class Table
         return -1;
     }
     /**
-	 * Sort by selected rows.
+     * Fetch a row object when the column's value is equal to the id value
+     * @param values the specified value
+     * @param colIndex specified column index
+     * @return selected row object
+     */
+    public function id(value:Dynamic, colIndex:Int = 0):Dynamic
+    {
+        return this.selectWhenE(1, value, colIndex).toFirstObj();
+    }
+    /**
+     * Sort by selected rows.
      * @param colIndex the column index specified for sorting
      * @param sortType 0: asc, 1: desc
      * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
-	 */
+     */
     public function sortBy(colIndex:Int, sortType:Int):Table
     {
         var len = _selector.length;
@@ -134,16 +145,17 @@ class Table
         return this;
     }
     /**
-	 * Get current selector(it includes all selected results).
-	 * <br><b>Notice:</b> It be assigned after call "select..." function
-	 */
+     * Get current selector(it includes all selected results).
+     * <br><b>Notice:</b> It be assigned after call "select..." function
+     * @return current selector
+     */
     public function getCurrentSelector():Array<Dynamic>
     {
         return _selector;
     }
     /**
-	 * Format data to row.
-	 */
+     * Format data to row.
+     */
     private function fmtRow(row:Array<Dynamic>):Array<Dynamic>
     {
         var obj:Array<Dynamic> = [];
@@ -169,8 +181,8 @@ class Table
         return obj;
     }
     /**
-	 * Format data to obj.
-	 */
+     * Format data to obj.
+     */
     private function fmtObj(row:Array<Dynamic>):Dynamic
     {
         var obj:Dynamic = {};
@@ -201,8 +213,9 @@ class Table
         return obj;
     }
     /**
-	 * Fetch first selected result to a row and return it.
-	 */
+     * Fetch first selected result to a row and return it.
+     * @return first selected row data
+     */
     public function toFirstRow():Array<Dynamic>
     {
         var rzl = null;
@@ -214,8 +227,9 @@ class Table
         return rzl;
     }
     /**
-	 * Fetch last selected result to a row and return it.
-	 */
+     * Fetch last selected result to a row and return it.
+     * @return last selected row data
+     */
     public function toLastRow():Array<Dynamic>
     {
         var rzl = null;
@@ -231,8 +245,9 @@ class Table
         return rzl;
     }
     /**
-	 * Fetch all selected results to the rows and return it.
-	 */
+     * Fetch all selected results to the rows and return it.
+     * @return a array of row data
+     */
     public function toRows():Array<Array<Dynamic>>
     {
         if (_selector == null)
@@ -249,8 +264,9 @@ class Table
         return dst;
     }
     /**
-	 * Fetch first selected result to a object and return it.
-	 */
+     * Fetch first selected result to a object and return it.
+     * @return first selected row object
+     */
     public function toFirstObj():Dynamic
     {
         var rzl = null;
@@ -262,8 +278,9 @@ class Table
         return rzl;
     }
     /**
-	 * Fetch last selected result to a object and return it.
-	 */
+     * Fetch last selected result to a object and return it.
+     * @return last selected row object
+     */
     public function toLastObj():Dynamic
     {
         var rzl = null;
@@ -279,8 +296,9 @@ class Table
         return rzl;
     }
     /**
-	 * Fetch all selected results to the objects and return it.
-	 */
+     * Fetch all selected results to the objects and return it.
+     * @return a array of row object
+     */
     public function toObjs():Array<Dynamic>
     {
         if (_selector == null)
@@ -297,8 +315,9 @@ class Table
         return dst;
     }
     /**
-	 * Fetch all selected results to a new table.
-	 */
+     * Fetch all selected results to a new table.
+     * @return a new table instance
+     */
     public function toTable():Table
     {
         if (_selector == null)
@@ -312,27 +331,27 @@ class Table
         return t;
     }
     /**
-	 * Select all rows.
+     * Select all rows.
      * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
-	 */
+     */
     public function selectAll():Table
     {
         _selector = body;
         return this;
     }
     /**
-	 * Select the first row.
+     * Select the first row.
      * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
-	 */
+     */
     public function selectFirstRow():Table
     {
         _selector = [body[0]];
         return this;
     }
     /**
-	 * Select the last row.
+     * Select the last row.
      * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
-	 */
+     */
     public function selectLastRow():Table
     {
         _selector = [body[body.length - 1]];
@@ -342,7 +361,7 @@ class Table
      * Selects the specified <b>rows</b> by indices.
      * @param rowIndices specified row's indices
      * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
-	 */
+     */
     public function selectAt(rowIndices:Array<Int>):Table
     {
         var dst = new Array<Array<Dynamic>>();
@@ -364,7 +383,7 @@ class Table
      * @param values the array of values
      * @param colIndex specified column index
      * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
-	 */
+     */
     public function selectWhenIn(limit:Int, values:Array<Dynamic>, colIndex:Int = 0):Table
     {
         var rows = new Array<Array<Dynamic>>();
@@ -384,7 +403,7 @@ class Table
      * @param colIndex specified column index
      * @param extraSelector extra selector, use it to save selected result
      * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
-	 */
+     */
     public function selectWhenE(limit:Int, value:Dynamic, colIndex:Int = 0, extraSelector:Array<Array<Dynamic>> = null):Table
     {
         var dst:Array<Array<Dynamic>> = extraSelector;
@@ -438,14 +457,14 @@ class Table
         return this;
     }
     /**
-	 * Select the rows when the column's values are equal to specified values.
+     * Select the rows when the column's values are equal to specified values.
      * @param limit maximum length of selected results (0 is infinite, if you only need 1 result, 1 is recommended, it will improve performance)
      * @param value1 first specified value
      * @param value2 second specified value
      * @param colIndex2 second specified column index
      * @param colIndex1 first specified column index
      * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
-	 */
+     */
     public function selectWhenE2(limit:Int, value1:Dynamic, value2:Dynamic, colIndex2:Int = 1, colIndex1:Int = 0):Table
     {
         var src = _selector;
@@ -471,7 +490,7 @@ class Table
         return this;
     }
     /**
-	 * Select the rows when the column's values are equal to specified values.
+     * Select the rows when the column's values are equal to specified values.
      * @param limit maximum length of selected results (0 is infinite, if you only need 1 result, 1 is recommended, it will improve performance)
      * @param value1 first specified value
      * @param value2 second specified value
@@ -480,7 +499,7 @@ class Table
      * @param colIndex2 second specified column index
      * @param colIndex1 first specified column index
      * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
-	 */
+     */
     public function selectWhenE3(limit:Int, value1:Dynamic, value2:Dynamic, value3:Dynamic, colIndex3:Int = 2, colIndex2:Int = 1, colIndex1:Int = 0):Table
     {
         var src = _selector;
@@ -506,13 +525,13 @@ class Table
         return this;
     }
     /**
-	 * Select the rows when the column's value is greater than specified value.
+     * Select the rows when the column's value is greater than specified value.
      * @param limit maximum length of selected results (0 is infinite, if you only need 1 result, 1 is recommended, it will improve performance)
      * @param withEqu whether include equation
      * @param value the specified value
      * @param colIndex specified column index
      * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
-	 */
+     */
     public function selectWhenG(limit:Int, withEqu:Bool, value:Float, colIndex:Int = 0):Table
     {
         var src = _selector;
@@ -539,13 +558,13 @@ class Table
         return this;
     }
     /**
-	 * Select the rows when the column's value is less than specified values.
+     * Select the rows when the column's value is less than specified values.
      * @param limit maximum length of selected results (0 is infinite, if you only need 1 result, 1 is recommended, it will improve performance)
      * @param withEqu whether include equation
      * @param value the specified value
      * @param colIndex specified column index
      * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
-	 */
+     */
     public function selectWhenL(limit:Int, withEqu:Bool, value:Float, colIndex:Int = 0):Table
     {
         var src = _selector;
@@ -572,7 +591,7 @@ class Table
         return this;
     }
     /**
-	 * Select the rows when the column's value is greater than specified value <b>and</b> less than specified value.
+     * Select the rows when the column's value is greater than specified value <b>and</b> less than specified value.
      * @param limit maximum length of selected results (0 is infinite, if you only need 1 result, 1 is recommended, it will improve performance)
      * @param GWithEqu whether greater and equal
      * @param LWithEqu whether less and equal
@@ -580,7 +599,7 @@ class Table
      * @param LValue the specified less value
      * @param colIndex specified column index
      * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
-	 */
+     */
     public function selectWhenGreaterAndLess(limit:Int, GWithEqu:Bool, LWithEqu:Bool, GValue:Float, LValue:Float, colIndex:Int = 0):Table
     {
         var src = _selector;
@@ -609,7 +628,7 @@ class Table
         return this;
     }
     /**
-	 * Select the rows when the column's value is less than specified value <b>or</b> greater than specified value.
+     * Select the rows when the column's value is less than specified value <b>or</b> greater than specified value.
      * @param limit maximum length of selected results (0 is infinite, if you only need 1 result, 1 is recommended, it will improve performance)
      * @param LWithEqu whether less and equal
      * @param GWithEqu whether greater and equal
@@ -617,8 +636,8 @@ class Table
      * @param GValue the specified greater value
      * @param colIndex specified column index
      * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
-	 */
-    public function selectWhenLessOrGreater(limit:Int, LWithEqu:Bool, GWithEqu:Bool, LValue:Float, GValue:Int, colIndex:Int = 0):Table
+     */
+    public function selectWhenLessOrGreater(limit:Int, LWithEqu:Bool, GWithEqu:Bool, LValue:Float, GValue:Float, colIndex:Int = 0):Table
     {
         var src = _selector;
         if (src == null)
@@ -646,11 +665,12 @@ class Table
         return this;
     }
     /**
-	 * Parse csv conent.
+     * Parse csv conent.
      * @param content As name mean
      * @param filedSeparator filed separator
      * @param filedMultiLineDelimiter filed multi-line delimiter
-	 */
+     * @return a table instance
+     */
     public static function Parse(content:String, filedSeparator:String = ",", filedMultiLineDelimiter:String = "\""):Table
     {
         var table:Table = arrayToRows(textToArray(content, filedSeparator, filedMultiLineDelimiter));
@@ -658,8 +678,8 @@ class Table
         return table;
     }
     /**
-	 * Convert text to array.
-	 */
+     * Convert text to array.
+     */
     static private function textToArray(text:String, FS:String = ",", FML:String = "\""):Array<Array<Dynamic>>
     {
         var FMLs = FML + FML;
@@ -794,8 +814,8 @@ class Table
         return arr;
     }
     /**
-	 * Convert array to rows.
-	 */
+     * Convert array to rows.
+     */
     static private function arrayToRows(arr:Array<Array<Dynamic>>):Table
     {
         var head:Array<Dynamic> = arr.shift();
