@@ -1,98 +1,95 @@
 package acsv;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+
 /**
  * 1. Copyright (c) 2022 amin2312
  * 2. Version 1.0.0
  * 3. MIT License
- *
+ * <p>
  * ACsv is a easy, fast and powerful csv parse library.
  */
-@:expose
-class Table
-{
+public class Table {
     /**
      * Supported json field types.
      */
-    private static var JSON_TYPES:Array<String> = ["json", "strings"];
+    private static String[] JSON_TYPES = {"json", "strings"};
     /**
      * The raw content.
      */
-    public var content:String = null;
+    public String content;
     /**
      * Parsed csv table Head.
      */
-    public var head = new Array<Field>();
+    public Field[] head;
     /**
      * Parsed csv table Body.
      */
-    public var body = new Array<Array<Dynamic>>();
+    public Object[][] body;
     /**
      * Index Set(optimize for read).
      */
-    private var _indexSet:Dynamic = {};
+    private HashMap<Integer, HashMap<Object, Object[]>> _indexSet = new HashMap<>();
     /**
      * Selected data(for Method Chaining).
      **/
-    private var _selector:Array<Array<Dynamic>> = null;
+    private Object[][] _selector;
     /**
      * Constructor.
      */
-    @:dox(hide)
-    public function new()
-    {}
+    public Table() {}
     /**
      * Merge a table.
-     * <br/><b>Notice:</b> two tables' structure must be same.
+     * <br><b>Notice:</b> two tables' structure must be same.
+     *
      * @param b source table
      * @return THIS instance
      */
-    public function merge(b:Table):Table
+    public Table merge(Table b)
     {
-        this.body = this.body.concat(b.body);
-        var index = b.content.indexOf('\r\n');
+        Object[][] both = Arrays.copyOf(this.body, this.body.length + b.body.length);
+        System.arraycopy(b.body, 0, both, this.body.length, b.body.length);
+        this.body = both;
+        int index = b.content.indexOf("\r\n");
         if (index == -1)
         {
-            index = b.content.indexOf('\n');
+            index = b.content.indexOf("\n");
         }
-        var c = b.content.substring(index);
+        String c = b.content.substring(index);
         this.content += c;
         return this;
     }
     /**
      * Create index for the specified column.
-     * <br>This function is only valid for "selectWhenE" and "limit" param is 1.
-     * <br>It will improve performance.
+     * <br> This function is only valid for "selectWhenE" and "limit" param is 1.
+     * <br> It will improve performance.
+     *
      * @param colIndex column index
      */
-    public function createIndexAt(colIndex:Int):Void
+    public void createIndexAt(int colIndex)
     {
-        var map:Dynamic = {};
-        for (i in 0...this.body.length)
+        HashMap<Object, Object[]> map = new HashMap<>();
+        for (int i = 0, len = this.body.length; i < len; i++)
         {
-            var row:Array<Dynamic> = this.body[i];
-            var key:Dynamic = row[colIndex];
-            #if (js || lua)
-            map[key] = row;
-            #else
-            Reflect.setProperty(map, key + '', row);
-            #end
+            Object[] row = this.body[i];
+            Object key = row[colIndex];
+            map.put(key, row);
         }
-        #if (js || lua)
-        _indexSet[colIndex] = map;
-        #else
-        Reflect.setProperty(_indexSet, colIndex + '', map);
-        #end
+        _indexSet.put(colIndex, map);
     }
     /**
      * Get column index by specified field name.
+     *
      * @param name As name mean
      * @return column index
      */
-    public function getColIndexBy(name:String):Int
+    public int getColIndexBy(String name)
     {
-        for (i in 0...this.head.length)
+        for (int i = 0, len = this.head.length; i < len; i++)
         {
-            var field = this.head[i];
+            Field field = this.head[i];
             if (field.name == name)
             {
                 return i;
@@ -102,30 +99,32 @@ class Table
     }
     /**
      * Fetch a row object when the column's value is equal to the id value
-     * @param values the specified value
+     *
+     * @param values   the specified value
      * @param colIndex specified column index
      * @return selected row object
      */
-    public function id(value:Dynamic, colIndex:Int = 0):Dynamic
+    public HashMap<String, Object> id(Object value, int colIndex)
     {
-        return this.selectWhenE(1, value, colIndex).toFirstObj();
+        return this.selectWhenE(1, value, colIndex, null).toFirstObj();
     }
     /**
      * Sort by selected rows.
+     *
      * @param colIndex the column index specified for sorting
      * @param sortType 0: asc, 1: desc
      * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
      */
-    public function sortBy(colIndex:Int, sortType:Int):Table
+    public Table sortBy(int colIndex, int sortType)
     {
-        var len = _selector.length;
-        for (i in 0...len)
+        int len = _selector.length;
+        for (int i = 0; i < len; i++)
         {
-            for (j in 0...len - 1)
+            for (int j = 0; j < len - 1; j++)
             {
-                var ok = false;
-                var a = _selector[j][colIndex];
-                var b = _selector[j + 1][colIndex];
+                Boolean ok = false;
+                double a = (Double) _selector[j][colIndex];
+                double b = (Double) _selector[j + 1][colIndex];
                 if (sortType == 0 && a > b)
                 {
                     ok = true;
@@ -136,7 +135,7 @@ class Table
                 }
                 if (ok)
                 {
-                    var temp = _selector[j];
+                    Object[] temp = _selector[j];
                     _selector[j] = _selector[j + 1];
                     _selector[j + 1] = temp;
                 }
@@ -147,78 +146,90 @@ class Table
     /**
      * Get current selector(it includes all selected results).
      * <br><b>Notice:</b> It be assigned after call "select..." function
+     *
      * @return current selector
      */
-    public function getCurrentSelector():Array<Dynamic>
+    public Object[][] getCurrentSelector()
     {
         return _selector;
     }
     /**
+     * Check if the type is json.
+     */
+    private Boolean isJsonType(String type)
+    {
+        for (int i = 0, len = JSON_TYPES.length; i < len; i++)
+        {
+            if (JSON_TYPES[i] == type)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+    /**
      * Format data to row.
      */
-    private function fmtRow(row:Array<Dynamic>):Array<Dynamic>
+    private Object[] fmtRow(Object[] row)
     {
-        var obj:Array<Dynamic> = [];
-        for (i in 0...this.head.length)
+        ArrayList<Object> obj = new ArrayList<>();
+        for (int i = 0, len = this.head.length; i < len; i++)
         {
-            var filed = this.head[i];
-            var type = filed.type;
-            var val0 = row[i];
-            var val1:Dynamic = null;
-            if (type != null && type != '' && Table.JSON_TYPES.indexOf(type) != -1)
+            Field filed = this.head[i];
+            String type = filed.type;
+            Object val0 = row[i];
+            Object val1 = null;
+            if (type != null && type.isEmpty() == false && isJsonType(type))
             {
                 if (val0 != null)
                 {
-                    val1 = haxe.Json.parse(val0);
+                    val1 = val0;// new JSONObject(val0);
                 }
             }
             else
             {
                 val1 = val0;
             }
-            obj.push(val1);
+            obj.add(val1);
         }
-        return obj;
+        return obj.toArray();
     }
     /**
      * Format data to obj.
      */
-    private function fmtObj(row:Array<Dynamic>):Dynamic
+    private HashMap<String, Object> fmtObj(Object[] row)
     {
-        var obj:Dynamic = {};
-        for (i in 0...this.head.length)
+        HashMap<String, Object> obj = new HashMap<>();
+        for (int i = 0, len = this.head.length; i < len; i++)
         {
-            var field = this.head[i];
-            var name = field.name;
-            var type = field.type;
-            var val0 = row[i];
-            var val1:Dynamic = null;
-            if (type != null && type != '' && Table.JSON_TYPES.indexOf(type) != -1)
+            Field field = this.head[i];
+            String name = field.name;
+            String type = field.type;
+            Object val0 = row[i];
+            Object val1 = null;
+            if (type != null && type.isEmpty() == false && isJsonType(type))
             {
                 if (val0 != null)
                 {
-                    val1 = haxe.Json.parse(val0);
+                    val1 = val0;// new JSONObject(val0);
                 }
             }
             else
             {
                 val1 = val0;
             }
-            #if (js || lua)
-            untyped obj[name] = val1;
-            #else
-            Reflect.setProperty(obj, name, val1);
-            #end
+            obj.put(name, val1);
         }
         return obj;
     }
     /**
      * Fetch first selected result to a row and return it.
+     *
      * @return first selected row data
      */
-    public function toFirstRow():Array<Dynamic>
+    public Object[] toFirstRow()
     {
-        var rzl = null;
+        Object[] rzl = null;
         if (_selector != null && _selector.length > 0)
         {
             rzl = this.fmtRow(_selector[0]);
@@ -228,14 +239,15 @@ class Table
     }
     /**
      * Fetch last selected result to a row and return it.
+     *
      * @return last selected row data
      */
-    public function toLastRow():Array<Dynamic>
+    public Object[] toLastRow()
     {
-        var rzl = null;
+        Object[] rzl = null;
         if (_selector != null)
         {
-            var len = _selector.length;
+            int len = _selector.length;
             if (len > 0)
             {
                 rzl = this.fmtRow(_selector[len - 1]);
@@ -246,30 +258,33 @@ class Table
     }
     /**
      * Fetch all selected results to the rows and return it.
+     *
      * @return a array of row data
      */
-    public function toRows():Array<Array<Dynamic>>
+    public Object[][] toRows()
     {
         if (_selector == null)
         {
             return null;
         }
-        var dst = new Array<Array<Dynamic>>();
-        for (i in 0..._selector.length)
+        int len = _selector.length;
+        Object[] dst = new Object[len];
+        for (int i = 0; i < len; i++)
         {
-            var row:Array<Dynamic> = _selector[i];
-            dst.push(this.fmtRow(row));
+            Object[] row = _selector[i];
+            dst[i] = this.fmtRow(row);
         }
         _selector = null;
-        return dst;
+        return (Object[][]) dst;
     }
     /**
      * Fetch first selected result to a object and return it.
+     *
      * @return first selected row object
      */
-    public function toFirstObj():Dynamic
+    public HashMap<String, Object> toFirstObj()
     {
-        var rzl = null;
+        HashMap<String, Object> rzl = null;
         if (_selector != null && _selector.length > 0)
         {
             rzl = this.fmtObj(_selector[0]);
@@ -279,14 +294,15 @@ class Table
     }
     /**
      * Fetch last selected result to a object and return it.
+     *
      * @return last selected row object
      */
-    public function toLastObj():Dynamic
+    public HashMap<String, Object> toLastObj()
     {
-        var rzl = null;
+        HashMap<String, Object> rzl = null;
         if (_selector != null)
         {
-            var len = _selector.length;
+            int len = _selector.length;
             if (len > 0)
             {
                 rzl = this.fmtObj(_selector[len - 1]);
@@ -297,155 +313,157 @@ class Table
     }
     /**
      * Fetch all selected results to the objects and return it.
+     *
      * @return a array of row object
      */
-    public function toObjs():Array<Dynamic>
+    @SuppressWarnings("unchecked")
+    public HashMap<String, Object>[] toObjs()
     {
         if (_selector == null)
         {
             return null;
         }
-        var dst = new Array<Dynamic>();
-        for (i in 0..._selector.length)
+        int len = _selector.length;
+        Object[] dst = new Object[len];
+        for (int i = 0; i < len; i++)
         {
-            var row:Array<Dynamic> = _selector[i];
-            dst.push(this.fmtObj(row));
+            Object[] row = _selector[i];
+            dst[i] = this.fmtObj(row);
         }
         _selector = null;
-        return dst;
+        return (HashMap<String, Object>[]) dst;
     }
     /**
      * Fetch all selected results to a new table.
+     *
      * @return a new table instance
      */
-    public function toTable():Table
+    public Table toTable()
     {
         if (_selector == null)
         {
             return null;
         }
-        var t = new Table();
-        t.head = this.head.concat([]);
+        Table t = new Table();
+        t.head = Arrays.copyOf(this.head, this.head.length);
         t.body = this._selector;
         _selector = null;
         return t;
     }
     /**
      * Select all rows.
+     *
      * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
      */
-    public function selectAll():Table
+    public Table selectAll()
     {
         _selector = body;
         return this;
     }
     /**
      * Select the first row.
+     *
      * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
      */
-    public function selectFirstRow():Table
+    public Table selectFirstRow()
     {
-        _selector = [body[0]];
+        _selector = new Object[][]{body[0]};
         return this;
     }
     /**
      * Select the last row.
+     *
      * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
      */
-    public function selectLastRow():Table
+    public Table selectLastRow()
     {
-        _selector = [body[body.length - 1]];
+        _selector = new Object[][]{body[body.length - 1]};
         return this;
     }
     /**
      * Selects the specified <b>rows</b> by indices.
+     *
      * @param rowIndices specified row's indices
      * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
      */
-    public function selectAt(rowIndices:Array<Int>):Table
+    public Table selectAt(int[] rowIndices)
     {
-        var dst = new Array<Array<Dynamic>>();
-        var maxLen = this.body.length;
-        for (i in 0...rowIndices.length)
+        ArrayList<Object> dst = new ArrayList<>();
+        int maxLen = this.body.length;
+        for (int i = 0, len = rowIndices.length; i < len; i++)
         {
-            var rowIndex = rowIndices[i];
+            int rowIndex = rowIndices[i];
             if (rowIndex >= 0 && rowIndex < maxLen)
             {
-                dst.push(this.body[rowIndex]);
+                dst.add(this.body[rowIndex]);
             }
         }
-        _selector = dst;
+        _selector = (Object[][]) dst.toArray();
         return this;
     }
     /**
      * Select the rows when the column's value is equal to any value of array.
-     * @param limit maximum length of every selected results (0 is infinite, if you only need 1 result, 1 is recommended, it will improve performance)
-     * @param values the array of values
+     *
+     * @param limit    maximum length of every selected results (0 is infinite, if you only need 1 result, 1 is recommended, it will improve performance)
+     * @param values   the array of values
      * @param colIndex specified column index
      * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
      */
-    public function selectWhenIn(limit:Int, values:Array<Dynamic>, colIndex:Int = 0):Table
+    public Table selectWhenIn(int limit, Object[] values, int colIndex)
     {
-        var rows = new Array<Array<Dynamic>>();
-        for (i in 0...values.length)
+        ArrayList<Object[]> rows = new ArrayList<>();
+        for (int i = 0, len = values.length; i < len; i++)
         {
-            var value = values[i];
+            Object value = values[i];
             selectWhenE(limit, value, colIndex, rows);
             _selector = null;
         }
-        _selector = rows;
+        _selector = (Object[][]) rows.toArray();
         return this;
     }
     /**
      * Select the rows when the column's value is equal to specified value.
-     * @param limit maximum length of selected results (0 is infinite, if you only need 1 result, 1 is recommended, it will improve performance)
-     * @param value the specified value
-     * @param colIndex specified column index
+     *
+     * @param limit         maximum length of selected results (0 is infinite, if you only need 1 result, 1 is recommended, it will improve performance)
+     * @param value         the specified value
+     * @param colIndex      specified column index
      * @param extraSelector extra selector, use it to save selected result
      * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
      */
-    public function selectWhenE(limit:Int, value:Dynamic, colIndex:Int = 0, extraSelector:Array<Array<Dynamic>> = null):Table
+    public Table selectWhenE(int limit, Object value, int colIndex, ArrayList<Object[]> extraSelector)
     {
-        var dst:Array<Array<Dynamic>> = extraSelector;
+        ArrayList<Object[]> dst = extraSelector;
         if (dst == null)
         {
-            dst = new Array<Array<Dynamic>>();
+            dst = new ArrayList<>();
         }
         // 1.check indexed set
         if (limit == 1)
         {
-            #if (js || lua)
-            var map:Dynamic = _indexSet[colIndex];
-            #else
-            var map:Dynamic = Reflect.getProperty(_indexSet, colIndex + '');
-            #end
+            HashMap<Object, Object[]> map = _indexSet.get(colIndex);
             if (map != null)
             {
-                #if (js || lua)
-                var val = map[value];
-                #else
-                var val = Reflect.getProperty(map, value + '');
-                #end
+                Object[] val = map.get(value);
                 if (val != null)
                 {
-                    dst.push(val);
+                    dst.add(val);
                 }
-                _selector = dst;
+                _selector = (Object[][]) dst.toArray();
                 return this;
             }
         }
         // 2.line-by-line scan
-        var src = _selector;
+        Object[][] src = _selector;
         if (src == null)
         {
             src = body;
         }
-        for (i in 0...src.length)
+        for (int i = 0, len = src.length; i < len; i++)
         {
-            var row:Array<Dynamic> = src[i];
+            Object[] row = src[i];
             if (row[colIndex] == value)
             {
-                dst.push(row);
+                dst.add(row);
                 limit--;
                 if (limit == 0)
                 {
@@ -453,32 +471,33 @@ class Table
                 }
             }
         }
-        _selector = dst;
+        _selector = (Object[][]) dst.toArray();
         return this;
     }
     /**
      * Select the rows when the column's values are equal to specified values.
-     * @param limit maximum length of selected results (0 is infinite, if you only need 1 result, 1 is recommended, it will improve performance)
-     * @param value1 first specified value
-     * @param value2 second specified value
+     *
+     * @param limit     maximum length of selected results (0 is infinite, if you only need 1 result, 1 is recommended, it will improve performance)
+     * @param value1    first specified value
+     * @param value2    second specified value
      * @param colIndex2 second specified column index
      * @param colIndex1 first specified column index
      * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
      */
-    public function selectWhenE2(limit:Int, value1:Dynamic, value2:Dynamic, colIndex2:Int = 1, colIndex1:Int = 0):Table
+    public Table selectWhenE2(int limit, Object value1, Object value2, int colIndex2, int colIndex1)
     {
-        var src = _selector;
+        Object[][] src = _selector;
         if (src == null)
         {
             src = body;
         }
-        var dst = new Array<Array<Dynamic>>();
-        for (i in 0...src.length)
+        ArrayList<Object> dst = new ArrayList<>();
+        for (int i = 0, len = src.length; i < len; i++)
         {
-            var row:Array<Dynamic> = src[i];
+            Object[] row = src[i];
             if (row[colIndex1] == value1 && row[colIndex2] == value2)
             {
-                dst.push(row);
+                dst.add(row);
                 limit--;
                 if (limit == 0)
                 {
@@ -486,34 +505,35 @@ class Table
                 }
             }
         }
-        _selector = dst;
+        _selector = (Object[][]) dst.toArray();
         return this;
     }
     /**
      * Select the rows when the column's values are equal to specified values.
-     * @param limit maximum length of selected results (0 is infinite, if you only need 1 result, 1 is recommended, it will improve performance)
-     * @param value1 first specified value
-     * @param value2 second specified value
-     * @param value3 third specified value
+     *
+     * @param limit     maximum length of selected results (0 is infinite, if you only need 1 result, 1 is recommended, it will improve performance)
+     * @param value1    first specified value
+     * @param value2    second specified value
+     * @param value3    third specified value
      * @param colIndex3 third specified column index
      * @param colIndex2 second specified column index
      * @param colIndex1 first specified column index
      * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
      */
-    public function selectWhenE3(limit:Int, value1:Dynamic, value2:Dynamic, value3:Dynamic, colIndex3:Int = 2, colIndex2:Int = 1, colIndex1:Int = 0):Table
+    public Table selectWhenE3(int limit, Object value1, Object value2, Object value3, int colIndex3, int colIndex2, int colIndex1)
     {
-        var src = _selector;
+        Object[][] src = _selector;
         if (src == null)
         {
             src = body;
         }
-        var dst = new Array<Array<Dynamic>>();
-        for (i in 0...src.length)
+        ArrayList<Object> dst = new ArrayList<>();
+        for (int i = 0, len = src.length; i < len; i++)
         {
-            var row:Array<Dynamic> = src[i];
+            Object[] row = src[i];
             if (row[colIndex1] == value1 && row[colIndex2] == value2 && row[colIndex3] == value3)
             {
-                dst.push(row);
+                dst.add(row);
                 limit--;
                 if (limit == 0)
                 {
@@ -521,32 +541,33 @@ class Table
                 }
             }
         }
-        _selector = dst;
+        _selector = (Object[][]) dst.toArray();
         return this;
     }
     /**
      * Select the rows when the column's value is greater than specified value.
-     * @param limit maximum length of selected results (0 is infinite, if you only need 1 result, 1 is recommended, it will improve performance)
-     * @param withEqu whether include equation
-     * @param value the specified value
+     *
+     * @param limit    maximum length of selected results (0 is infinite, if you only need 1 result, 1 is recommended, it will improve performance)
+     * @param withEqu  whether include equation
+     * @param value    the specified value
      * @param colIndex specified column index
      * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
      */
-    public function selectWhenG(limit:Int, withEqu:Bool, value:Float, colIndex:Int = 0):Table
+    public Table selectWhenG(int limit, Boolean withEqu, float value, int colIndex)
     {
-        var src = _selector;
+        Object[][] src = _selector;
         if (src == null)
         {
             src = body;
         }
-        var dst = new Array<Array<Dynamic>>();
-        for (i in 0...src.length)
+        ArrayList<Object> dst = new ArrayList<>();
+        for (int i = 0, len = src.length; i < len; i++)
         {
-            var row:Array<Dynamic> = src[i];
-            var rowVal = row[colIndex];
+            Object[] row = src[i];
+            double rowVal = (Double) row[colIndex];
             if (rowVal > value || (withEqu && rowVal == value))
             {
-                dst.push(row);
+                dst.add(row);
                 limit--;
                 if (limit == 0)
                 {
@@ -554,32 +575,33 @@ class Table
                 }
             }
         }
-        _selector = dst;
+        _selector = (Object[][]) dst.toArray();
         return this;
     }
     /**
      * Select the rows when the column's value is less than specified values.
-     * @param limit maximum length of selected results (0 is infinite, if you only need 1 result, 1 is recommended, it will improve performance)
-     * @param withEqu whether include equation
-     * @param value the specified value
+     *
+     * @param limit    maximum length of selected results (0 is infinite, if you only need 1 result, 1 is recommended, it will improve performance)
+     * @param withEqu  whether include equation
+     * @param value    the specified value
      * @param colIndex specified column index
      * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
      */
-    public function selectWhenL(limit:Int, withEqu:Bool, value:Float, colIndex:Int = 0):Table
+    public Table selectWhenL(int limit, Boolean withEqu, float value, int colIndex)
     {
-        var src = _selector;
+        Object[][] src = _selector;
         if (src == null)
         {
             src = body;
         }
-        var dst = new Array<Array<Dynamic>>();
-        for (i in 0...src.length)
+        ArrayList<Object> dst = new ArrayList<>();
+        for (int i = 0, len = src.length; i < len; i++)
         {
-            var row:Array<Dynamic> = src[i];
-            var rowVal = row[colIndex];
+            Object[] row = src[i];
+            double rowVal = (Double) row[colIndex];
             if (rowVal < value || (withEqu && rowVal == value))
             {
-                dst.push(row);
+                dst.add(row);
                 limit--;
                 if (limit == 0)
                 {
@@ -587,36 +609,38 @@ class Table
                 }
             }
         }
-        _selector = dst;
+        _selector = (Object[][]) dst.toArray();
         return this;
     }
+
     /**
      * Select the rows when the column's value is greater than specified value <b>and</b> less than specified value.
-     * @param limit maximum length of selected results (0 is infinite, if you only need 1 result, 1 is recommended, it will improve performance)
+     *
+     * @param limit    maximum length of selected results (0 is infinite, if you only need 1 result, 1 is recommended, it will improve performance)
      * @param GWithEqu whether greater and equal
      * @param LWithEqu whether less and equal
-     * @param GValue the specified greater value
-     * @param LValue the specified less value
+     * @param GValue   the specified greater value
+     * @param LValue   the specified less value
      * @param colIndex specified column index
      * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
      */
-    public function selectWhenGreaterAndLess(limit:Int, GWithEqu:Bool, LWithEqu:Bool, GValue:Float, LValue:Float, colIndex:Int = 0):Table
+    public Table selectWhenGreaterAndLess(int limit, Boolean GWithEqu, Boolean LWithEqu, float GValue, float LValue, int colIndex)
     {
-        var src = _selector;
+        Object[][] src = _selector;
         if (src == null)
         {
             src = body;
         }
-        var dst = new Array<Array<Dynamic>>();
-        for (i in 0...src.length)
+        ArrayList<Object> dst = new ArrayList<>();
+        for (int i = 0, len = src.length; i < len; i++)
         {
-            var row:Array<Dynamic> = src[i];
-            var rowVal = row[colIndex];
-            var v1 = (rowVal > GValue || (GWithEqu && rowVal == GValue));
-            var v2 = (rowVal < LValue || (LWithEqu && rowVal == LValue));
+            Object[] row = src[i];
+            double rowVal = (Double) row[colIndex];
+            Boolean v1 = (rowVal > GValue || (GWithEqu && rowVal == GValue));
+            Boolean v2 = (rowVal < LValue || (LWithEqu && rowVal == LValue));
             if (v1 && v2)
             {
-                dst.push(row);
+                dst.add(row);
                 limit--;
                 if (limit == 0)
                 {
@@ -624,36 +648,38 @@ class Table
                 }
             }
         }
-        _selector = dst;
+        _selector = (Object[][]) dst.toArray();
         return this;
     }
     /**
      * Select the rows when the column's value is less than specified value <b>or</b> greater than specified value.
-     * @param limit maximum length of selected results (0 is infinite, if you only need 1 result, 1 is recommended, it will improve performance)
+     *
+     * @param limit    maximum length of selected results (0 is infinite, if you only need 1 result, 1 is recommended, it will improve performance)
      * @param LWithEqu whether less and equal
      * @param GWithEqu whether greater and equal
-     * @param LValue the specified less value
-     * @param GValue the specified greater value
+     * @param LValue   the specified less value
+     * @param GValue   the specified greater value
      * @param colIndex specified column index
      * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
      */
-    public function selectWhenLessOrGreater(limit:Int, LWithEqu:Bool, GWithEqu:Bool, LValue:Float, GValue:Float, colIndex:Int = 0):Table
+    public Table selectWhenLessOrGreater(int limit, Boolean LWithEqu, Boolean GWithEqu, float LValue, float GValue,
+                                         int colIndex)
     {
-        var src = _selector;
+        Object[][] src = _selector;
         if (src == null)
         {
             src = body;
         }
-        var dst = new Array<Array<Dynamic>>();
-        for (i in 0...src.length)
+        ArrayList<Object> dst = new ArrayList<>();
+        for (int i = 0, len = src.length; i < len; i++)
         {
-            var row:Array<Dynamic> = src[i];
-            var rowVal = row[colIndex];
-            var v1 = (rowVal < LValue || (LWithEqu && rowVal == LValue));
-            var v2 = (rowVal > GValue || (GWithEqu && rowVal == GValue));
+            Object[] row = src[i];
+            double rowVal = (Double) row[colIndex];
+            Boolean v1 = (rowVal < LValue || (LWithEqu && rowVal == LValue));
+            Boolean v2 = (rowVal > GValue || (GWithEqu && rowVal == GValue));
             if (v1 || v2)
             {
-                dst.push(row);
+                dst.add(row);
                 limit--;
                 if (limit == 0)
                 {
@@ -661,82 +687,93 @@ class Table
                 }
             }
         }
-        _selector = dst;
+        _selector = (Object[][]) dst.toArray();
         return this;
     }
     /**
      * Parse csv conent.
-     * @param content As name mean
-     * @param filedSeparator filed separator
+     *
+     * @param content                 As name mean
+     * @param filedSeparator          filed separator
      * @param filedMultiLineDelimiter filed multi-line delimiter
      * @return a table instance
      */
-    public static function Parse(content:String, filedSeparator:String = ",", filedMultiLineDelimiter:String = "\""):Table
+    public static Table Parse(String content, String filedSeparator, String filedMultiLineDelimiter)
     {
-        var table:Table = arrayToRows(textToArray(content, filedSeparator, filedMultiLineDelimiter));
+        Table table = arrayToRows(textToArray(content, filedSeparator, filedMultiLineDelimiter));
         table.content = content;
         return table;
     }
     /**
+     * Parse csv conent.
+     *
+     * @param content As name mean
+     * @return a table instance
+     */
+    public static Table Parse(String content)
+    {
+        return Parse(content, ",", "\"");
+    }
+    /**
      * Convert text to array.
      */
-    static private function textToArray(text:String, FS:String = ",", FML:String = "\""):Array<Array<Dynamic>>
+    static private ArrayList<ArrayList<String>> textToArray(String text, String FS, String FML)
     {
-        var FMLs = FML + FML;
-        var arr:Array<Array<Dynamic>> = [];
-        var maxLen:Int = text.length;
-        var ptr:String = text;
-        var ptrPos:Int = 0;
+        String FMLs = FML + FML;
+        ArrayList<ArrayList<String>> arr = new ArrayList<>();
+        int maxLen = text.length();
+        String ptr = text;
+        int ptrPos = 0;
         while (true)
         {
-            var curLen = maxLen - ptrPos;
-            var cellIndexA:Int = 0;
-            var cellIndexB:Int = 0;
-            var cells:Array<Dynamic> = [];
-            var cell:String = null;
-            var chr:String = null;
+            int curLen = maxLen - ptrPos;
+            int cellIndexA = 0;
+            int cellIndexB = 0;
+            ArrayList<String> cells = new ArrayList<>();
+            String cell = null;
+            String chr = null;
             while (cellIndexB < curLen)
             {
                 cellIndexA = cellIndexB;
-                chr = ptr.charAt(ptrPos + cellIndexB);
-                if (chr == "\n" || chr == "\r\n") // line is over
+                chr = String.valueOf(ptr.charAt(ptrPos + cellIndexB));
+                if (chr.equals("\n")) // line is over
                 {
                     cellIndexB += 1;
                     break;
                 }
-                if (chr == "\r" && ptr.charAt(ptrPos + cellIndexB + 1) == "\n") // line is over
+                if (chr.equals("\r") && ptr.charAt(ptrPos + cellIndexB + 1) == '\n') // line is over
                 {
                     cellIndexB += 2;
                     break;
                 }
-                if (chr == FS) // is separator
+                if (chr.equals(FS)) // is separator
                 {
                     cell = "";
-                    var nextPos = ptrPos + cellIndexB + 1;
+                    int nextPos = ptrPos + cellIndexB + 1;
                     if (nextPos >= maxLen)
                     {
-                        chr = '\n'; // fix the bug when the last cell is empty
+                        chr = "\n"; // fix the bug when the last cell is empty
                     }
                     else
                     {
-                        chr = ptr.charAt(nextPos);
+                        chr = String.valueOf(ptr.charAt(nextPos));
                     }
-                    if (cellIndexA == 0 || chr == FS || chr == "\n" || chr == "\r\n") // is empty cell
+                    if (cellIndexA == 0 || chr.equals(FS) || chr.equals("\n")) // is empty cell
                     {
                         cellIndexB += 1;
-                        cells.push("");
+                        cells.add("");
                     }
-                    else if (chr == "\r" && ptr.charAt(ptrPos + cellIndexB + 2) == "\n") // is empty cell
+                    else if (chr.equals("\r") && ptr.charAt(ptrPos + cellIndexB + 2) == '\n') // is empty cell
                     {
                         cellIndexB += 2;
-                        cells.push("");
+                        cells.add("");
                     }
                     else
                     {
                         cellIndexB += 1;
                     }
                 }
-                else if (chr == FML) // is double quote
+                else if (chr.equals(FML)) // is double quote
                 {
                     // pass DQ
                     cellIndexB++;
@@ -746,11 +783,12 @@ class Table
                         cellIndexB = ptr.indexOf(FML, ptrPos + cellIndexB);
                         if (cellIndexB == -1)
                         {
-                            trace("[ACsv] Invalid Double Quote");
+                            System.out.print("[ACsv] Invalid Double Quote");
                             return null;
                         }
                         cellIndexB -= ptrPos;
-                        if (ptr.charAt(ptrPos + cellIndexB + 1) == FML) // """" is normal double quote
+                        if (String.valueOf(ptr.charAt(ptrPos + cellIndexB + 1)).equals(FML)) // """" is normal double
+                        // quote
                         {
                             cellIndexB += 2; // pass """"
                             continue;
@@ -759,15 +797,15 @@ class Table
                     }
                     // 2.truncate the content of double quote
                     cell = ptr.substring(ptrPos + cellIndexA + 1, ptrPos + cellIndexB);
-                    cell = StringTools.replace(cell, FMLs, FML); // convert """" to ""
-                    cells.push(cell);
+                    cell = cell.replaceAll(FMLs, FML); // convert """" to ""
+                    cells.add(cell);
                     // pass DQ
                     cellIndexB++;
                 }
                 else // is normal
                 {
                     // 1.find the nearest comma and LF
-                    var indexA:Int = ptr.indexOf(FS, ptrPos + cellIndexB);
+                    int indexA = ptr.indexOf(FS, ptrPos + cellIndexB);
                     if (indexA == -1)
                     {
                         indexA = curLen; // is last cell
@@ -776,7 +814,7 @@ class Table
                     {
                         indexA -= ptrPos;
                     }
-                    var indexB:Int = ptr.indexOf("\r\n", ptrPos + cellIndexB);
+                    int indexB = ptr.indexOf("\r\n", ptrPos + cellIndexB);
                     if (indexB == -1)
                     {
                         indexB = ptr.indexOf("\n", ptrPos + cellIndexB);
@@ -800,10 +838,10 @@ class Table
                     }
                     // 2.Truncate the cell contennt
                     cell = ptr.substring(ptrPos + cellIndexA, ptrPos + cellIndexB);
-                    cells.push(cell);
+                    cells.add(cell);
                 }
             }
-            arr.push(cells);
+            arr.add(cells);
             // move to next position
             ptrPos += cellIndexB;
             if (ptrPos >= maxLen)
@@ -816,35 +854,37 @@ class Table
     /**
      * Convert array to rows.
      */
-    static private function arrayToRows(arr:Array<Array<Dynamic>>):Table
+    static private Table arrayToRows(ArrayList<ArrayList<String>> arr)
     {
-        var rawHead:Array<Dynamic> = arr.shift();
-        var srcBody:Array<Array<Dynamic>> = arr;
+        ArrayList<String> rawHead = arr.remove(0);
+        ArrayList<ArrayList<String>> rawBody = arr;
         // parse head
-        var newHead:Array<Field> = new Array<Field>();
-        for (i in 0...rawHead.length)
+        ArrayList<Field> newHead = new ArrayList<Field>();
+        for (int i = 0, len = rawHead.size(); i < len; i++)
         {
-            var fullName:String = rawHead[i];
-            var parts:Array<String> = fullName.split(":");
-            var filed = new Field();
+            String fullName = rawHead.get(i);
+            String[] parts = fullName.split(":");
+            Field filed = new Field();
             filed.fullName = fullName;
             filed.name = parts[0];
-            filed.type = parts[1];
-            newHead.push(filed);
+            filed.type = parts.length == 2 ? parts[1] : "";
+            newHead.add(filed);
         }
         // parse body
-        for (i in 0...srcBody.length)
+        ArrayList<ArrayList<Object>> newBody = new ArrayList<>();
+        for (int i = 0, len = rawBody.size(); i < len; i++)
         {
-            var row:Array<Dynamic> = srcBody[i];
-            for (j in 0...row.length)
+            ArrayList<String> row = rawBody.get(i);
+            ArrayList<Object> item = new ArrayList<>();
+            for (int j = 0, lenJ = row.size(); j < lenJ; j++)
             {
-                var cell:String = row[j];
-                var newVal:Dynamic = cell;
-                var isEmptyCell = (cell == null || cell == '');
-                var type:String = newHead[j].type;
-                if (type == "bool")
+                String cell = row.get(j);
+                Object newVal = cell;
+                Boolean isEmptyCell = (cell.equals(null) || cell.equals(""));
+                String type = newHead.get(j).type;
+                if (type.equals("bool"))
                 {
-                    if (isEmptyCell || cell == "false" || cell == '0')
+                    if (isEmptyCell || cell.equals("false") || cell.equals("0"))
                     {
                         newVal = false;
                     }
@@ -853,7 +893,7 @@ class Table
                         newVal = true;
                     }
                 }
-                else if (type == "int")
+                else if (type.equals("int"))
                 {
                     if (isEmptyCell)
                     {
@@ -861,14 +901,10 @@ class Table
                     }
                     else
                     {
-                        #if js
-                        newVal = untyped parseInt(cell);
-                        #else
-                        newVal = Std.parseInt(cell);
-                        #end
+                        newVal = Integer.parseInt(cell);
                     }
                 }
-                else if (type == "number")
+                else if (type.equals("number"))
                 {
                     if (isEmptyCell)
                     {
@@ -876,10 +912,10 @@ class Table
                     }
                     else
                     {
-                        newVal = Std.parseFloat(cell);
+                        newVal = Double.parseDouble(cell);
                     }
                 }
-                else if (type == "json")
+                else if (type.equals("json"))
                 {
                     if (isEmptyCell)
                     {
@@ -887,16 +923,16 @@ class Table
                     }
                     else
                     {
-                        var chr0 = cell.charAt(0);
-                        if (!(chr0 == '[' || chr0 == '{' ))
+                        char chr0 = cell.charAt(0);
+                        if (!(chr0 == '[' || chr0 == '{'))
                         {
-                            trace("[ACsv] Invalid json format:" + newHead[j].name + ',' + cell);
+                            System.out.print("[ACsv] Invalid json format:" + newHead.get(j).name + ',' + cell);
                             return null;
                         }
                         newVal = cell;
                     }
                 }
-                else if (type == "strings")
+                else if (type.equals("strings"))
                 {
                     if (isEmptyCell)
                     {
@@ -904,17 +940,17 @@ class Table
                     }
                     else
                     {
-                        newVal = '["' + cell.split(',').join('\",\"') + '"]';
+                        newVal = "[\"" + String.join("\",\"", cell.split(",")) + "\"]";
                     }
                 }
-                row[j] = newVal;
+                item.add(newVal);
             }
-            srcBody[i] = row; // update row
+            newBody.add(item); // update row
         }
         // create table
-        var table:Table = new Table();
-        table.head = newHead;
-        table.body = srcBody;
+        Table table = new Table();
+        table.head = (Field[]) newHead.toArray();
+        table.body = (Object[][]) rawBody.toArray();
         return table;
     }
 }

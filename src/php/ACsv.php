@@ -346,10 +346,10 @@ namespace acsv
         public function selectAt($rowIndices)
         {
             $dst = [];
-            $len = count($this->body);
+            $maxLen = count($this->body);
             foreach ($rowIndices as $i => $rowIndex)
             {
-                if ($rowIndex >= 0 && $rowIndex < $len)
+                if ($rowIndex >= 0 && $rowIndex < $maxLen)
                 {
                     array_push($dst, $this->body[$rowIndex]);
                 }
@@ -788,26 +788,26 @@ namespace acsv
          */
         private static function arrayToRows($arr)
         {
-            $head = array_shift($arr);
-            $body = $arr;
+            $rawHead = array_shift($arr);
+            $srcBody = $arr;
             // parse head
-            $fileds = [];
-            foreach ($head as $i => $fullName)
+            $newHead = [];
+            foreach ($rawHead as $i => $fullName)
             {
                 $parts = explode(':', $fullName);
                 $filed = new Field();
                 $filed->fullName = $fullName;
                 $filed->name = $parts[0];
                 $filed->type = count($parts) == 2 ? $parts[1] : '';
-                array_push($fileds, $filed);
+                array_push($newHead, $filed);
             }
             // parse body
-            foreach ($body as $i => &$row)
+            foreach ($srcBody as $i => &$row)
             {
                 foreach ($row as $j => $cell)
                 {
                     $newVal = $cell;
-                    $type = $fileds[$j]->type;
+                    $type = $newHead[$j]->type;
                     $isEmptyCell = ($cell === null || $cell === '');
                     if ($type == 'bool')
                     {
@@ -828,7 +828,7 @@ namespace acsv
                         }
                         else
                         {
-                            $newVal = intval($newVal);
+                            $newVal = intval($cell);
                         }
                     }
                     else if ($type == 'number')
@@ -839,7 +839,7 @@ namespace acsv
                         }
                         else
                         {
-                            $newVal = floatval($newVal);
+                            $newVal = floatval($cell);
                         }
                     }
                     else if ($type == 'json')
@@ -853,7 +853,7 @@ namespace acsv
                             $chr0 = $cell[0];
                             if (!($chr0 == '[' || $chr0 == '{'))
                             {
-                                echo("[ACsv] Invalid json format:" . $fileds[$j]->name . ',' . $cell);
+                                echo("[ACsv] Invalid json format:" . $newHead[$j]->name . ',' . $cell);
                                 return null;
                             }
                             $newVal = $cell;
@@ -872,12 +872,12 @@ namespace acsv
                     }
                     $row[$j] = $newVal;
                 }
-                $body[$i] = $row; // update row
+                $srcBody[$i] = $row; // update row
             }
             // create table
             $table = new Table();
-            $table->head = $fileds;
-            $table->body = $body;
+            $table->head = $newHead;
+            $table->body = $srcBody;
             return $table;
         }
     }
