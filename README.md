@@ -9,8 +9,8 @@ The features:
 * **Fast speed** - optimized code for high performance, it can works easy in older device
 * **Powerful** - support **enhanced** csv format,  
 &emsp;&emsp;allow field type to be declared after field name (like width:**int**, name:**string**),  
-&emsp;&emsp;please see details from "release/csvs/enhanced_format_text.csv"  
-&emsp;&emsp;\* current supported field types: **bool, int, number, json, strings**
+&emsp;&emsp;supported field types: **bool, int, number, json, strings**  
+&emsp;&emsp;see details in "release/csvs/enhanced_format_text.csv"   
 * Cross platform - provide **haxe**, **js**, **php** version (the lua, python version via Haxe)
   
 
