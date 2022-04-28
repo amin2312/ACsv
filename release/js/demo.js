@@ -115,7 +115,8 @@ Demo.test_enhanced_csv_format = function() {
 	Demo.P("[E] sort by (id3) = 300 desc (id)",Demo._tab2.selectWhenE(0,300,2).sortBy(0,1).toObjs());
 	Demo._tab2.createIndexAt(0);
 	Demo.P("[E] (indexed) 1st row name",Demo._tab2.selectWhenE(1,"Dwi",Demo._tab2.getColIndexBy("name")).toObjs()[0].name);
-	Demo.P("[E] (indexed) id=2 education #2",Demo._tab2.id(2).education[1]);
+	Demo.P("[E] (indexed) id=6 education #2",Demo._tab2.id(6).education.CC);
+	Demo.P("[E] (indexed) id=6 tags #2",Demo._tab2.id(6).tags[1]);
 	Demo.P("[E] (indexed) 99th row",Demo._tab2.selectWhenE(1,99).toObjs());
 };
 var StringTools = function() { };
@@ -759,7 +760,7 @@ acsv_Table.prototype = {
 	}
 };
 Demo.standard_format_text = "id,id2,id3,name,brief\r\n1,20,100,John,He is a googd man\r\n2,20,100,张三,\"他是一个好人\r\n我们都喜欢他\"\r\n3,21,100,море,\"Он хороший человек\r\nмы все любим его\r\nЕго девиз:\r\n\"\"доверяй себе\"\"\"\r\n4,21,200,الشمس,صباح الخير\r\n5,22,200,चंद्रमा,सुसंध्या\r\n6,22,200,ดาว,";
-Demo.enhanced_format_text = "id:int,id2:int,id3:int,name:string,weight:number,marry:bool,education:json,tags:strings,brief\r\n1,21,100,John,120.1,true,\"[\"\"AB\"\"]\",\"good,cool\",\"Today is good day\r\nTomorrow is good day too\"\r\n2,21,100,张三,121.2,false,\"[\"\"CD\"\",\"\"EF\"\"]\",good,今天是个好日子\r\n3,22,100,море,123.4,true,\"[\"\"GH\"\",\"\"AB\"\",\"\"CD\"\"]\",good,\"Сегодня хороший день\r\nЗавтра тоже хороший день\"\r\n4,22,200,الشمس,124.5,false,\"{\"\"AA\"\":12}\",strong,صباح الخير\r\n5,23,200,चंद्रमा,126.7,1,\"{\"\"BB\"\":12}\",strong,सुसंध्या\r\n6,23,200,Emilia,,0,\"{\"\"CC\"\":34,\"\"DD\"\":56}\",\"strong,cool\",Hoje é um bom dia\r\n7,24,300,Ayşe,128.9,0,\"{\"\"EE\"\":34,\"\"FF\"\":56}\",\"strong,cool\",Bugün güzel bir gün\r\n8,24,300,陽菜乃,129.01,,\"{\"\"AC\"\":78,\"\"BD\"\":[90,12]}\",\"height,strong\",今日はいい日です\r\n9,25,300,Dwi,130.12,1,\"{\"\"EF\"\":78,\"\"CF\"\":[90,12]}\",,\"Hari ini adalah hari yang baik\r\nBesok juga hari yang baik\"\r\n10,25,400,Bảo,131.23,1,\"[\"\"BC\"\",{\"\"AT\"\":34}]\",\"thin,good\",\r\n11,26,400,민준,132.34,0,\"[\"\"FG\"\",{\"\"AG\"\":34}]\",\"hot,thin,good\",오늘은 좋은 날이다\r\n12,26,400,ดาว,133.456,0,,,";
+Demo.enhanced_format_text = "id:int,id2:int,id3:int,name:string,weight:number,marry:bool,education:json,tags:strings,brief\r\n1,21,100,John,120.1,true,\"[\"\"AB\"\"]\",\"good,cool\",\"Today is good day\r\nTomorrow is good day too\"\r\n2,21,100,张三,121.2,false,\"[\"\"CD\"\",\"\"EF\"\"]\",good,今天是个好日子\r\n3,22,100,море,123.4,true,\"[\"\"GH\"\",\"\"AB\"\",\"\"CD\"\"]\",good,\"Сегодня хороший день\r\nЗавтра тоже хороший день\"\r\n4,22,200,الشمس,124.5,false,\"{\"\"AA\"\":12}\",strong,صباح الخير\r\n5,23,200,चंद्रमा,126.7,1,\"{\"\"BB\"\":12}\",strong,सुसंध्या\r\n6,23,200,Emilia,,0,\"{\"\"CC\"\":67,\"\"DD\"\":56}\",\"strong,cool\",Hoje é um bom dia\r\n7,24,300,Ayşe,128.9,0,\"{\"\"EE\"\":68,\"\"FF\"\":56}\",\"strong,cool\",Bugün güzel bir gün\r\n8,24,300,陽菜乃,129.01,,\"{\"\"AC\"\":78,\"\"BD\"\":[90,12]}\",\"height,strong\",今日はいい日です\r\n9,25,300,Dwi,130.12,1,\"{\"\"EF\"\":78,\"\"CF\"\":[90,12]}\",,\"Hari ini adalah hari yang baik\r\nBesok juga hari yang baik\"\r\n10,25,400,Bảo,131.23,1,\"[\"\"BC\"\",{\"\"AT\"\":34}]\",\"thin,good\",\r\n11,26,400,민준,132.34,0,\"[\"\"FG\"\",{\"\"AG\"\":34}]\",\"hot,thin,good\",오늘은 좋은 날이다\r\n12,26,400,ดาว,133.456,0,,,";
 acsv_Table.JSON_TYPES = ["json","strings"];
 Demo.main();
 })(typeof exports != "undefined" ? exports : typeof window != "undefined" ? window : typeof self != "undefined" ? self : this);

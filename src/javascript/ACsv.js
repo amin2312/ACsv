@@ -126,26 +126,26 @@ acsv_Table.textToArray = function(text,FS,FML) {
 	return arr;
 };
 acsv_Table.arrayToRows = function(arr) {
-	var head = arr.shift();
-	var body = arr;
-	var fileds = [];
+	var rawHead = arr.shift();
+	var srcBody = arr;
+	var newHead = [];
 	var _g1 = 0;
-	var _g = head.length;
+	var _g = rawHead.length;
 	while(_g1 < _g) {
 		var i = _g1++;
-		var fullName = head[i];
+		var fullName = rawHead[i];
 		var parts = fullName.split(":");
 		var filed = new acsv_Field();
 		filed.fullName = fullName;
 		filed.name = parts[0];
 		filed.type = parts[1];
-		fileds.push(filed);
+		newHead.push(filed);
 	}
 	var _g11 = 0;
-	var _g2 = body.length;
+	var _g2 = srcBody.length;
 	while(_g11 < _g2) {
 		var i1 = _g11++;
-		var row = body[i1];
+		var row = srcBody[i1];
 		var _g3 = 0;
 		var _g21 = row.length;
 		while(_g3 < _g21) {
@@ -153,7 +153,7 @@ acsv_Table.arrayToRows = function(arr) {
 			var cell = row[j];
 			var newVal = cell;
 			var isEmptyCell = cell == null || cell == "";
-			var type = fileds[j].type;
+			var type = newHead[j].type;
 			if(type == "bool") {
 				if(isEmptyCell || cell == "false" || cell == "0") {
 					newVal = false;
@@ -164,13 +164,13 @@ acsv_Table.arrayToRows = function(arr) {
 				if(isEmptyCell) {
 					newVal = 0;
 				} else {
-					newVal = parseInt(newVal);
+					newVal = parseInt(cell);
 				}
 			} else if(type == "number") {
 				if(isEmptyCell) {
 					newVal = 0.0;
 				} else {
-					newVal = parseFloat(newVal);
+					newVal = parseFloat(cell);
 				}
 			} else if(type == "json") {
 				if(isEmptyCell) {
@@ -178,7 +178,7 @@ acsv_Table.arrayToRows = function(arr) {
 				} else {
 					var chr0 = cell.charAt(0);
 					if(!(chr0 == "[" || chr0 == "{")) {
-						console.log("[ACsv] Invalid json format:" + fileds[j].name + "," + cell);
+						console.log("[ACsv] Invalid json format:" + newHead[j].name + "," + cell);
 						return null;
 					}
 					newVal = cell;
@@ -192,11 +192,11 @@ acsv_Table.arrayToRows = function(arr) {
 			}
 			row[j] = newVal;
 		}
-		body[i1] = row;
+		srcBody[i1] = row;
 	}
 	var table = new acsv_Table();
-	table.head = fileds;
-	table.body = body;
+	table.head = newHead;
+	table.body = srcBody;
 	return table;
 };
 acsv_Table.prototype = {
@@ -405,13 +405,13 @@ acsv_Table.prototype = {
 	}
 	,selectAt: function(rowIndices) {
 		var dst = [];
-		var len = this.body.length;
+		var maxLen = this.body.length;
 		var _g1 = 0;
 		var _g = rowIndices.length;
 		while(_g1 < _g) {
 			var i = _g1++;
 			var rowIndex = rowIndices[i];
-			if(rowIndex >= 0 && rowIndex < len) {
+			if(rowIndex >= 0 && rowIndex < maxLen) {
 				dst.push(this.body[rowIndex]);
 			}
 		}
@@ -422,16 +422,16 @@ acsv_Table.prototype = {
 		if(colIndex == null) {
 			colIndex = 0;
 		}
-		var rows = [];
+		var dst = [];
 		var _g1 = 0;
 		var _g = values.length;
 		while(_g1 < _g) {
 			var i = _g1++;
 			var value = values[i];
-			this.selectWhenE(limit,value,colIndex,rows);
+			this.selectWhenE(limit,value,colIndex,dst);
 			this._selector = null;
 		}
-		this._selector = rows;
+		this._selector = dst;
 		return this;
 	}
 	,selectWhenE: function(limit,value,colIndex,extraSelector) {

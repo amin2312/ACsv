@@ -23,8 +23,8 @@ Tomorrow is good day too"
 Завтра тоже хороший день"
 4,22,200,الشمس,124.5,false,"{""AA"":12}",strong,صباح الخير
 5,23,200,चंद्रमा,126.7,1,"{""BB"":12}",strong,सुसंध्या
-6,23,200,Emilia,,0,"{""CC"":34,""DD"":56}","strong,cool",Hoje é um bom dia
-7,24,300,Ayşe,128.9,0,"{""EE"":34,""FF"":56}","strong,cool",Bugün güzel bir gün
+6,23,200,Emilia,,0,"{""CC"":67,""DD"":56}","strong,cool",Hoje é um bom dia
+7,24,300,Ayşe,128.9,0,"{""EE"":68,""FF"":56}","strong,cool",Bugün güzel bir gün
 8,24,300,陽菜乃,129.01,,"{""AC"":78,""BD"":[90,12]}","height,strong",今日はいい日です
 9,25,300,Dwi,130.12,1,"{""EF"":78,""CF"":[90,12]}",,"Hari ini adalah hari yang baik
 Besok juga hari yang baik"
@@ -105,7 +105,8 @@ function test_enhanced_csv_format()
 
     $_tab2->createIndexAt(0);
     P("[E] (indexed) 1st row name", $_tab2->selectWhenE(1, 'Dwi', $_tab2->getColIndexBy('name'))->toObjs()[0]['name']);
-    P("[E] (indexed) id=2 education #2", $_tab2->id(2)['education'][1]);
+    P("[E] (indexed) id=6 education #2", $_tab2->id(6)['education']->CC);
+    P("[E] (indexed) id=6 tags #2", $_tab2->id(6)['tags'][1]);
     P("[E] (indexed) 99th row", $_tab2->selectWhenE(1, 99)->toObjs());
 }
 main();
