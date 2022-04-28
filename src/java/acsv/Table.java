@@ -123,8 +123,26 @@ public class Table {
             for (int j = 0; j < len - 1; j++)
             {
                 Boolean ok = false;
-                double a = (Double) _selector[j][colIndex];
-                double b = (Double) _selector[j + 1][colIndex];
+                double a;
+                Object objA = _selector[j][colIndex];
+                if (objA instanceof Integer)
+                {
+                    a = ((Integer)objA).doubleValue();
+                }
+                else
+                {
+                    a = (Double)objA;
+                }
+                double b;
+                Object objB = _selector[j + 1][colIndex];
+                if (objB instanceof Integer)
+                {
+                    b = ((Integer)objB).doubleValue();
+                }
+                else
+                {
+                    b = (Double)objB;
+                }
                 if (sortType == 0 && a > b)
                 {
                     ok = true;
@@ -152,20 +170,6 @@ public class Table {
     public Object[][] getCurrentSelector()
     {
         return _selector;
-    }
-    /**
-     * Check if the type is json.
-     */
-    private Boolean isJsonType(String type)
-    {
-        for (int i = 0, len = JSON_TYPES.length; i < len; i++)
-        {
-            if (JSON_TYPES[i] == type)
-            {
-                return true;
-            }
-        }
-        return false;
     }
     /**
      * Format data to row.
@@ -388,7 +392,7 @@ public class Table {
      */
     public Table selectAt(int[] rowIndices)
     {
-        ArrayList<Object> dst = new ArrayList<>();
+        ArrayList<Object[]> dst = new ArrayList<>();
         int maxLen = this.body.length;
         for (int i = 0, len = rowIndices.length; i < len; i++)
         {
@@ -398,7 +402,7 @@ public class Table {
                 dst.add(this.body[rowIndex]);
             }
         }
-        _selector = (Object[][]) dst.toArray();
+        _selector = ArrayListToObjectArray(dst);
         return this;
     }
     /**
@@ -411,14 +415,14 @@ public class Table {
      */
     public Table selectWhenIn(int limit, Object[] values, int colIndex)
     {
-        ArrayList<Object[]> rows = new ArrayList<>();
+        ArrayList<Object[]> dst = new ArrayList<>();
         for (int i = 0, len = values.length; i < len; i++)
         {
             Object value = values[i];
-            selectWhenE(limit, value, colIndex, rows);
+            selectWhenE(limit, value, colIndex, dst);
             _selector = null;
         }
-        _selector = (Object[][]) rows.toArray();
+        _selector = ArrayListToObjectArray(dst);
         return this;
     }
     /**
@@ -448,7 +452,7 @@ public class Table {
                 {
                     dst.add(val);
                 }
-                _selector = (Object[][]) dst.toArray();
+                _selector = ArrayListToObjectArray(dst);
                 return this;
             }
         }
@@ -461,7 +465,7 @@ public class Table {
         for (int i = 0, len = src.length; i < len; i++)
         {
             Object[] row = src[i];
-            if (row[colIndex] == value)
+            if (value.equals(row[colIndex]))
             {
                 dst.add(row);
                 limit--;
@@ -471,7 +475,7 @@ public class Table {
                 }
             }
         }
-        _selector = (Object[][]) dst.toArray();
+        _selector = ArrayListToObjectArray(dst);
         return this;
     }
     /**
@@ -491,11 +495,11 @@ public class Table {
         {
             src = body;
         }
-        ArrayList<Object> dst = new ArrayList<>();
+        ArrayList<Object[]> dst = new ArrayList<>();
         for (int i = 0, len = src.length; i < len; i++)
         {
             Object[] row = src[i];
-            if (row[colIndex1] == value1 && row[colIndex2] == value2)
+            if (value1.equals(row[colIndex1]) && value2.equals(row[colIndex2]))
             {
                 dst.add(row);
                 limit--;
@@ -505,7 +509,7 @@ public class Table {
                 }
             }
         }
-        _selector = (Object[][]) dst.toArray();
+        _selector = ArrayListToObjectArray(dst);
         return this;
     }
     /**
@@ -527,11 +531,11 @@ public class Table {
         {
             src = body;
         }
-        ArrayList<Object> dst = new ArrayList<>();
+        ArrayList<Object[]> dst = new ArrayList<>();
         for (int i = 0, len = src.length; i < len; i++)
         {
             Object[] row = src[i];
-            if (row[colIndex1] == value1 && row[colIndex2] == value2 && row[colIndex3] == value3)
+            if (value1.equals(row[colIndex1]) && value2.equals(row[colIndex2]) && value3.equals(row[colIndex3]))
             {
                 dst.add(row);
                 limit--;
@@ -541,7 +545,7 @@ public class Table {
                 }
             }
         }
-        _selector = (Object[][]) dst.toArray();
+        _selector = ArrayListToObjectArray(dst);
         return this;
     }
     /**
@@ -553,18 +557,27 @@ public class Table {
      * @param colIndex specified column index
      * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
      */
-    public Table selectWhenG(int limit, Boolean withEqu, float value, int colIndex)
+    public Table selectWhenG(int limit, Boolean withEqu, double value, int colIndex)
     {
         Object[][] src = _selector;
         if (src == null)
         {
             src = body;
         }
-        ArrayList<Object> dst = new ArrayList<>();
+        ArrayList<Object[]> dst = new ArrayList<>();
         for (int i = 0, len = src.length; i < len; i++)
         {
             Object[] row = src[i];
-            double rowVal = (Double) row[colIndex];
+            double rowVal;
+            Object objVal = row[colIndex];
+            if (objVal instanceof Integer)
+            {
+                rowVal = ((Integer)objVal).doubleValue();
+            }
+            else
+            {
+                rowVal = (Double)objVal;
+            }
             if (rowVal > value || (withEqu && rowVal == value))
             {
                 dst.add(row);
@@ -575,7 +588,7 @@ public class Table {
                 }
             }
         }
-        _selector = (Object[][]) dst.toArray();
+        _selector = ArrayListToObjectArray(dst);
         return this;
     }
     /**
@@ -587,18 +600,27 @@ public class Table {
      * @param colIndex specified column index
      * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
      */
-    public Table selectWhenL(int limit, Boolean withEqu, float value, int colIndex)
+    public Table selectWhenL(int limit, Boolean withEqu, double value, int colIndex)
     {
         Object[][] src = _selector;
         if (src == null)
         {
             src = body;
         }
-        ArrayList<Object> dst = new ArrayList<>();
+        ArrayList<Object[]> dst = new ArrayList<>();
         for (int i = 0, len = src.length; i < len; i++)
         {
             Object[] row = src[i];
-            double rowVal = (Double) row[colIndex];
+            double rowVal;
+            Object objVal = row[colIndex];
+            if (objVal instanceof Integer)
+            {
+                rowVal = ((Integer)objVal).doubleValue();
+            }
+            else
+            {
+                rowVal = (Double)objVal;
+            }
             if (rowVal < value || (withEqu && rowVal == value))
             {
                 dst.add(row);
@@ -609,7 +631,7 @@ public class Table {
                 }
             }
         }
-        _selector = (Object[][]) dst.toArray();
+        _selector = ArrayListToObjectArray(dst);
         return this;
     }
 
@@ -624,18 +646,27 @@ public class Table {
      * @param colIndex specified column index
      * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
      */
-    public Table selectWhenGreaterAndLess(int limit, Boolean GWithEqu, Boolean LWithEqu, float GValue, float LValue, int colIndex)
+    public Table selectWhenGreaterAndLess(int limit, Boolean GWithEqu, Boolean LWithEqu, double GValue, double LValue, int colIndex)
     {
         Object[][] src = _selector;
         if (src == null)
         {
             src = body;
         }
-        ArrayList<Object> dst = new ArrayList<>();
+        ArrayList<Object[]> dst = new ArrayList<>();
         for (int i = 0, len = src.length; i < len; i++)
         {
             Object[] row = src[i];
-            double rowVal = (Double) row[colIndex];
+            double rowVal;
+            Object objVal = row[colIndex];
+            if (objVal instanceof Integer)
+            {
+                rowVal = ((Integer)objVal).doubleValue();
+            }
+            else
+            {
+                rowVal = (Double)objVal;
+            }
             Boolean v1 = (rowVal > GValue || (GWithEqu && rowVal == GValue));
             Boolean v2 = (rowVal < LValue || (LWithEqu && rowVal == LValue));
             if (v1 && v2)
@@ -648,7 +679,7 @@ public class Table {
                 }
             }
         }
-        _selector = (Object[][]) dst.toArray();
+        _selector = ArrayListToObjectArray(dst);
         return this;
     }
     /**
@@ -662,7 +693,7 @@ public class Table {
      * @param colIndex specified column index
      * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
      */
-    public Table selectWhenLessOrGreater(int limit, Boolean LWithEqu, Boolean GWithEqu, float LValue, float GValue,
+    public Table selectWhenLessOrGreater(int limit, Boolean LWithEqu, Boolean GWithEqu, double LValue, double GValue,
                                          int colIndex)
     {
         Object[][] src = _selector;
@@ -670,11 +701,20 @@ public class Table {
         {
             src = body;
         }
-        ArrayList<Object> dst = new ArrayList<>();
+        ArrayList<Object[]> dst = new ArrayList<>();
         for (int i = 0, len = src.length; i < len; i++)
         {
             Object[] row = src[i];
-            double rowVal = (Double) row[colIndex];
+            double rowVal;
+            Object objVal = row[colIndex];
+            if (objVal instanceof Integer)
+            {
+                rowVal = ((Integer)objVal).doubleValue();
+            }
+            else
+            {
+                rowVal = (Double)objVal;
+            }
             Boolean v1 = (rowVal < LValue || (LWithEqu && rowVal == LValue));
             Boolean v2 = (rowVal > GValue || (GWithEqu && rowVal == GValue));
             if (v1 || v2)
@@ -687,7 +727,7 @@ public class Table {
                 }
             }
         }
-        _selector = (Object[][]) dst.toArray();
+        _selector = ArrayListToObjectArray(dst);
         return this;
     }
     /**
@@ -882,6 +922,7 @@ public class Table {
                 Object newVal = cell;
                 Boolean isEmptyCell = (cell.equals(null) || cell.equals(""));
                 String type = newHead.get(j).type;
+                
                 if (type.equals("bool"))
                 {
                     if (isEmptyCell || cell.equals("false") || cell.equals("0"))
@@ -950,16 +991,40 @@ public class Table {
         // create table
         Table table = new Table();
         table.head = (Field[]) newHead.toArray(new Field[0]);
-        int numRows = rawBody.size();
+        int numRows = newBody.size();
         int numCols = newHead.size();
         table.body = new Object[numRows][numCols];
         for (int i = 0; i < numRows; i++)
         {
             for (int j = 0; j < numCols; j++)
             {
-                table.body[i][j] = rawBody.get(i).get(j);
+                table.body[i][j] = newBody.get(i).get(j);
             }
         }
         return table;
+    }
+    /**
+     * Check if the type is json.
+     */
+    private Boolean isJsonType(String type)
+    {
+        for (int i = 0, len = JSON_TYPES.length; i < len; i++)
+        {
+            if (JSON_TYPES[i] == type)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+    private Object[][] ArrayListToObjectArray(ArrayList<Object[]> src)
+    {
+        int len = src.size();
+        Object[][] dst = new Object[src.size()][];
+        for (int i = 0; i < len; i++)
+        {
+            dst[i] = src.get(i);
+        }
+        return dst;
     }
 }
