@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 /**
  * 1. Copyright (c) 2022 amin2312
  * 2. Version 1.0.0
@@ -90,7 +94,7 @@ public class Table {
         for (int i = 0, len = this.head.length; i < len; i++)
         {
             Field field = this.head[i];
-            if (field.name == name)
+            if (field.name.equals(name))
             {
                 return i;
             }
@@ -187,7 +191,7 @@ public class Table {
             {
                 if (val0 != null)
                 {
-                    val1 = val0;// new JSONObject(val0);
+                    val1 = toJsonIns((String)val0);
                 }
             }
             else
@@ -215,7 +219,7 @@ public class Table {
             {
                 if (val0 != null)
                 {
-                    val1 = val0;// new JSONObject(val0);
+                    val1 = toJsonIns((String)val0);
                 }
             }
             else
@@ -1010,13 +1014,38 @@ public class Table {
     {
         for (int i = 0, len = JSON_TYPES.length; i < len; i++)
         {
-            if (JSON_TYPES[i] == type)
+            if (JSON_TYPES[i].equals(type))
             {
                 return true;
             }
         }
         return false;
     }
+    /**
+     * Convert to json variable instance.
+     */
+    private Object toJsonIns(String json)
+    {
+        Object ins = null;
+        try {
+            if (json.charAt(0) == '{')
+            {
+                JSONObject obj = new JSONObject(json);
+                ins = obj;
+            }
+            else
+            {
+                JSONArray arr = new JSONArray(json);
+                ins = arr;
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return ins;
+    }
+    /**
+     * Convert ArrayList to ObjectArray.
+     */
     private Object[][] ArrayListToObjectArray(ArrayList<Object[]> src)
     {
         int len = src.size();

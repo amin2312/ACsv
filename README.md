@@ -11,7 +11,7 @@ The features:
 &emsp;&emsp;allow field type to be declared after field name (like width:**int**, name:**string**),  
 &emsp;&emsp;supported field types: **bool, int, number, json, strings**  
 &emsp;&emsp;see details in "release/csvs/enhanced_format_text.csv"   
-* Cross platform - provide **haxe**, **js**, **ts**, **php** version (the lua, python version via Haxe)
+* Cross platform - provide **haxe**, **js**, **ts**, **php**, **java** version (the lua, python version via Haxe)
   
 
 Example

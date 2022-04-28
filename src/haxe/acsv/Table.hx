@@ -386,14 +386,14 @@ class Table
      */
     public function selectWhenIn(limit:Int, values:Array<Dynamic>, colIndex:Int = 0):Table
     {
-        var rows = new Array<Array<Dynamic>>();
+        var dst = new Array<Array<Dynamic>>();
         for (i in 0...values.length)
         {
             var value = values[i];
-            selectWhenE(limit, value, colIndex, rows);
+            selectWhenE(limit, value, colIndex, dst);
             _selector = null;
         }
-        _selector = rows;
+        _selector = dst;
         return this;
     }
     /**

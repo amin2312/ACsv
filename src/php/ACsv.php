@@ -366,13 +366,13 @@ namespace acsv
          */
         public function selectWhenIn($limit, $values, $colIndex = 0)
         {
-            $rows = [];
+            $dst = [];
             foreach ($values as $i => $value)
             {
-                $this->selectWhenE($limit, $value, $colIndex, $rows);
+                $this->selectWhenE($limit, $value, $colIndex, $dst);
                 $this->_selector = null;
             }
-            $this->_selector = $rows;
+            $this->_selector = $dst;
             return $this;
         }
         /**
