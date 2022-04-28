@@ -268,14 +268,14 @@ public class Table {
             return null;
         }
         int len = _selector.length;
-        Object[] dst = new Object[len];
+        Object[][] dst = new Object[len][];
         for (int i = 0; i < len; i++)
         {
             Object[] row = _selector[i];
             dst[i] = this.fmtRow(row);
         }
         _selector = null;
-        return (Object[][]) dst;
+        return dst;
     }
     /**
      * Fetch first selected result to a object and return it.
@@ -324,14 +324,14 @@ public class Table {
             return null;
         }
         int len = _selector.length;
-        Object[] dst = new Object[len];
+        HashMap<String, Object>[] dst = new HashMap[len];
         for (int i = 0; i < len; i++)
         {
             Object[] row = _selector[i];
             dst[i] = this.fmtObj(row);
         }
         _selector = null;
-        return (HashMap<String, Object>[]) dst;
+        return dst;
     }
     /**
      * Fetch all selected results to a new table.
@@ -949,8 +949,17 @@ public class Table {
         }
         // create table
         Table table = new Table();
-        table.head = (Field[]) newHead.toArray();
-        table.body = (Object[][]) rawBody.toArray();
+        table.head = (Field[]) newHead.toArray(new Field[0]);
+        int numRows = rawBody.size();
+        int numCols = newHead.size();
+        table.body = new Object[numRows][numCols];
+        for (int i = 0; i < numRows; i++)
+        {
+            for (int j = 0; j < numCols; j++)
+            {
+                table.body[i][j] = rawBody.get(i).get(j);
+            }
+        }
         return table;
     }
 }
