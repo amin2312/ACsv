@@ -66,6 +66,7 @@ public class JSONArray {
      *     inconsistent state.
      */
     /* Accept a raw type for API compatibility */
+    @SuppressWarnings("rawtypes")
     public JSONArray(Collection copyFrom) {
         this();
         if (copyFrom != null) {

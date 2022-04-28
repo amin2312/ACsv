@@ -126,6 +126,7 @@ public class JSONObject {
      * @throws NullPointerException if any of the map's keys are null.
      */
     /* (accept a raw type for API compatibility) */
+    @SuppressWarnings("rawtypes")
     public JSONObject(Map copyFrom) {
         this();
         Map<?, ?> contentsTyped = (Map<?, ?>) copyFrom;
@@ -297,7 +298,6 @@ public class JSONObject {
      *     Integer, Long, Double, {@link #NULL} or null. May not be {@link
      *     Double#isNaN() NaNs} or {@link Double#isInfinite() infinities}.
      */
-    // TODO: Change {@code append) to {@link #append} when append is
     // unhidden.
     public JSONObject accumulate(String name, Object value) throws JSONException {
         Object current = nameValuePairs.get(checkName(name));
@@ -786,6 +786,7 @@ public class JSONObject {
      * Otherwise if the object is from a {@code java} package, returns the result of {@code toString}.
      * If wrapping fails, returns null.
      */
+    @SuppressWarnings("rawtypes")
     public static Object wrap(Object o) {
         if (o == null) {
             return NULL;
