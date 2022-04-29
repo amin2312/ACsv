@@ -38,7 +38,7 @@ public class Table {
     private HashMap<Integer, HashMap<Object, Object[]>> _indexSet = new HashMap<>();
     /**
      * Selected data(for Method Chaining).
-     **/
+     */
     private Object[][] _selector;
     /**
      * Constructor.
@@ -74,14 +74,14 @@ public class Table {
      */
     public void createIndexAt(int colIndex)
     {
-        HashMap<Object, Object[]> map = new HashMap<>();
-        for (int i = 0, len = this.body.length; i < len; i++)
+        HashMap<Object, Object[]> m = new HashMap<>();
+        for (int i = 0, l = this.body.length; i < l; i++)
         {
             Object[] row = this.body[i];
             Object key = row[colIndex];
-            map.put(key, row);
+            m.put(key, row);
         }
-        _indexSet.put(colIndex, map);
+        _indexSet.put(colIndex, m);
     }
     /**
      * Get column index by specified field name.
@@ -91,7 +91,7 @@ public class Table {
      */
     public int getColIndexBy(String name)
     {
-        for (int i = 0, len = this.head.length; i < len; i++)
+        for (int i = 0, l = this.head.length; i < l; i++)
         {
             Field field = this.head[i];
             if (field.name.equals(name))
@@ -121,10 +121,10 @@ public class Table {
      */
     public Table sortBy(int colIndex, int sortType)
     {
-        int len = _selector.length;
-        for (int i = 0; i < len; i++)
+        int l = _selector.length;
+        for (int i = 0; i < l; i++)
         {
-            for (int j = 0; j < len - 1; j++)
+            for (int j = 0; j < l - 1; j++)
             {
                 Boolean ok = false;
                 double a;
@@ -181,13 +181,13 @@ public class Table {
     private Object[] fmtRow(Object[] row)
     {
         ArrayList<Object> obj = new ArrayList<>();
-        for (int i = 0, len = this.head.length; i < len; i++)
+        for (int i = 0, l = this.head.length; i < l; i++)
         {
             Field filed = this.head[i];
-            String type = filed.type;
+            String ft = filed.type;
             Object val0 = row[i];
             Object val1 = null;
-            if (type != null && type.isEmpty() == false && isJsonType(type))
+            if (ft != null && ft.isEmpty() == false && isJsonType(ft))
             {
                 if (val0 != null)
                 {
@@ -208,14 +208,14 @@ public class Table {
     private HashMap<String, Object> fmtObj(Object[] row)
     {
         HashMap<String, Object> obj = new HashMap<>();
-        for (int i = 0, len = this.head.length; i < len; i++)
+        for (int i = 0, l = this.head.length; i < l; i++)
         {
             Field field = this.head[i];
             String name = field.name;
-            String type = field.type;
+            String ft = field.type;
             Object val0 = row[i];
             Object val1 = null;
-            if (type != null && type.isEmpty() == false && isJsonType(type))
+            if (ft != null && ft.isEmpty() == false && isJsonType(ft))
             {
                 if (val0 != null)
                 {
@@ -255,10 +255,10 @@ public class Table {
         Object[] rzl = null;
         if (_selector != null)
         {
-            int len = _selector.length;
-            if (len > 0)
+            int l = _selector.length;
+            if (l > 0)
             {
-                rzl = this.fmtRow(_selector[len - 1]);
+                rzl = this.fmtRow(_selector[l - 1]);
             }
         }
         _selector = null;
@@ -275,9 +275,9 @@ public class Table {
         {
             return null;
         }
-        int len = _selector.length;
-        Object[][] dst = new Object[len][];
-        for (int i = 0; i < len; i++)
+        int l = _selector.length;
+        Object[][] dst = new Object[l][];
+        for (int i = 0; i < l; i++)
         {
             Object[] row = _selector[i];
             dst[i] = this.fmtRow(row);
@@ -310,10 +310,10 @@ public class Table {
         HashMap<String, Object> rzl = null;
         if (_selector != null)
         {
-            int len = _selector.length;
-            if (len > 0)
+            int l = _selector.length;
+            if (l > 0)
             {
-                rzl = this.fmtObj(_selector[len - 1]);
+                rzl = this.fmtObj(_selector[l - 1]);
             }
         }
         _selector = null;
@@ -331,9 +331,9 @@ public class Table {
         {
             return null;
         }
-        int len = _selector.length;
-        HashMap<String, Object>[] dst = new HashMap[len];
-        for (int i = 0; i < len; i++)
+        int l = _selector.length;
+        HashMap<String, Object>[] dst = new HashMap[l];
+        for (int i = 0; i < l; i++)
         {
             Object[] row = _selector[i];
             dst[i] = this.fmtObj(row);
@@ -398,7 +398,7 @@ public class Table {
     {
         ArrayList<Object[]> dst = new ArrayList<>();
         int maxLen = this.body.length;
-        for (int i = 0, len = rowIndices.length; i < len; i++)
+        for (int i = 0, l = rowIndices.length; i < l; i++)
         {
             int rowIndex = rowIndices[i];
             if (rowIndex >= 0 && rowIndex < maxLen)
@@ -420,7 +420,7 @@ public class Table {
     public Table selectWhenIn(int limit, Object[] values, int colIndex)
     {
         ArrayList<Object[]> dst = new ArrayList<>();
-        for (int i = 0, len = values.length; i < len; i++)
+        for (int i = 0, l = values.length; i < l; i++)
         {
             Object value = values[i];
             selectWhenE(limit, value, colIndex, dst);
@@ -448,10 +448,10 @@ public class Table {
         // 1.check indexed set
         if (limit == 1)
         {
-            HashMap<Object, Object[]> map = _indexSet.get(colIndex);
-            if (map != null)
+            HashMap<Object, Object[]> m = _indexSet.get(colIndex);
+            if (m != null)
             {
-                Object[] val = map.get(value);
+                Object[] val = m.get(value);
                 if (val != null)
                 {
                     dst.add(val);
@@ -466,7 +466,7 @@ public class Table {
         {
             src = body;
         }
-        for (int i = 0, len = src.length; i < len; i++)
+        for (int i = 0, l = src.length; i < l; i++)
         {
             Object[] row = src[i];
             if (value.equals(row[colIndex]))
@@ -500,7 +500,7 @@ public class Table {
             src = body;
         }
         ArrayList<Object[]> dst = new ArrayList<>();
-        for (int i = 0, len = src.length; i < len; i++)
+        for (int i = 0, l = src.length; i < l; i++)
         {
             Object[] row = src[i];
             if (value1.equals(row[colIndex1]) && value2.equals(row[colIndex2]))
@@ -536,7 +536,7 @@ public class Table {
             src = body;
         }
         ArrayList<Object[]> dst = new ArrayList<>();
-        for (int i = 0, len = src.length; i < len; i++)
+        for (int i = 0, l = src.length; i < l; i++)
         {
             Object[] row = src[i];
             if (value1.equals(row[colIndex1]) && value2.equals(row[colIndex2]) && value3.equals(row[colIndex3]))
@@ -569,7 +569,7 @@ public class Table {
             src = body;
         }
         ArrayList<Object[]> dst = new ArrayList<>();
-        for (int i = 0, len = src.length; i < len; i++)
+        for (int i = 0, l = src.length; i < l; i++)
         {
             Object[] row = src[i];
             double rowVal;
@@ -612,7 +612,7 @@ public class Table {
             src = body;
         }
         ArrayList<Object[]> dst = new ArrayList<>();
-        for (int i = 0, len = src.length; i < len; i++)
+        for (int i = 0, l = src.length; i < l; i++)
         {
             Object[] row = src[i];
             double rowVal;
@@ -658,7 +658,7 @@ public class Table {
             src = body;
         }
         ArrayList<Object[]> dst = new ArrayList<>();
-        for (int i = 0, len = src.length; i < len; i++)
+        for (int i = 0, l = src.length; i < l; i++)
         {
             Object[] row = src[i];
             double rowVal;
@@ -706,7 +706,7 @@ public class Table {
             src = body;
         }
         ArrayList<Object[]> dst = new ArrayList<>();
-        for (int i = 0, len = src.length; i < len; i++)
+        for (int i = 0, l = src.length; i < l; i++)
         {
             Object[] row = src[i];
             double rowVal;
@@ -904,7 +904,7 @@ public class Table {
         ArrayList<ArrayList<String>> rawBody = arr;
         // parse head
         ArrayList<Field> newHead = new ArrayList<Field>();
-        for (int i = 0, len = rawHead.size(); i < len; i++)
+        for (int i = 0, l = rawHead.size(); i < l; i++)
         {
             String fullName = rawHead.get(i);
             String[] parts = fullName.split(":");
@@ -916,7 +916,7 @@ public class Table {
         }
         // parse body
         ArrayList<ArrayList<Object>> newBody = new ArrayList<>();
-        for (int i = 0, len = rawBody.size(); i < len; i++)
+        for (int i = 0, l = rawBody.size(); i < l; i++)
         {
             ArrayList<String> row = rawBody.get(i);
             ArrayList<Object> item = new ArrayList<>();
@@ -925,9 +925,8 @@ public class Table {
                 String cell = row.get(j);
                 Object newVal = cell;
                 Boolean isEmptyCell = (cell.equals(null) || cell.equals(""));
-                String type = newHead.get(j).type;
-                
-                if (type.equals("bool"))
+                String ft = newHead.get(j).type;
+                if (ft.equals("bool"))
                 {
                     if (isEmptyCell || cell.equals("false") || cell.equals("0"))
                     {
@@ -938,7 +937,7 @@ public class Table {
                         newVal = true;
                     }
                 }
-                else if (type.equals("int"))
+                else if (ft.equals("int"))
                 {
                     if (isEmptyCell)
                     {
@@ -949,7 +948,7 @@ public class Table {
                         newVal = Integer.parseInt(cell);
                     }
                 }
-                else if (type.equals("number"))
+                else if (ft.equals("number"))
                 {
                     if (isEmptyCell)
                     {
@@ -960,7 +959,7 @@ public class Table {
                         newVal = Double.parseDouble(cell);
                     }
                 }
-                else if (type.equals("json"))
+                else if (ft.equals("json"))
                 {
                     if (isEmptyCell)
                     {
@@ -977,7 +976,7 @@ public class Table {
                         newVal = cell;
                     }
                 }
-                else if (type.equals("strings"))
+                else if (ft.equals("strings"))
                 {
                     if (isEmptyCell)
                     {
@@ -1010,11 +1009,11 @@ public class Table {
     /**
      * Check if the type is json.
      */
-    private Boolean isJsonType(String type)
+    private Boolean isJsonType(String v)
     {
-        for (int i = 0, len = JSON_TYPES.length; i < len; i++)
+        for (int i = 0, l = JSON_TYPES.length; i < l; i++)
         {
-            if (JSON_TYPES[i].equals(type))
+            if (JSON_TYPES[i].equals(v))
             {
                 return true;
             }
@@ -1048,9 +1047,9 @@ public class Table {
      */
     private Object[][] ArrayListToObjectArray(ArrayList<Object[]> src)
     {
-        int len = src.size();
+        int l = src.size();
         Object[][] dst = new Object[src.size()][];
-        for (int i = 0; i < len; i++)
+        for (int i = 0; i < l; i++)
         {
             dst[i] = src.get(i);
         }

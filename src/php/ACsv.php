@@ -32,7 +32,7 @@ namespace acsv
         private $_indexSet = [];
         /**
          * Selected data(for Method Chaining).
-         **/
+         */
         private $_selector = null;
         /**
          * Constructor.
@@ -65,13 +65,13 @@ namespace acsv
          */
         public function createIndexAt($colIndex)
         {
-            $map = [];
+            $m = [];
             foreach ($this->body as $i => $row)
             {
                 $key = $row[$colIndex];
-                $map[$key] = $row;
+                $m[$key] = $row;
             }
-            $this->_indexSet[$colIndex] = $map;
+            $this->_indexSet[$colIndex] = $m;
         }
         /**
          * Get column index by specified field name.
@@ -107,10 +107,10 @@ namespace acsv
          */
         public function sortBy($colIndex, $sortType)
         {
-            $len = count($this->_selector);
-            for ($i = 0; $i < $len; $i++)
+            $l = count($this->_selector);
+            for ($i = 0; $i < $l; $i++)
             {
-                for ($j = 0; $j < $len - 1; $j++)
+                for ($j = 0; $j < $l - 1; $j++)
                 {
                     $ok = false;
                     $a = $this->_selector[$j][$colIndex];
@@ -150,10 +150,10 @@ namespace acsv
             $obj = [];
             foreach ($this->head as $i => $field)
             {
-                $type = $field->type;
+                $ft = $field->type;
                 $val0 = $row[$i];
                 $val1 = null;
-                if ($type !== null && $type !== '' && array_search($type, self::$JSON_TYPES) !== false)
+                if ($ft !== null && $ft !== '' && array_search($ft, self::$JSON_TYPES) !== false)
                 {
                     if ($val0)
                     {
@@ -177,10 +177,10 @@ namespace acsv
             foreach ($this->head as $i => $field)
             {
                 $name = $field->name;
-                $type = $field->type;
+                $ft = $field->type;
                 $val0 = $row[$i];
                 $val1 = null;
-                if ($type !== null && $type !== '' && array_search($type, self::$JSON_TYPES) !== false)
+                if ($ft !== null && $ft !== '' && array_search($ft, self::$JSON_TYPES) !== false)
                 {
                     if ($val0)
                     {
@@ -218,10 +218,10 @@ namespace acsv
             $rzl = null;
             if ($this->_selector != null)
             {
-                $len = count($this->_selector);
-                if ($len > 0)
+                $l = count($this->_selector);
+                if ($l > 0)
                 {
-                    $rzl = $this->fmtRow($this->_selector[$len - 1]);
+                    $rzl = $this->fmtRow($this->_selector[$l - 1]);
                 }
             }
             $this->_selector = null;
@@ -268,10 +268,10 @@ namespace acsv
             $rzl = null;
             if ($this->_selector != null)
             {
-                $len = count($this->_selector);
-                if ($len > 0)
+                $l = count($this->_selector);
+                if ($l > 0)
                 {
-                    $rzl = $this->fmtObj($this->_selector[$len - 1]);
+                    $rzl = $this->fmtObj($this->_selector[$l - 1]);
                 }
             }
             $this->_selector = null;
@@ -395,12 +395,12 @@ namespace acsv
             {
                 if (isset($this->_indexSet[$colIndex]))
                 {
-                    $map = $this->_indexSet[$colIndex];
-                    if ($map)
+                    $m = $this->_indexSet[$colIndex];
+                    if ($m)
                     {
-                        if (isset($map[$value]))
+                        if (isset($m[$value]))
                         {
-                            $val = $map[$value];
+                            $val = $m[$value];
                             if ($val)
                             {
                                 array_push($dst, $val);
@@ -807,9 +807,9 @@ namespace acsv
                 foreach ($row as $j => $cell)
                 {
                     $newVal = $cell;
-                    $type = $newHead[$j]->type;
+                    $ft = $newHead[$j]->type;
                     $isEmptyCell = ($cell === null || $cell === '');
-                    if ($type == 'bool')
+                    if ($ft == 'bool')
                     {
                         if ($isEmptyCell || $cell == 'false' || $cell == '0')
                         {
@@ -820,7 +820,7 @@ namespace acsv
                             $newVal = true;
                         }
                     }
-                    else if ($type == 'int')
+                    else if ($ft == 'int')
                     {
                         if ($isEmptyCell)
                         {
@@ -831,7 +831,7 @@ namespace acsv
                             $newVal = intval($cell);
                         }
                     }
-                    else if ($type == 'number')
+                    else if ($ft == 'number')
                     {
                         if ($isEmptyCell)
                         {
@@ -842,7 +842,7 @@ namespace acsv
                             $newVal = floatval($cell);
                         }
                     }
-                    else if ($type == 'json')
+                    else if ($ft == 'json')
                     {
                         if ($isEmptyCell)
                         {
@@ -859,7 +859,7 @@ namespace acsv
                             $newVal = $cell;
                         }
                     }
-                    else if ($type == 'strings')
+                    else if ($ft == 'strings')
                     {
                         if ($isEmptyCell)
                         {
@@ -901,7 +901,7 @@ namespace acsv
         /**
          * Type.
          */
-        public $type;
+        public $ft;
         /**
          * Constructor.
          */

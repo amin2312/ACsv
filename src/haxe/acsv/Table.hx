@@ -32,7 +32,7 @@ class Table
     private var _indexSet:Dynamic = {};
     /**
      * Selected data(for Method Chaining).
-     **/
+     */
     private var _selector:Array<Array<Dynamic>> = null;
     /**
      * Constructor.
@@ -66,21 +66,21 @@ class Table
      */
     public function createIndexAt(colIndex:Int):Void
     {
-        var map:Dynamic = {};
+        var m:Dynamic = {};
         for (i in 0...this.body.length)
         {
             var row:Array<Dynamic> = this.body[i];
             var key:Dynamic = row[colIndex];
             #if (js || lua)
-            map[key] = row;
+            m[key] = row;
             #else
-            Reflect.setProperty(map, key + '', row);
+            Reflect.setProperty(m, key + '', row);
             #end
         }
         #if (js || lua)
-        _indexSet[colIndex] = map;
+        _indexSet[colIndex] = m;
         #else
-        Reflect.setProperty(_indexSet, colIndex + '', map);
+        Reflect.setProperty(_indexSet, colIndex + '', m);
         #end
     }
     /**
@@ -118,10 +118,10 @@ class Table
      */
     public function sortBy(colIndex:Int, sortType:Int):Table
     {
-        var len = _selector.length;
-        for (i in 0...len)
+        var l = _selector.length;
+        for (i in 0...l)
         {
-            for (j in 0...len - 1)
+            for (j in 0...l - 1)
             {
                 var ok = false;
                 var a = _selector[j][colIndex];
@@ -162,10 +162,10 @@ class Table
         for (i in 0...this.head.length)
         {
             var filed = this.head[i];
-            var type = filed.type;
+            var ft = filed.type; // avoid "type" keyword in other languages
             var val0 = row[i];
             var val1:Dynamic = null;
-            if (type != null && type != '' && Table.JSON_TYPES.indexOf(type) != -1)
+            if (ft != null && ft != '' && Table.JSON_TYPES.indexOf(ft) != -1)
             {
                 if (val0 != null)
                 {
@@ -190,10 +190,10 @@ class Table
         {
             var field = this.head[i];
             var name = field.name;
-            var type = field.type;
+            var ft = field.type; // avoid "type" keyword in other languages
             var val0 = row[i];
             var val1:Dynamic = null;
-            if (type != null && type != '' && Table.JSON_TYPES.indexOf(type) != -1)
+            if (ft != null && ft != '' && Table.JSON_TYPES.indexOf(ft) != -1)
             {
                 if (val0 != null)
                 {
@@ -235,10 +235,10 @@ class Table
         var rzl = null;
         if (_selector != null)
         {
-            var len = _selector.length;
-            if (len > 0)
+            var l = _selector.length;
+            if (l > 0)
             {
-                rzl = this.fmtRow(_selector[len - 1]);
+                rzl = this.fmtRow(_selector[l - 1]);
             }
         }
         _selector = null;
@@ -286,10 +286,10 @@ class Table
         var rzl = null;
         if (_selector != null)
         {
-            var len = _selector.length;
-            if (len > 0)
+            var l = _selector.length;
+            if (l > 0)
             {
-                rzl = this.fmtObj(_selector[len - 1]);
+                rzl = this.fmtObj(_selector[l - 1]);
             }
         }
         _selector = null;
@@ -415,16 +415,16 @@ class Table
         if (limit == 1)
         {
             #if (js || lua)
-            var map:Dynamic = _indexSet[colIndex];
+            var m:Dynamic = _indexSet[colIndex];
             #else
-            var map:Dynamic = Reflect.getProperty(_indexSet, colIndex + '');
+            var m:Dynamic = Reflect.getProperty(_indexSet, colIndex + '');
             #end
-            if (map != null)
+            if (m != null)
             {
                 #if (js || lua)
-                var val = map[value];
+                var val = m[value];
                 #else
-                var val = Reflect.getProperty(map, value + '');
+                var val = Reflect.getProperty(m, value + '');
                 #end
                 if (val != null)
                 {
@@ -841,8 +841,8 @@ class Table
                 var cell:String = row[j];
                 var newVal:Dynamic = cell;
                 var isEmptyCell = (cell == null || cell == '');
-                var type:String = newHead[j].type;
-                if (type == "bool")
+                var ft:String = newHead[j].type; // avoid "type" keyword in other languages
+                if (ft == "bool")
                 {
                     if (isEmptyCell || cell == "false" || cell == '0')
                     {
@@ -853,7 +853,7 @@ class Table
                         newVal = true;
                     }
                 }
-                else if (type == "int")
+                else if (ft == "int")
                 {
                     if (isEmptyCell)
                     {
@@ -868,7 +868,7 @@ class Table
                         #end
                     }
                 }
-                else if (type == "number")
+                else if (ft == "number")
                 {
                     if (isEmptyCell)
                     {
@@ -879,7 +879,7 @@ class Table
                         newVal = Std.parseFloat(cell);
                     }
                 }
-                else if (type == "json")
+                else if (ft == "json")
                 {
                     if (isEmptyCell)
                     {
@@ -896,7 +896,7 @@ class Table
                         newVal = cell;
                     }
                 }
-                else if (type == "strings")
+                else if (ft == "strings")
                 {
                     if (isEmptyCell)
                     {
