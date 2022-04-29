@@ -775,39 +775,39 @@ public class Table {
             int cellIndexB = 0;
             ArrayList<String> cells = new ArrayList<>();
             String cell = null;
-            String chr = null;
+            String cc = null; // current character
             while (cellIndexB < curLen)
             {
                 cellIndexA = cellIndexB;
-                chr = String.valueOf(ptr.charAt(ptrPos + cellIndexB));
-                if (chr.equals("\n")) // line is over
+                cc = String.valueOf(ptr.charAt(ptrPos + cellIndexB));
+                if (cc.equals("\n")) // line is over
                 {
                     cellIndexB += 1;
                     break;
                 }
-                if (chr.equals("\r") && ptr.charAt(ptrPos + cellIndexB + 1) == '\n') // line is over
+                if (cc.equals("\r") && ptr.charAt(ptrPos + cellIndexB + 1) == '\n') // line is over
                 {
                     cellIndexB += 2;
                     break;
                 }
-                if (chr.equals(FS)) // is separator
+                if (cc.equals(FS)) // is separator
                 {
                     cell = "";
                     int nextPos = ptrPos + cellIndexB + 1;
                     if (nextPos >= maxLen)
                     {
-                        chr = "\n"; // fix the bug when the last cell is empty
+                        cc = "\n"; // fix the bug when the last cell is empty
                     }
                     else
                     {
-                        chr = String.valueOf(ptr.charAt(nextPos));
+                        cc = String.valueOf(ptr.charAt(nextPos));
                     }
-                    if (cellIndexA == 0 || chr.equals(FS) || chr.equals("\n")) // is empty cell
+                    if (cellIndexA == 0 || cc.equals(FS) || cc.equals("\n")) // is empty cell
                     {
                         cellIndexB += 1;
                         cells.add("");
                     }
-                    else if (chr.equals("\r") && ptr.charAt(ptrPos + cellIndexB + 2) == '\n') // is empty cell
+                    else if (cc.equals("\r") && ptr.charAt(ptrPos + cellIndexB + 2) == '\n') // is empty cell
                     {
                         cellIndexB += 2;
                         cells.add("");
@@ -817,7 +817,7 @@ public class Table {
                         cellIndexB += 1;
                     }
                 }
-                else if (chr.equals(FML)) // is double quote
+                else if (cc.equals(FML)) // is double quote
                 {
                     // pass DQ
                     cellIndexB++;
@@ -967,8 +967,8 @@ public class Table {
                     }
                     else
                     {
-                        char chr0 = cell.charAt(0);
-                        if (!(chr0 == '[' || chr0 == '{'))
+                        char cc = cell.charAt(0);
+                        if (!(cc == '[' || cc == '{'))
                         {
                             System.out.print("[ACsv] Invalid json format:" + newHead.get(j).name + ',' + cell);
                             return null;

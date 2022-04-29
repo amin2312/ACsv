@@ -664,39 +664,39 @@ namespace acsv
                 $cellIndexB = 0;
                 $cells = [];
                 $cell = null;
-                $chr = null;
+                $cc = null; // current character
                 while ($cellIndexB < $curLen)
                 {
                     $cellIndexA = $cellIndexB;
-                    $chr = $ptr[$ptrPos + $cellIndexB];
-                    if ($chr == "\n" || $chr == "\r\n") // line is over
+                    $cc = $ptr[$ptrPos + $cellIndexB];
+                    if ($cc == "\n" || $cc == "\r\n") // line is over
                     {
                         $cellIndexB += 1;
                         break;
                     }
-                    if ($chr == "\r" && $ptr[$ptrPos + $cellIndexB + 1] == "\n") // line is over
+                    if ($cc == "\r" && $ptr[$ptrPos + $cellIndexB + 1] == "\n") // line is over
                     {
                         $cellIndexB += 2;
                         break;
                     }
-                    if ($chr == $FS) // is separator
+                    if ($cc == $FS) // is separator
                     {
                         $cell = "";
                         $nextPos = $ptrPos + $cellIndexB + 1;
                         if ($nextPos >= $maxLen)
                         {
-                            $chr = "\n"; // fix the bug when the last cell is empty
+                            $cc = "\n"; // fix the bug when the last cell is empty
                         }
                         else
                         {
-                            $chr = $ptr[$nextPos];
+                            $cc = $ptr[$nextPos];
                         }
-                        if ($cellIndexA == 0 || $chr == $FS || $chr == "\n" || $chr == "\r\n") // is empty cell
+                        if ($cellIndexA == 0 || $cc == $FS || $cc == "\n" || $cc == "\r\n") // is empty cell
                         {
                             $cellIndexB += 1;
                             array_push($cells, "");
                         }
-                        else if ($chr == "\r" && $ptr[$ptrPos + $cellIndexB + 2] == "\n") // is empty cell
+                        else if ($cc == "\r" && $ptr[$ptrPos + $cellIndexB + 2] == "\n") // is empty cell
                         {
                             $cellIndexB += 2;
                             array_push($cells, "");
@@ -706,7 +706,7 @@ namespace acsv
                             $cellIndexB += 1;
                         }
                     }
-                    else if ($chr == $FML) // is double quote
+                    else if ($cc == $FML) // is double quote
                     {
                         // pass DQ
                         $cellIndexB++;
@@ -850,8 +850,8 @@ namespace acsv
                         }
                         else
                         {
-                            $chr0 = $cell[0];
-                            if (!($chr0 == '[' || $chr0 == '{'))
+                            $cc = $cell[0];
+                            if (!($cc == '[' || $cc == '{'))
                             {
                                 echo("[ACsv] Invalid json format:" . $newHead[$j]->name . ',' . $cell);
                                 return null;

@@ -694,39 +694,39 @@ class Table
             var cellIndexB:Int = 0;
             var cells:Array<Dynamic> = [];
             var cell:String = null;
-            var chr:String = null;
+            var cc:String = null; // cureent character
             while (cellIndexB < curLen)
             {
                 cellIndexA = cellIndexB;
-                chr = ptr.charAt(ptrPos + cellIndexB);
-                if (chr == "\n" || chr == "\r\n") // line is over
+                cc = ptr.charAt(ptrPos + cellIndexB);
+                if (cc == "\n" || cc == "\r\n") // line is over
                 {
                     cellIndexB += 1;
                     break;
                 }
-                if (chr == "\r" && ptr.charAt(ptrPos + cellIndexB + 1) == "\n") // line is over
+                if (cc == "\r" && ptr.charAt(ptrPos + cellIndexB + 1) == "\n") // line is over
                 {
                     cellIndexB += 2;
                     break;
                 }
-                if (chr == FS) // is separator
+                if (cc == FS) // is separator
                 {
                     cell = "";
                     var nextPos = ptrPos + cellIndexB + 1;
                     if (nextPos >= maxLen)
                     {
-                        chr = '\n'; // fix the bug when the last cell is empty
+                        cc = '\n'; // fix the bug when the last cell is empty
                     }
                     else
                     {
-                        chr = ptr.charAt(nextPos);
+                        cc = ptr.charAt(nextPos);
                     }
-                    if (cellIndexA == 0 || chr == FS || chr == "\n" || chr == "\r\n") // is empty cell
+                    if (cellIndexA == 0 || cc == FS || cc == "\n" || cc == "\r\n") // is empty cell
                     {
                         cellIndexB += 1;
                         cells.push("");
                     }
-                    else if (chr == "\r" && ptr.charAt(ptrPos + cellIndexB + 2) == "\n") // is empty cell
+                    else if (cc == "\r" && ptr.charAt(ptrPos + cellIndexB + 2) == "\n") // is empty cell
                     {
                         cellIndexB += 2;
                         cells.push("");
@@ -736,7 +736,7 @@ class Table
                         cellIndexB += 1;
                     }
                 }
-                else if (chr == FML) // is double quote
+                else if (cc == FML) // is double quote
                 {
                     // pass DQ
                     cellIndexB++;
@@ -887,8 +887,8 @@ class Table
                     }
                     else
                     {
-                        var chr0 = cell.charAt(0);
-                        if (!(chr0 == '[' || chr0 == '{' ))
+                        var cc = cell.charAt(0);
+                        if (!(cc == '[' || cc == '{' ))
                         {
                             trace("[ACsv] Invalid json format:" + newHead[j].name + ',' + cell);
                             return null;
