@@ -214,7 +214,7 @@ class Table
     }
     /**
      * Fetch first selected result to a row and return it.
-     * @return first selected row data
+     * @return first selected row data or null
      */
     public function toFirstRow():Array<Dynamic>
     {
@@ -228,7 +228,7 @@ class Table
     }
     /**
      * Fetch last selected result to a row and return it.
-     * @return last selected row data
+     * @return last selected row data or null
      */
     public function toLastRow():Array<Dynamic>
     {
@@ -246,7 +246,7 @@ class Table
     }
     /**
      * Fetch all selected results to the rows and return it.
-     * @return a array of row data
+     * @return a array of row data (even if the result is empty)
      */
     public function toRows():Array<Array<Dynamic>>
     {
@@ -265,7 +265,7 @@ class Table
     }
     /**
      * Fetch first selected result to a object and return it.
-     * @return first selected row object
+     * @return first selected row object or null
      */
     public function toFirstObj():Dynamic
     {
@@ -279,7 +279,7 @@ class Table
     }
     /**
      * Fetch last selected result to a object and return it.
-     * @return last selected row object
+     * @return last selected row object or null
      */
     public function toLastObj():Dynamic
     {
@@ -297,7 +297,7 @@ class Table
     }
     /**
      * Fetch all selected results to the objects and return it.
-     * @return a array of row object
+     * @return a array of row object (even if the result is empty)
      */
     public function toObjs():Array<Dynamic>
     {

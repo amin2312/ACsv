@@ -233,7 +233,7 @@ public class Table {
     /**
      * Fetch first selected result to a row and return it.
      *
-     * @return first selected row data
+     * @return first selected row data or null
      */
     public Object[] toFirstRow()
     {
@@ -248,7 +248,7 @@ public class Table {
     /**
      * Fetch last selected result to a row and return it.
      *
-     * @return last selected row data
+     * @return last selected row data or null
      */
     public Object[] toLastRow()
     {
@@ -267,7 +267,7 @@ public class Table {
     /**
      * Fetch all selected results to the rows and return it.
      *
-     * @return a array of row data
+     * @return a array of row data (even if the result is empty)
      */
     public Object[][] toRows()
     {
@@ -288,7 +288,7 @@ public class Table {
     /**
      * Fetch first selected result to a object and return it.
      *
-     * @return first selected row object
+     * @return first selected row object or null
      */
     public HashMap<String, Object> toFirstObj()
     {
@@ -303,7 +303,7 @@ public class Table {
     /**
      * Fetch last selected result to a object and return it.
      *
-     * @return last selected row object
+     * @return last selected row object or null
      */
     public HashMap<String, Object> toLastObj()
     {
@@ -322,7 +322,7 @@ public class Table {
     /**
      * Fetch all selected results to the objects and return it.
      *
-     * @return a array of row object
+     * @return a array of row object (even if the result is empty)
      */
     @SuppressWarnings("unchecked")
     public HashMap<String, Object>[] toObjs()

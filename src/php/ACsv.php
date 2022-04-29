@@ -197,7 +197,7 @@ namespace acsv
         }
         /**
          * Fetch first selected result to a row and return it.
-         * @return array first selected row data
+         * @return array|null first selected row data or null
          */
         public function toFirstRow()
         {
@@ -211,7 +211,7 @@ namespace acsv
         }
         /**
          * Fetch last selected result to a row and return it.
-         * @return array last selected row data
+         * @return array|null last selected row data or null
          */
         public function toLastRow()
         {
@@ -229,7 +229,7 @@ namespace acsv
         }
         /**
          * Fetch all selected results to the rows and return it.
-         * @return array[] a array of row data
+         * @return array[] a array of row data (even if the result is empty)
          */
         public function toRows()
         {
@@ -247,7 +247,7 @@ namespace acsv
         }
         /**
          * Fetch first selected result to a object and return it.
-         * @return object first selected row object
+         * @return object|null first selected row object or null
          */
         public function toFirstObj()
         {
@@ -261,7 +261,7 @@ namespace acsv
         }
         /**
          * Fetch last selected result to a object and return it.
-         * @return object last selected row object
+         * @return object|null last selected row object or null
          */
         public function toLastObj()
         {
@@ -279,7 +279,7 @@ namespace acsv
         }
         /**
          * Fetch all selected results to the objects and return it.
-         * @return array[] a array of row object
+         * @return array[] a array of row object (even if the result is empty)
          */
         public function toObjs()
         {

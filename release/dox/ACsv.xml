@@ -767,32 +767,32 @@
 		<toFirstRow public="1" set="method" line="219">
 			<f a=""><c path="Array"><d/></c></f>
 			<haxe_doc>* Fetch first selected result to a row and return it.
-     * @return first selected row data</haxe_doc>
+     * @return first selected row data or null</haxe_doc>
 		</toFirstRow>
 		<toLastRow public="1" set="method" line="233">
 			<f a=""><c path="Array"><d/></c></f>
 			<haxe_doc>* Fetch last selected result to a row and return it.
-     * @return last selected row data</haxe_doc>
+     * @return last selected row data or null</haxe_doc>
 		</toLastRow>
 		<toRows public="1" set="method" line="251">
 			<f a=""><c path="Array"><c path="Array"><d/></c></c></f>
 			<haxe_doc>* Fetch all selected results to the rows and return it.
-     * @return a array of row data</haxe_doc>
+     * @return a array of row data (even if the result is empty)</haxe_doc>
 		</toRows>
 		<toFirstObj public="1" set="method" line="270">
 			<f a=""><d/></f>
 			<haxe_doc>* Fetch first selected result to a object and return it.
-     * @return first selected row object</haxe_doc>
+     * @return first selected row object or null</haxe_doc>
 		</toFirstObj>
 		<toLastObj public="1" set="method" line="284">
 			<f a=""><d/></f>
 			<haxe_doc>* Fetch last selected result to a object and return it.
-     * @return last selected row object</haxe_doc>
+     * @return last selected row object or null</haxe_doc>
 		</toLastObj>
 		<toObjs public="1" set="method" line="302">
 			<f a=""><c path="Array"><d/></c></f>
 			<haxe_doc>* Fetch all selected results to the objects and return it.
-     * @return a array of row object</haxe_doc>
+     * @return a array of row object (even if the result is empty)</haxe_doc>
 		</toObjs>
 		<toTable public="1" set="method" line="321">
 			<f a=""><c path="acsv.Table"/></f>
