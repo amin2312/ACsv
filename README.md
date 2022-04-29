@@ -3,6 +3,7 @@ ACsv Library
 **ACsv** is a easy, fast and powerful **csv parse** library.  
 
 The features:
+* **Cross platform** - provide **haxe**, **js**, **ts**, **php**, **java** version (the lua version via Haxe)
 * **Standard** - support standard csv format (RFC 4180)
 * **Tiny size** - js version is only 7k
 * **Easy to use** - provide the example, demo and documentation
@@ -11,9 +12,7 @@ The features:
 &emsp;&emsp;&emsp;&emsp;&emsp;allow field type to be declared after field name (like width:**int**, name:**string**),  
 &emsp;&emsp;&emsp;&emsp;&emsp;supported field types: **bool, int, number, string, json, strings**  
 &emsp;&emsp;&emsp;&emsp;&emsp;see details in "release/csvs/enhanced_format_text.csv"   
-* **Cross platform** - provide **haxe**, **js**, **ts**, **php**, **java** version (the lua version via Haxe)
   
-
 Example
 ----------------
 ```javascript
