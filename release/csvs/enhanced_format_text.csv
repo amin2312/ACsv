@@ -1,4 +1,4 @@
-﻿id:int,id2:int,id3:int,name:string,weight:number,marry:bool,education:json,tags:strings,brief
+id:int,id2:int,id3:int,name:string,weight:number,marry:bool,education:json,tags:strings,brief
 1,21,100,John,120.1,true,"[""AB""]","good,cool","Today is good day
 Tomorrow is good day too"
 2,21,100,张三,121.2,false,"[""CD"",""EF""]",good,今天是个好日子

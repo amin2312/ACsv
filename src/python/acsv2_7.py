@@ -1,4 +1,5 @@
 # -*- coding: UTF-8 -*-
+import json
 '''
     * 1. Copyright (c) 2022 amin2312
     * 2. Version 1.0.0
@@ -7,10 +8,6 @@
     * ACsv is a easy, fast and powerful csv parse library.
 '''
 class Table:
-    '''
-        * Supported json field types.
-    '''
-    #private static JSON_TYPES = ["json", "strings"]
     '''
         * The raw content.
     '''
@@ -43,11 +40,11 @@ class Table:
     * @return Table THIS instance
     '''
     def merge(self, b):
-        self.body = array_merge(self.body, b.body)
-        index = strpos(b.content, "\r\n")
+        self.body = self.body + b.body
+        index = b.content.find("\r\n")
         if (index == -1):
-            index = strpos(b.content, "\n")
-        c = substr(b.content, index)
+            index = b.content.find("\n")
+        c = b.content[index:]
         self.content += c
         return self
     '''
@@ -58,7 +55,7 @@ class Table:
         * @return void
     '''
     def createIndexAt(self, colIndex):
-        m = []
+        m = {}
         for row in self.body:
             key = row[colIndex]
             m[key] = row
@@ -69,7 +66,7 @@ class Table:
         * @return int column index
     '''
     def getColIndexBy(self, name):
-        for field in self.head:
+        for i, field in enumerate(self.head):
             if (field.name == name):
                 return i
         return -1
@@ -88,10 +85,10 @@ class Table:
         * @return Table THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
     '''
     def sortBy(self, colIndex, sortType):
-        LEN = count(self._selector)
-        for i in range(LEN):
-            for j in range(LEN - 1):
-                ok = false
+        l = len(self._selector)
+        for i in range(l):
+            for j in range(l - 1):
+                ok = False
                 a = self._selector[j][colIndex]
                 b = self._selector[j + 1][colIndex]
                 if (sortType == 0 and a > b):
@@ -119,9 +116,9 @@ class Table:
             ft = field.type
             val0 = row[i]
             val1 = None
-            if (ft != None and ft != '' and array_search(ft, JSON_TYPES) != false):
+            if (ft != None and ft != '' and (Table.JSON_TYPES.index(ft) if ft in Table.JSON_TYPES else -1) != -1):
                 if (val0):
-                    val1 = json_decode(val0)
+                    val1 = json.loads(val0)
             else:
                 val1 = val0
             obj.append(val1)
@@ -130,15 +127,15 @@ class Table:
         * Format data to obj.
     '''
     def fmtObj(self, row):
-        obj = []
+        obj = {}
         for i, field in enumerate(self.head):
             name = field.name
             ft = field.type
             val0 = row[i]
             val1 = None
-            if (ft != None and ft != '' and array_search(ft, JSON_TYPES) != false):
+            if (ft != None and ft != '' and (Table.JSON_TYPES.index(ft) if ft in Table.JSON_TYPES else -1) != -1):
                 if (val0):
-                    val1 = json_decode(val0)
+                    val1 = json.loads(val0)
             else:
                 val1 = val0
             obj[name] = val1
@@ -149,7 +146,7 @@ class Table:
     '''
     def toFirstRow(self, ):
         rzl = None
-        if (self._selector != None and count(self._selector) > 0):
+        if (self._selector != None and len(self._selector) > 0):
             rzl = self.fmtRow(self._selector[0])
         self._selector = None
         return rzl
@@ -160,9 +157,9 @@ class Table:
     def toLastRow(self, ):
         rzl = None
         if (self._selector != None):
-            len = count(self._selector)
-            if (len > 0):
-                rzl = self.fmtRow(self._selector[len - 1])
+            l = len(self._selector)
+            if (l > 0):
+                rzl = self.fmtRow(self._selector[l - 1])
         self._selector = None
         return rzl
     '''
@@ -183,7 +180,7 @@ class Table:
     '''
     def toFirstObj(self, ):
         rzl = None
-        if (self._selector != None and count(self._selector) > 0):
+        if (self._selector != None and len(self._selector) > 0):
             rzl = self.fmtObj(self._selector[0])
         self._selector = None
         return rzl
@@ -194,9 +191,9 @@ class Table:
     def toLastObj(self, ):
         rzl = None
         if (self._selector != None):
-            len = count(self._selector)
-            if (len > 0):
-                rzl = self.fmtObj(self._selector[len - 1])
+            l = len(self._selector)
+            if (l > 0):
+                rzl = self.fmtObj(self._selector[l - 1])
         self._selector = None
         return rzl
     '''
@@ -242,7 +239,7 @@ class Table:
         * @return Table THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
     '''
     def selectLastRow(self, ):
-        self._selector = [self.body[count(self.body) - 1]]
+        self._selector = [self.body[len(self.body) - 1]]
         return self
     '''
         * Selects the specified <b>rows</b> by indices.
@@ -251,7 +248,7 @@ class Table:
     '''
     def selectAt(self, rowIndices):
         dst = []
-        maxLen = count(self.body)
+        maxLen = len(self.body)
         for rowIndex in rowIndices:
             if (rowIndex >= 0 and rowIndex < maxLen):
                 dst.append(self.body[rowIndex])
@@ -574,19 +571,19 @@ class Table:
                 isEmptyCell = (cell == None or cell == '')
                 if (ft == 'bool'):
                     if (isEmptyCell or cell == 'false' or cell == '0'):
-                        newVal = false
+                        newVal = False
                     else:
                         newVal = True
                 elif (ft == 'int'):
                     if (isEmptyCell):
                         newVal = 0
                     else:
-                        newVal = intval(cell)
+                        newVal = int(cell)
                 elif (ft == 'number'):
                     if (isEmptyCell):
                         newVal = 0.0
                     else:
-                        newVal = floatval(cell)
+                        newVal = float(cell)
                 elif (ft == 'json'):
                     if (isEmptyCell):
                         newVal = None
@@ -600,7 +597,7 @@ class Table:
                     if (isEmptyCell):
                         newVal = '[]'
                     else:
-                        newVal = '["' + implode("\",\"", explode(',', cell)) + '"]'
+                        newVal = '["' + "\",\"".join(cell.split(',')) + '"]'
                 row[j] = newVal
             srcBody[i] = row; # update row
         # create table
@@ -608,6 +605,11 @@ class Table:
         table.head = newHead
         table.body = srcBody
         return table
+     
+'''
+    * Supported json field types.
+'''
+Table.JSON_TYPES = ["json", "strings"]
 '''
     * 1. Copyright (c) 2022 amin2312
     * 2. Version 1.0.0
