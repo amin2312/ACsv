@@ -180,7 +180,7 @@ Besok juga hari yang baik"
 
         _tab2.createIndexAt(0);
 		P("[E] (indexed) 1st row name", _tab2.selectWhenE(1, 'Dwi', _tab2.getColIndexBy('name')).toObjs()[0].name);
-        P("[E] (indexed) id=6 education #2", _tab2.id(6).education.CC);
+        P("[E] (indexed) id=6 education.CC", _tab2.id(6).education.CC);
         P("[E] (indexed) id=6 tags #2", _tab2.id(6).tags[1]);
 		P("[E] (indexed) 99th row", _tab2.selectWhenE(1, 99).toObjs());
 	}

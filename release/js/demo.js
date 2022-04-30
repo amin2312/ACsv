@@ -115,7 +115,7 @@ Demo.test_enhanced_csv_format = function() {
 	Demo.P("[E] sort by (id3) = 300 desc (id)",Demo._tab2.selectWhenE(0,300,2).sortBy(0,1).toObjs());
 	Demo._tab2.createIndexAt(0);
 	Demo.P("[E] (indexed) 1st row name",Demo._tab2.selectWhenE(1,"Dwi",Demo._tab2.getColIndexBy("name")).toObjs()[0].name);
-	Demo.P("[E] (indexed) id=6 education #2",Demo._tab2.id(6).education.CC);
+	Demo.P("[E] (indexed) id=6 education.CC",Demo._tab2.id(6).education.CC);
 	Demo.P("[E] (indexed) id=6 tags #2",Demo._tab2.id(6).tags[1]);
 	Demo.P("[E] (indexed) 99th row",Demo._tab2.selectWhenE(1,99).toObjs());
 };
@@ -161,36 +161,36 @@ acsv_Table.textToArray = function(text,FS,FML) {
 		var cellIndexB = 0;
 		var cells = [];
 		var cell = null;
-		var chr = null;
+		var cc = null;
 		while(cellIndexB < curLen) {
 			cellIndexA = cellIndexB;
-			chr = ptr.charAt(ptrPos + cellIndexB);
-			if(chr == "\n" || chr == "\r\n") {
-				++cellIndexB;
-				break;
-			}
-			if(chr == "\r" && ptr.charAt(ptrPos + cellIndexB + 1) == "\n") {
+			cc = ptr.charAt(ptrPos + cellIndexB);
+			if(cc == "\r" && ptr.charAt(ptrPos + cellIndexB + 1) == "\n") {
 				cellIndexB += 2;
 				break;
 			}
-			if(chr == FS) {
+			if(cc == "\n") {
+				++cellIndexB;
+				break;
+			}
+			if(cc == FS) {
 				cell = "";
 				var nextPos = ptrPos + cellIndexB + 1;
 				if(nextPos >= maxLen) {
-					chr = "\n";
+					cc = "\n";
 				} else {
-					chr = ptr.charAt(nextPos);
+					cc = ptr.charAt(nextPos);
 				}
-				if(cellIndexA == 0 || chr == FS || chr == "\n" || chr == "\r\n") {
+				if(cellIndexA == 0 || cc == FS || cc == "\n") {
 					++cellIndexB;
 					cells.push("");
-				} else if(chr == "\r" && ptr.charAt(ptrPos + cellIndexB + 2) == "\n") {
+				} else if(cc == "\r" && ptr.charAt(ptrPos + cellIndexB + 2) == "\n") {
 					cellIndexB += 2;
 					cells.push("");
 				} else {
 					++cellIndexB;
 				}
-			} else if(chr == FML) {
+			} else if(cc == FML) {
 				++cellIndexB;
 				while(true) {
 					cellIndexB = ptr.indexOf(FML,ptrPos + cellIndexB);
@@ -219,11 +219,9 @@ acsv_Table.textToArray = function(text,FS,FML) {
 				var indexB = ptr.indexOf("\r\n",ptrPos + cellIndexB);
 				if(indexB == -1) {
 					indexB = ptr.indexOf("\n",ptrPos + cellIndexB);
-					if(indexB == -1) {
-						indexB = curLen;
-					} else {
-						indexB -= ptrPos;
-					}
+				}
+				if(indexB == -1) {
+					indexB = curLen;
 				} else {
 					indexB -= ptrPos;
 				}
@@ -271,37 +269,37 @@ acsv_Table.arrayToRows = function(arr) {
 			var cell = row[j];
 			var newVal = cell;
 			var isEmptyCell = cell == null || cell == "";
-			var type = newHead[j].type;
-			if(type == "bool") {
+			var ft = newHead[j].type;
+			if(ft == "bool") {
 				if(isEmptyCell || cell == "false" || cell == "0") {
 					newVal = false;
 				} else {
 					newVal = true;
 				}
-			} else if(type == "int") {
+			} else if(ft == "int") {
 				if(isEmptyCell) {
 					newVal = 0;
 				} else {
 					newVal = parseInt(cell);
 				}
-			} else if(type == "number") {
+			} else if(ft == "number") {
 				if(isEmptyCell) {
 					newVal = 0.0;
 				} else {
 					newVal = parseFloat(cell);
 				}
-			} else if(type == "json") {
+			} else if(ft == "json") {
 				if(isEmptyCell) {
 					newVal = null;
 				} else {
-					var chr0 = cell.charAt(0);
-					if(!(chr0 == "[" || chr0 == "{")) {
+					var cc = cell.charAt(0);
+					if(!(cc == "[" || cc == "{")) {
 						console.log("[ACsv] Invalid json format:" + newHead[j].name + "," + cell);
 						return null;
 					}
 					newVal = cell;
 				}
-			} else if(type == "strings") {
+			} else if(ft == "strings") {
 				if(isEmptyCell) {
 					newVal = "[]";
 				} else {
@@ -329,16 +327,16 @@ acsv_Table.prototype = {
 		return this;
 	}
 	,createIndexAt: function(colIndex) {
-		var map = { };
+		var m = { };
 		var _g1 = 0;
 		var _g = this.body.length;
 		while(_g1 < _g) {
 			var i = _g1++;
 			var row = this.body[i];
 			var key = row[colIndex];
-			map[key] = row;
+			m[key] = row;
 		}
-		this._indexSet[colIndex] = map;
+		this._indexSet[colIndex] = m;
 	}
 	,getColIndexBy: function(name) {
 		var _g1 = 0;
@@ -359,13 +357,13 @@ acsv_Table.prototype = {
 		return this.selectWhenE(1,value,colIndex).toFirstObj();
 	}
 	,sortBy: function(colIndex,sortType) {
-		var len = this._selector.length;
+		var l = this._selector.length;
 		var _g1 = 0;
-		var _g = len;
+		var _g = l;
 		while(_g1 < _g) {
 			var i = _g1++;
 			var _g3 = 0;
-			var _g2 = len - 1;
+			var _g2 = l - 1;
 			while(_g3 < _g2) {
 				var j = _g3++;
 				var ok = false;
@@ -395,10 +393,10 @@ acsv_Table.prototype = {
 		while(_g1 < _g) {
 			var i = _g1++;
 			var filed = this.head[i];
-			var type = filed.type;
+			var ft = filed.type;
 			var val0 = row[i];
 			var val1 = null;
-			if(type != null && type != "" && acsv_Table.JSON_TYPES.indexOf(type) != -1) {
+			if(ft != null && ft != "" && acsv_Table.JSON_TYPES.indexOf(ft) != -1) {
 				if(val0 != null) {
 					val1 = JSON.parse(val0);
 				}
@@ -417,10 +415,10 @@ acsv_Table.prototype = {
 			var i = _g1++;
 			var field = this.head[i];
 			var name = field.name;
-			var type = field.type;
+			var ft = field.type;
 			var val0 = row[i];
 			var val1 = null;
-			if(type != null && type != "" && acsv_Table.JSON_TYPES.indexOf(type) != -1) {
+			if(ft != null && ft != "" && acsv_Table.JSON_TYPES.indexOf(ft) != -1) {
 				if(val0 != null) {
 					val1 = JSON.parse(val0);
 				}
@@ -442,9 +440,9 @@ acsv_Table.prototype = {
 	,toLastRow: function() {
 		var rzl = null;
 		if(this._selector != null) {
-			var len = this._selector.length;
-			if(len > 0) {
-				rzl = this.fmtRow(this._selector[len - 1]);
+			var l = this._selector.length;
+			if(l > 0) {
+				rzl = this.fmtRow(this._selector[l - 1]);
 			}
 		}
 		this._selector = null;
@@ -476,9 +474,9 @@ acsv_Table.prototype = {
 	,toLastObj: function() {
 		var rzl = null;
 		if(this._selector != null) {
-			var len = this._selector.length;
-			if(len > 0) {
-				rzl = this.fmtObj(this._selector[len - 1]);
+			var l = this._selector.length;
+			if(l > 0) {
+				rzl = this.fmtObj(this._selector[l - 1]);
 			}
 		}
 		this._selector = null;
@@ -561,9 +559,9 @@ acsv_Table.prototype = {
 			dst = [];
 		}
 		if(limit == 1) {
-			var map = this._indexSet[colIndex];
-			if(map != null) {
-				var val = map[value];
+			var m = this._indexSet[colIndex];
+			if(m != null) {
+				var val = m[value];
 				if(val != null) {
 					dst.push(val);
 				}

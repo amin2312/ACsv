@@ -4,4 +4,4 @@ acsv.Field
 -xml release/dox/ACsv.xml
 -js src/javascript/ACsv.js
 #-lua release/lua/ACsv.lua
-#-python release/py/ACsv.py
+#-python src/python/ACsv.py

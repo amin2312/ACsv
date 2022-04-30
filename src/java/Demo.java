@@ -116,7 +116,7 @@ public class Demo
 
         _tab2.createIndexAt(0);
 		P("[E] (indexed) 1st row name", _tab2.selectWhenE(1, "Dwi", _tab2.getColIndexBy("name"), null).toObjs()[0].get("name"));
-        P("[E] (indexed) id=6 education #2", ((JSONObject)_tab2.id(6, 0).get("education")).getString("CC") );
+        P("[E] (indexed) id=6 education.CC", ((JSONObject)_tab2.id(6, 0).get("education")).getString("CC") );
         P("[E] (indexed) id=6 tags #2", ((JSONArray)_tab2.id(6, 0).get("tags")).get(1) );
 		P("[E] (indexed) 99th row", _tab2.selectWhenE(1, 99, 0, null).toObjs());
 	}
