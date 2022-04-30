@@ -1,6 +1,6 @@
 # -*- coding: UTF-8 -*-
 
-import acsv2_7 as acsv;
+import acsv_2_7 as acsv;
 import json;
 
 class Demo:
