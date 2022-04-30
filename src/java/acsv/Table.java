@@ -780,14 +780,14 @@ public class Table {
             {
                 cellIndexA = cellIndexB;
                 cc = String.valueOf(ptr.charAt(ptrPos + cellIndexB));
-                if (cc.equals("\n")) // line is over
-                {
-                    cellIndexB += 1;
-                    break;
-                }
                 if (cc.equals("\r") && ptr.charAt(ptrPos + cellIndexB + 1) == '\n') // line is over
                 {
                     cellIndexB += 2;
+                    break;
+                }
+                if (cc.equals("\n")) // line is over
+                {
+                    cellIndexB += 1;
                     break;
                 }
                 if (cc.equals(FS)) // is separator
@@ -862,14 +862,10 @@ public class Table {
                     if (indexB == -1)
                     {
                         indexB = ptr.indexOf("\n", ptrPos + cellIndexB);
-                        if (indexB == -1)
-                        {
-                            indexB = curLen;
-                        }
-                        else
-                        {
-                            indexB -= ptrPos;
-                        }
+                    }
+                    if (indexB == -1)
+                    {
+                        indexB = curLen;
                     }
                     else
                     {

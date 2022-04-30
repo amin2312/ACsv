@@ -669,14 +669,14 @@ namespace acsv
                 {
                     $cellIndexA = $cellIndexB;
                     $cc = $ptr[$ptrPos + $cellIndexB];
-                    if ($cc == "\n" || $cc == "\r\n") // line is over
-                    {
-                        $cellIndexB += 1;
-                        break;
-                    }
                     if ($cc == "\r" && $ptr[$ptrPos + $cellIndexB + 1] == "\n") // line is over
                     {
                         $cellIndexB += 2;
+                        break;
+                    }
+                    if ($cc == "\n") // line is over
+                    {
+                        $cellIndexB += 1;
                         break;
                     }
                     if ($cc == $FS) // is separator
@@ -691,7 +691,7 @@ namespace acsv
                         {
                             $cc = $ptr[$nextPos];
                         }
-                        if ($cellIndexA == 0 || $cc == $FS || $cc == "\n" || $cc == "\r\n") // is empty cell
+                        if ($cellIndexA == 0 || $cc == $FS || $cc == "\n") // is empty cell
                         {
                             $cellIndexB += 1;
                             array_push($cells, "");
@@ -750,14 +750,10 @@ namespace acsv
                         if ($indexB === false)
                         {
                             $indexB = strpos($ptr, "\n", $ptrPos + $cellIndexB);
-                            if ($indexB === false)
-                            {
-                                $indexB = $curLen;
-                            }
-                            else
-                            {
-                                $indexB -= $ptrPos;
-                            }
+                        }
+                        if ($indexB === false)
+                        {
+                            $indexB = $curLen;
                         }
                         else
                         {

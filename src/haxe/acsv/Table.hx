@@ -699,14 +699,14 @@ class Table
             {
                 cellIndexA = cellIndexB;
                 cc = ptr.charAt(ptrPos + cellIndexB);
-                if (cc == "\n" || cc == "\r\n") // line is over
-                {
-                    cellIndexB += 1;
-                    break;
-                }
                 if (cc == "\r" && ptr.charAt(ptrPos + cellIndexB + 1) == "\n") // line is over
                 {
                     cellIndexB += 2;
+                    break;
+                }
+                if (cc == "\n") // line is over
+                {
+                    cellIndexB += 1;
                     break;
                 }
                 if (cc == FS) // is separator
@@ -721,7 +721,7 @@ class Table
                     {
                         cc = ptr.charAt(nextPos);
                     }
-                    if (cellIndexA == 0 || cc == FS || cc == "\n" || cc == "\r\n") // is empty cell
+                    if (cellIndexA == 0 || cc == FS || cc == "\n") // is empty cell
                     {
                         cellIndexB += 1;
                         cells.push("");
@@ -780,14 +780,10 @@ class Table
                     if (indexB == -1)
                     {
                         indexB = ptr.indexOf("\n", ptrPos + cellIndexB);
-                        if (indexB == -1)
-                        {
-                            indexB = curLen;
-                        }
-                        else
-                        {
-                            indexB -= ptrPos;
-                        }
+                    }
+                    if (indexB == -1)
+                    {
+                        indexB = curLen;
                     }
                     else
                     {
