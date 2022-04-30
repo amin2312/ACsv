@@ -831,11 +831,14 @@ public class Table {
                             return null;
                         }
                         cellIndexB -= ptrPos;
-                        if (String.valueOf(ptr.charAt(ptrPos + cellIndexB + 1)).equals(FML)) // """" is normal double
-                        // quote
+                        int nextPos = ptrPos + cellIndexB + 1;
+                        if (nextPos < maxLen)
                         {
-                            cellIndexB += 2; // pass """"
-                            continue;
+                            if (String.valueOf(ptr.charAt(nextPos)).equals(FML)) // """" is normal double quote
+                            {
+                                cellIndexB += 2; // pass """"
+                                continue;
+                            }
                         }
                         break;
                     }

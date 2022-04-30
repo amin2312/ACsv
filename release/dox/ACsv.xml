@@ -664,7 +664,7 @@
 			</f>
 			<haxe_doc>* Convert text to array.</haxe_doc>
 		</textToArray>
-		<arrayToRows set="method" line="815" static="1">
+		<arrayToRows set="method" line="819" static="1">
 			<f a="arr">
 				<c path="Array"><c path="Array"><d/></c></c>
 				<c path="acsv.Table"/>

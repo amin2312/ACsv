@@ -534,9 +534,11 @@ class Table:
                             echo("[ACsv] Invalid Double Quote")
                             return None
                         cellIndexB -= ptrPos
-                        if (ptr[ptrPos + cellIndexB + 1] == FML): # """" is normal double quote
-                            cellIndexB += 2; # pass """"
-                            continue
+                        nextPos = ptrPos + cellIndexB + 1
+                        if (nextPos < maxLen):
+                            if (ptr[nextPos] == FML): # """" is normal double quote
+                                cellIndexB += 2; # pass """"
+                                continue
                         break
                     # 2.truncate the content of double quote
                     cell = ptr[ptrPos + cellIndexA + 1 : ptrPos + cellIndexB]

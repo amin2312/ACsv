@@ -81,9 +81,12 @@ acsv_Table.textToArray = function(text,FS,FML) {
 						return null;
 					}
 					cellIndexB -= ptrPos;
-					if(ptr.charAt(ptrPos + cellIndexB + 1) == FML) {
-						cellIndexB += 2;
-						continue;
+					var nextPos1 = ptrPos + cellIndexB + 1;
+					if(nextPos1 < maxLen) {
+						if(ptr.charAt(nextPos1) == FML) {
+							cellIndexB += 2;
+							continue;
+						}
 					}
 					break;
 				}

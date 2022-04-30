@@ -720,10 +720,14 @@ namespace acsv
                                 return null;
                             }
                             $cellIndexB -= $ptrPos;
-                            if ($ptr[$ptrPos + $cellIndexB + 1] == $FML) // """" is normal double quote
+                            $nextPos = $ptrPos + $cellIndexB + 1;
+                            if ($nextPos < $maxLen)
                             {
-                                $cellIndexB += 2; // pass """"
-                                continue;
+                                if ($ptr[$nextPos] == $FML) // """" is normal double quote
+                                {
+                                    $cellIndexB += 2; // pass """"
+                                    continue;
+                                }
                             }
                             break;
                         }
