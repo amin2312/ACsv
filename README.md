@@ -3,7 +3,7 @@ ACsv Library
 **ACsv** is a easy, fast and powerful **csv parse** library.  
 
 The features:
-* **Cross platform** - provide **haxe**, **js**, **ts**, **php**, **java** version (the lua version via Haxe)
+* **Cross platform** - provide **haxe**, **js**, **ts**, **php**, **java**, **python 2.7**, **python 3.x** version (the lua version via Haxe)
 * **Standard** - support standard csv format (RFC 4180)
 * **Tiny size** - js version is only 7k
 * **Easy to use** - provide the example, demo and documentation
