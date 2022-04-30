@@ -2,15 +2,17 @@
 
 import acsv_2_7 as acsv;
 import json;
+import os;
 
 class Demo:
 
     @staticmethod
     def main():
-        f = open( "release/csvs/standard_format_text.csv", "r")
+        srcDir = os.path.dirname(__file__)
+        f = open(srcDir + "/../../release/csvs/standard_format_text.csv", "r")
         Demo._tab1 = acsv.Table.Parse(f.read())
         Demo.test_standard_csv_format()
-        f = open( "release/csvs/enhanced_format_text.csv", "r")
+        f = open(srcDir + "/../../release/csvs/enhanced_format_text.csv", "r")
         Demo._tab2 = acsv.Table.Parse(f.read())
         Demo.test_enhanced_csv_format()
 
@@ -69,7 +71,7 @@ class Demo:
         Demo.P("[E] multi selects (id3) = 100 and (id2) < 22",Demo._tab2.selectWhenE(0,100,2).selectWhenL(0,False,22,1).toObjs())
         Demo.P("[E] sort by (id3) = 300 desc (id)",Demo._tab2.selectWhenE(0,300,2).sortBy(0,1).toObjs())
         Demo._tab2.createIndexAt(0)
-        Demo.P("[E] (indexed) 1st row name",Demo._tab2.selectWhenE(1,"Dwi",Demo._tab2.getColIndexBy("name")).toObjs()[0]["name"])
+        Demo.P("[E] (indexed) 1st row name",Demo._tab2.selectWhenE(1,"चंद्रमा",Demo._tab2.getColIndexBy("name")).toObjs()[0]["name"])
         Demo.P("[E] (indexed) id=6 education.CC",Demo._tab2.id(6)["education"]["CC"])
         Demo.P("[E] (indexed) id=6 tags #2",Demo._tab2.id(6)["tags"][1])
         Demo.P("[E] (indexed) 99th row",Demo._tab2.selectWhenE(1, 99).toObjs())

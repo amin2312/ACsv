@@ -1,43 +1,45 @@
 # -*- coding: UTF-8 -*-
 import json
 '''
-    * 1. Copyright (c) 2022 amin2312
-    * 2. Version 1.0.0
-    * 3. MIT License
-    *
-    * ACsv is a easy, fast and powerful csv parse library.
+1. Copyright (c) 2022 amin2312
+2. Version 1.0.0
+3. MIT License
+
+ACsv is a easy, fast and powerful csv parse library.
+
 '''
 class Table:
     '''
-        * The raw content.
+    The raw content.
     '''
     content = None
     '''
-        * Parsed csv table Head.
+    Parsed csv table Head.
     '''
     head = []
     '''
-        * Parsed csv table Body.
+    Parsed csv table Body.
     '''
     body = []
     '''
-        * Index Set(optimize for read).
+    Index Set(optimize for read).
     '''
     _indexSet = {}
     '''
-        * Selected data(for Method Chaining).
+    Selected data(for Method Chaining).
     '''
     _selector = None
     '''
-        * Constructor.
+    Constructor.
     '''
     def __init__(self):
         self.content = None
     '''
-    * Merge a table.
-    * <br/><b>Notice:</b> two tables' structure must be same.
-    * @param Table b source table
-    * @return Table THIS instance
+    Merge a table.
+    <br/><b>Notice:</b> two tables' structure must be same.
+
+    :param b: source table
+    :return: THIS instance
     '''
     def merge(self, b):
         self.body = self.body + b.body
@@ -48,11 +50,12 @@ class Table:
         self.content += c
         return self
     '''
-        * Create index for the specified column.
-        * <br>This function is only valid for "selectWhenE" and "limit" param is 1.
-        * <br>It will improve performance.
-        * @param int colIndex column index
-        * @return void
+    Create index for the specified column.
+    <br>This function is only valid for "selectWhenE" and "limit" param is 1.
+    <br>It will improve performance.
+
+    :param colIndex: column index
+    :return:
     '''
     def createIndexAt(self, colIndex):
         m = {}
@@ -61,9 +64,10 @@ class Table:
             m[key] = row
         self._indexSet[colIndex] = m
     '''
-        * Get column index by specified field name.
-        * @param string name As name mean
-        * @return int column index
+    Get column index by specified field name.
+
+    :param name: As name mean
+    :return: column index
     '''
     def getColIndexBy(self, name):
         for i, field in enumerate(self.head):
@@ -71,18 +75,20 @@ class Table:
                 return i
         return -1
     '''
-        * Fetch a row object when the column's value is equal to the id value
-        * @param mixed values the specified value
-        * @param int colIndex specified column index
-        * @return object selected row object
+    Fetch a row object when the column's value is equal to the id value
+
+    :param values: the specified value
+    :param colIndex: specified column index
+    :return: selected row object
     '''
     def id(self, value, colIndex = 0):
         return self.selectWhenE(1, value, colIndex).toFirstObj()
     '''
-        * Sort by selected rows.
-        * @param int colIndex the column index specified for sorting
-        * @param int sortType 0: asc, 1: desc
-        * @return Table THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
+    Sort by selected rows.
+
+    :param colIndex: the column index specified for sorting
+    :param sortType: 0: asc, 1: desc
+    :return: THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
     '''
     def sortBy(self, colIndex, sortType):
         l = len(self._selector)
@@ -101,14 +107,15 @@ class Table:
                     self._selector[j + 1] = temp
         return self
     '''
-        * Get current selector(it includes all selected results).
-        * <br><b>Notice:</b> It be assigned after call "select..." function
-        * @return array current selector
+    Get current selector(it includes all selected results).
+    <br><b>Notice:</b> It be assigned after call "select..." function
+
+    :return: current selector
     '''
     def getCurrentSelector(self):
         return self._selector
     '''
-        * Format data to row.
+    Format data to row.
     '''
     def fmtRow(self, row):
         obj = []
@@ -124,7 +131,7 @@ class Table:
             obj.append(val1)
         return obj
     '''
-        * Format data to obj.
+    Format data to obj.
     '''
     def fmtObj(self, row):
         obj = {}
@@ -141,8 +148,9 @@ class Table:
             obj[name] = val1
         return obj
     '''
-        * Fetch first selected result to a row and return it.
-        * @return array|None first selected row data or None
+    Fetch first selected result to a row and return it.
+
+    :return: first selected row data or None
     '''
     def toFirstRow(self, ):
         rzl = None
@@ -151,8 +159,9 @@ class Table:
         self._selector = None
         return rzl
     '''
-        * Fetch last selected result to a row and return it.
-        * @return array|None last selected row data or None
+    Fetch last selected result to a row and return it.
+
+    :return: last selected row data or None
     '''
     def toLastRow(self, ):
         rzl = None
@@ -163,8 +172,9 @@ class Table:
         self._selector = None
         return rzl
     '''
-        * Fetch all selected results to the rows and return it.
-        * @return array[] a array of row data (even if the result is empty)
+    Fetch all selected results to the rows and return it.
+
+    :return: a array of row data (even if the result is empty)
     '''
     def toRows(self, ):
         if (self._selector == None):
@@ -175,8 +185,9 @@ class Table:
         self._selector = None
         return dst
     '''
-        * Fetch first selected result to a object and return it.
-        * @return object|None first selected row object or None
+    Fetch first selected result to a object and return it.
+
+    :return: first selected row object or None
     '''
     def toFirstObj(self, ):
         rzl = None
@@ -185,8 +196,9 @@ class Table:
         self._selector = None
         return rzl
     '''
-        * Fetch last selected result to a object and return it.
-        * @return object|None last selected row object or None
+    Fetch last selected result to a object and return it.
+
+    :return: last selected row object or None
     '''
     def toLastObj(self, ):
         rzl = None
@@ -197,8 +209,9 @@ class Table:
         self._selector = None
         return rzl
     '''
-        * Fetch all selected results to the objects and return it.
-        * @return array[] a array of row object (even if the result is empty)
+    Fetch all selected results to the objects and return it.
+
+    :return: a array of row object (even if the result is empty)
     '''
     def toObjs(self, ):
         if (self._selector == None):
@@ -209,8 +222,9 @@ class Table:
         self._selector = None
         return dst
     '''
-        * Fetch all selected results to a new table.
-        * @return Table a new table instance
+    Fetch all selected results to a new table.
+
+    :return: a new table instance
     '''
     def toTable(self, ):
         if (self._selector == None):
@@ -221,30 +235,34 @@ class Table:
         self._selector = None
         return t
     '''
-        * Select all rows.
-        * @return Table THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
+    Select all rows.
+
+    :return: THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
     '''
     def selectAll(self, ):
         self._selector = self.body
         return self
     '''
-        * Select the first row.
-        * @return Table THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
+    Select the first row.
+
+    :return: THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
     '''
     def selectFirstRow(self, ):
         self._selector = [self.body[0]]
         return self
     '''
-        * Select the last row.
-        * @return Table THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
+    Select the last row.
+
+    :return: THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
     '''
     def selectLastRow(self, ):
         self._selector = [self.body[len(self.body) - 1]]
         return self
     '''
-        * Selects the specified <b>rows</b> by indices.
-        * @param int[] rowIndices specified row's indices
-        * @return Table THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
+    Selects the specified <b>rows</b> by indices.
+
+    :param rowIndices: specified row's indices
+    :return: THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
     '''
     def selectAt(self, rowIndices):
         dst = []
@@ -255,11 +273,12 @@ class Table:
         self._selector = dst
         return self
     '''
-        * Select the rows when the column's value is equal to any value of array.
-        * @param int limit maximum length of every selected results (0 is infinite, if you only need 1 result, 1 is recommended, it will improve performance)
-        * @param array values the array of values
-        * @param int colIndex specified column index
-        * @return Table THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
+    Select the rows when the column's value is equal to any value of array.
+
+    :param limit: maximum length of every selected results (0 is infinite, if you only need 1 result, 1 is recommended, it will improve performance)
+    :param values: the array of values
+    :param colIndex: specified column index
+    :return: THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
     '''
     def selectWhenIn(self, limit, values, colIndex = 0):
         dst = []
@@ -269,12 +288,13 @@ class Table:
         self._selector = dst
         return self
     '''
-        * Select the rows when the column's value is equal to specified value.
-        * @param int limit maximum length of selected results (0 is infinite, if you only need 1 result, 1 is recommended, it will improve performance)
-        * @param mixed value the specified value
-        * @param int colIndex specified column index
-        * @param array extraSelector extra selector, use it to save selected result
-        * @return Table THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
+    Select the rows when the column's value is equal to specified value.
+
+    :param limit: maximum length of selected results (0 is infinite, if you only need 1 result, 1 is recommended, it will improve performance)
+    :param value: the specified value
+    :param colIndex: specified column index
+    :param extraSelector: extra selector, use it to save selected result
+    :return: THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
     '''
     def selectWhenE(self, limit, value, colIndex = 0, extraSelector = None):
         dst = extraSelector
@@ -303,13 +323,14 @@ class Table:
         self._selector = dst
         return self
     '''
-        * Select the rows when the column's values are equal to specified values.
-        * @param int limit maximum length of selected results (0 is infinite, if you only need 1 result, 1 is recommended, it will improve performance)
-        * @param mixed value1 first specified value
-        * @param mixed value2 second specified value
-        * @param int colIndex2 second specified column index
-        * @param int colIndex1 first specified column index
-        * @return Table THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
+    Select the rows when the column's values are equal to specified values.
+
+    :param limit: maximum length of selected results (0 is infinite, if you only need 1 result, 1 is recommended, it will improve performance)
+    :param value1: first specified value
+    :param value2: second specified value
+    :param colIndex2: second specified column index
+    :param colIndex1: first specified column index
+    :return: THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
     '''
     def selectWhenE2(self, limit, value1, value2, colIndex2 = 1, colIndex1 = 0):
         src = self._selector
@@ -325,15 +346,16 @@ class Table:
         self._selector = dst
         return self
     '''
-        * Select the rows when the column's values are equal to specified values.
-        * @param int limit maximum length of selected results (0 is infinite, if you only need 1 result, 1 is recommended, it will improve performance)
-        * @param mixed value1 first specified value
-        * @param mixed value2 second specified value
-        * @param mixed value3 third specified value
-        * @param int colIndex3 third specified column index
-        * @param int colIndex2 second specified column index
-        * @param int colIndex1 first specified column index
-        * @return Table THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
+    Select the rows when the column's values are equal to specified values.
+
+    :param limit: maximum length of selected results (0 is infinite, if you only need 1 result, 1 is recommended, it will improve performance)
+    :param value1: first specified value
+    :param value2: second specified value
+    :param value3: third specified value
+    :param colIndex3: third specified column index
+    :param colIndex2; second specified column index
+    :param colIndex1: first specified column index
+    :return: Table THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
     '''
     def selectWhenE3(self, limit, value1, value2, value3, colIndex3 = 2, colIndex2 = 1, colIndex1 = 0):
         src = self._selector
@@ -349,12 +371,13 @@ class Table:
         self._selector = dst
         return self
     '''
-        * Select the rows when the column's value is greater than specified value.
-        * @param int limit maximum length of selected results (0 is infinite, if you only need 1 result, 1 is recommended, it will improve performance)
-        * @param bool withEqu whether include equation
-        * @param float value the specified value
-        * @param int colIndex specified column index
-        * @return Table THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
+    Select the rows when the column's value is greater than specified value.
+
+    :param limit: maximum length of selected results (0 is infinite, if you only need 1 result, 1 is recommended, it will improve performance)
+    :param withEqu: whether include equation
+    :param value: the specified value
+    :param colIndex: specified column index
+    :return: THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
     '''
     def selectWhenG(self, limit, withEqu, value, colIndex = 0):
         src = self._selector
@@ -371,12 +394,13 @@ class Table:
         self._selector = dst
         return self
     '''
-        * Select the rows when the column's value is less than specified values.
-        * @param int limit maximum length of selected results (0 is infinite, if you only need 1 result, 1 is recommended, it will improve performance)
-        * @param bool withEqu whether include equation
-        * @param float value the specified value
-        * @param int colIndex specified column index
-        * @return Table THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
+    Select the rows when the column's value is less than specified values.
+
+    :param limit: maximum length of selected results (0 is infinite, if you only need 1 result, 1 is recommended, it will improve performance)
+    :param withEqu: whether include equation
+    :param value: the specified value
+    :param colIndex: specified column index
+    :return: THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
     '''
     def selectWhenL(self, limit, withEqu, value, colIndex = 0):
         src = self._selector
@@ -393,14 +417,15 @@ class Table:
         self._selector = dst
         return self
     '''
-        * Select the rows when the column's value is greater than specified value <b>and</b> less than specified value.
-        * @param int limit maximum length of selected results (0 is infinite, if you only need 1 result, 1 is recommended, it will improve performance)
-        * @param bool GWithEqu whether greater and equal
-        * @param bool LWithEqu whether less and equal
-        * @param float GValue the specified greater value
-        * @param float LValue the specified less value
-        * @param int colIndex specified column index
-        * @return Table THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
+    Select the rows when the column's value is greater than specified value <b>and</b> less than specified value.
+
+    :param limit: maximum length of selected results (0 is infinite, if you only need 1 result, 1 is recommended, it will improve performance)
+    :param GWithEqu: whether greater and equal
+    :param LWithEqu: whether less and equal
+    :param GValue: the specified greater value
+    :param LValue: the specified less value
+    :param colIndex: specified column index
+    :return: THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
     '''
     def selectWhenGreaterAndLess(self, limit, GWithEqu, LWithEqu, GValue, LValue, colIndex = 0):
         src = self._selector
@@ -419,14 +444,15 @@ class Table:
         self._selector = dst
         return self
     '''
-        * Select the rows when the column's value is less than specified value <b>or</b> greater than specified value.
-        * @param int limit maximum length of selected results (0 is infinite, if you only need 1 result, 1 is recommended, it will improve performance)
-        * @param bool LWithEqu whether less and equal
-        * @param bool GWithEqu whether greater and equal
-        * @param float LValue the specified less value
-        * @param float GValue the specified greater value
-        * @param int colIndex specified column index
-        * @return Table THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
+    Select the rows when the column's value is less than specified value <b>or</b> greater than specified value.
+
+    :param limit: maximum length of selected results (0 is infinite, if you only need 1 result, 1 is recommended, it will improve performance)
+    :param LWithEqu: whether less and equal
+    :param GWithEqu: whether greater and equal
+    :param LValue: the specified less value
+    :param GValue: the specified greater value
+    :param colIndex: specified column index
+    :return: THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
     '''
     def selectWhenLessOrGreater(self, limit, LWithEqu, GWithEqu, LValue, GValue, colIndex = 0):
         src = self._selector
@@ -445,11 +471,12 @@ class Table:
         self._selector = dst
         return self
     '''
-        * Parse csv conent.
-        * @param strintg content As name mean
-        * @param strintg filedSeparator filed separator
-        * @param strintg filedMultiLineDelimiter filed multi-line delimiter
-        * @return Table a table instance
+    Parse csv conent.
+
+    :param content: As name mean
+    :param filedSeparator: filed separator
+    :param filedMultiLineDelimiter: filed multi-line delimiter
+    :return: a table instance
     '''
     @staticmethod
     def Parse(content, filedSeparator = ",", filedMultiLineDelimiter = "\""):
@@ -457,7 +484,7 @@ class Table:
         table.content = content
         return table
     '''
-        * Convert text to array.
+    Convert text to array.
     '''
     @staticmethod
     def textToArray(text, FS = ",", FML = "\""):
@@ -546,7 +573,7 @@ class Table:
                 break
         return arr
     '''
-        * Convert array to rows.
+    Convert array to rows.
     '''
     @staticmethod
     def arrayToRows(arr):
@@ -607,26 +634,27 @@ class Table:
         return table
      
 '''
-    * Supported json field types.
+Supported json field types.
 '''
 Table.JSON_TYPES = ["json", "strings"]
 '''
-    * 1. Copyright (c) 2022 amin2312
-    * 2. Version 1.0.0
-    * 3. MIT License
-    *
-    * CSV head field.
+1. Copyright (c) 2022 amin2312
+2. Version 1.0.0
+3. MIT License
+
+CSV head field.
+
 '''
 class Field:
     '''
-        * Full Name.
+    Full Name.
     '''
     fullName = ''
     '''
-        * Name.
+    Name.
     '''
     name = ''
     '''
-        * Type.
+    Type.
     '''
     type = ''
