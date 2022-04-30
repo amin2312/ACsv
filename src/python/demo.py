@@ -67,7 +67,7 @@ class Demo:
         self.P("[E] multi selects (id3) = 100 and (id2) < 22",self._tab2.selectWhenE(0,100,2).selectWhenL(0,False,22,1).toObjs())
         self.P("[E] sort by (id3) = 300 desc (id)",self._tab2.selectWhenE(0,300,2).sortBy(0,1).toObjs())
         self._tab2.createIndexAt(0)
-        self.P("[E] (indexed) 1st row name",self._tab2.selectWhenE(1,"चंद्रमा",self._tab2.getColIndexBy("name")).toObjs()[0]["name"])
+        self.P("[E] (indexed) 1st row name",self._tab2.selectWhenE(1,"Dwi",self._tab2.getColIndexBy("name")).toObjs()[0]["name"])
         self.P("[E] (indexed) id=6 education.CC",self._tab2.id(6)["education"]["CC"])
         self.P("[E] (indexed) id=6 tags #2",self._tab2.id(6)["tags"][1])
         self.P("[E] (indexed) 99th row",self._tab2.selectWhenE(1, 99).toObjs())

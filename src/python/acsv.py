@@ -503,11 +503,11 @@ class Table:
             while (cellIndexB < curLen):
                 cellIndexA = cellIndexB
                 cc = ptr[ptrPos + cellIndexB]
-                if (cc == "\n" or cc == "\r\n"): # line is over
-                    cellIndexB += 1
-                    break
                 if (cc == "\r" and ptr[ptrPos + cellIndexB + 1] == "\n"): # line is over
                     cellIndexB += 2
+                    break
+                if (cc == "\n"): # line is over
+                    cellIndexB += 1
                     break
                 if (cc == FS): # is separator
                     cell = ""
@@ -516,7 +516,7 @@ class Table:
                         cc = "\n"; # fix the bug when the last cell is empty
                     else:
                         cc = ptr[nextPos]
-                    if (cellIndexA == 0 or cc == FS or cc == "\n" or cc == "\r\n"): # is empty cell
+                    if (cellIndexA == 0 or cc == FS or cc == "\n"): # is empty cell
                         cellIndexB += 1
                         cells.append("")
                     elif (cc == "\r" and ptr[ptrPos + cellIndexB + 2] == "\n"): # is empty cell
@@ -554,10 +554,8 @@ class Table:
                     indexB = ptr.find("\r\n", ptrPos + cellIndexB)
                     if (indexB == -1):
                         indexB = ptr.find("\n", ptrPos + cellIndexB)
-                        if (indexB == -1):
-                            indexB = curLen
-                        else:
-                            indexB -= ptrPos
+                    if (indexB == -1):
+                        indexB = curLen
                     else:
                         indexB -= ptrPos
                     cellIndexB = indexA
