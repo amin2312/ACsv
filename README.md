@@ -1,11 +1,11 @@
 ACsv Library
 ================
-[![](https://img.shields.io/badge/support-haxe-green)]() 
-[![](https://img.shields.io/badge/support-javascript-green)]() 
-[![](https://img.shields.io/badge/support-typescript-green)]() 
-[![](https://img.shields.io/badge/support-php-green)]() 
-[![](https://img.shields.io/badge/support-java-green)]() 
-[![](https://img.shields.io/badge/support-python-green)]()  
+[![](https://img.shields.io/badge/support-haxe-blue)]() 
+[![](https://img.shields.io/badge/support-javascript-blue)]() 
+[![](https://img.shields.io/badge/support-typescript-blue)]() 
+[![](https://img.shields.io/badge/support-php-blue)]() 
+[![](https://img.shields.io/badge/support-java-blue)]() 
+[![](https://img.shields.io/badge/support-python-blue)]()  
   
 **ACsv** is a easy, fast and powerful **csv parse** library.  
 
