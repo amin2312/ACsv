@@ -794,13 +794,13 @@ public class Table {
                 {
                     cell = "";
                     int nextPos = ptrPos + cellIndexB + 1;
-                    if (nextPos >= maxLen)
+                    if (nextPos < maxLen)
                     {
-                        cc = "\n"; // fix the bug when the last cell is empty
+                        cc = String.valueOf(ptr.charAt(nextPos));
                     }
                     else
                     {
-                        cc = String.valueOf(ptr.charAt(nextPos));
+                        cc = "\n"; // fix the bug when the last cell is empty
                     }
                     if (cellIndexA == 0 || cc.equals(FS) || cc.equals("\n")) // is empty cell
                     {

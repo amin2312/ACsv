@@ -713,13 +713,13 @@ class Table
                 {
                     cell = "";
                     var nextPos = ptrPos + cellIndexB + 1;
-                    if (nextPos >= maxLen)
+                    if (nextPos < maxLen)
                     {
-                        cc = '\n'; // fix the bug when the last cell is empty
+                        cc = ptr.charAt(nextPos);
                     }
                     else
                     {
-                        cc = ptr.charAt(nextPos);
+                        cc = '\n'; // fix the bug when the last cell is empty
                     }
                     if (cellIndexA == 0 || cc == FS || cc == "\n") // is empty cell
                     {

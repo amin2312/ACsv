@@ -512,10 +512,10 @@ class Table:
                 if (cc == FS): # is separator
                     cell = ""
                     nextPos = ptrPos + cellIndexB + 1
-                    if (nextPos >= maxLen):
-                        cc = "\n"; # fix the bug when the last cell is empty
-                    else:
+                    if (nextPos < maxLen):
                         cc = ptr[nextPos]
+                    else:
+                        cc = "\n"; # fix the bug when the last cell is empty
                     if (cellIndexA == 0 or cc == FS or cc == "\n"): # is empty cell
                         cellIndexB += 1
                         cells.append("")
