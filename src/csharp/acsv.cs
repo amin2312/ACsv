@@ -37,7 +37,8 @@ namespace acsv
     * <p>
     * ACsv is a easy, fast and powerful csv parse library.
     */
-    public class Table {
+    public class Table
+    {
         /**
         * Supported json field types.
         */
