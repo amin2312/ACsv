@@ -5,75 +5,75 @@ namespace acsv
     using System.Collections.Generic;
     using Newtonsoft.Json.Linq;
     /**
-    * 1. Copyright (c) 2022 amin2312
-    * 2. Version 1.0.0
-    * 3. MIT License
-    *
-    * CSV head field.
-    */
+     * 1. Copyright (c) 2022 amin2312
+     * 2. Version 1.0.0
+     * 3. MIT License
+     *
+     * CSV head field.
+     */
     public class Field
     {
         /**
-        * Full Name.
-        */
+         * Full Name.
+         */
         public string fullName;
         /**
-        * Name.
-        */
+         * Name.
+         */
         public string name;
         /**
-        * Type.
-        */
+         * Type.
+         */
         public string type;
         /**
-        * Constructor.
-        */
+         * Constructor.
+         */
         public Field() {}
     }
     /**
-    * 1. Copyright (c) 2022 amin2312
-    * 2. Version 1.0.0
-    * 3. MIT License
-    * <p>
-    * ACsv is a easy, fast and powerful csv parse library.
-    */
+     * 1. Copyright (c) 2022 amin2312
+     * 2. Version 1.0.0
+     * 3. MIT License
+     *
+     * ACsv is a easy, fast and powerful csv parse library.
+     */
     public class Table
     {
         /**
-        * Supported json field types.
-        */
+         * Supported json field types.
+         */
         private static string[] JSON_TYPES = {"json", "strings"};
         /**
-        * The raw content.
-        */
+         * The raw content.
+         */
         public string content;
         /**
-        * Parsed csv table Head.
-        */
+         * Parsed csv table Head.
+         */
         public Field[] head;
         /**
-        * Parsed csv table Body.
-        */
+         * Parsed csv table Body.
+         */
         public object[][] body;
         /**
-        * Index Set(optimize for read).
-        */
+         * Index Set(optimize for read).
+         */
         private Dictionary<int, Dictionary<object, object[]>> _indexSet = new Dictionary<int, Dictionary<object, object[]>>();
         /**
-        * Selected data(for Method Chaining).
-        */
+         * Selected data(for Method Chaining).
+         */
         private object[][] _selector;
         /**
-        * Constructor.
-        */
+         * Constructor.
+         */
         public Table() {}
         /**
-        * Merge a table.
-        * <br><b>Notice:</b> two tables' structure must be same.
-        *
-        * @param b source table
-        * @return THIS instance
-        */
+         * Merge a table.
+         * <br><b>Notice:</b> two tables' structure must be same.
+         *
+         * @param b source table
+         * @return THIS instance
+         */
         public Table merge(Table b)
         {
             object[][] both = new object[this.body.GetLength(0) + b.body.GetLength(0)][];
@@ -90,12 +90,12 @@ namespace acsv
             return this;
         }
         /**
-        * Create index for the specified column.
-        * <br> This function is only valid for "selectWhenE" and "limit" param is 1.
-        * <br> It will improve performance.
-        *
-        * @param colIndex column index
-        */
+         * Create index for the specified column.
+         * <br> This function is only valid for "selectWhenE" and "limit" param is 1.
+         * <br> It will improve performance.
+         *
+         * @param colIndex column index
+         */
         public void createIndexAt(int colIndex)
         {
             Dictionary<object, object[]> m = new Dictionary<object, object[]>();
@@ -108,11 +108,11 @@ namespace acsv
             _indexSet[colIndex] = m;
         }
         /**
-        * Get column index by specified field name.
-        *
-        * @param name As name mean
-        * @return column index
-        */
+         * Get column index by specified field name.
+         *
+         * @param name As name mean
+         * @return column index
+         */
         public int getColIndexBy(string name)
         {
             for (int i = 0, l = this.head.Length; i < l; i++)
@@ -126,23 +126,23 @@ namespace acsv
             return -1;
         }
         /**
-        * Fetch a row object when the column's value is equal to the id value
-        *
-        * @param values   the specified value
-        * @param colIndex specified column index
-        * @return selected row object
-        */
+         * Fetch a row object when the column's value is equal to the id value
+         *
+         * @param values   the specified value
+         * @param colIndex specified column index
+         * @return selected row object
+         */
         public Dictionary<string, object> id(object value, int colIndex)
         {
             return this.selectWhenE(1, value, colIndex, null).toFirstObj();
         }
         /**
-        * Sort by selected rows.
-        *
-        * @param colIndex the column index specified for sorting
-        * @param sortType 0: asc, 1: desc
-        * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
-        */
+         * Sort by selected rows.
+         *
+         * @param colIndex the column index specified for sorting
+         * @param sortType 0: asc, 1: desc
+         * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
+         */
         public Table sortBy(int colIndex, int sortType)
         {
             int l = _selector.GetLength(0);
@@ -190,18 +190,18 @@ namespace acsv
             return this;
         }
         /**
-        * Get current selector(it includes all selected results).
-        * <br><b>Notice:</b> It be assigned after call "select..." function
-        *
-        * @return current selector
-        */
+         * Get current selector(it includes all selected results).
+         * <br><b>Notice:</b> It be assigned after call "select..." function
+         *
+         * @return current selector
+         */
         public object[][] getCurrentSelector()
         {
             return _selector;
         }
         /**
-        * Format data to row.
-        */
+         * Format data to row.
+         */
         private object[] fmtRow(object[] row)
         {
             ArrayList obj = new ArrayList();
@@ -227,8 +227,8 @@ namespace acsv
             return obj.ToArray();
         }
         /**
-        * Format data to obj.
-        */
+         * Format data to obj.
+         */
         private Dictionary<string, object> fmtObj(object[] row)
         {
             Dictionary<string, object> obj = new Dictionary<string, object>();
@@ -255,10 +255,10 @@ namespace acsv
             return obj;
         }
         /**
-        * Fetch first selected result to a row and return it.
-        *
-        * @return first selected row data or null
-        */
+         * Fetch first selected result to a row and return it.
+         *
+         * @return first selected row data or null
+         */
         public object[] toFirstRow()
         {
             object[] rzl = null;
@@ -270,10 +270,10 @@ namespace acsv
             return rzl;
         }
         /**
-        * Fetch last selected result to a row and return it.
-        *
-        * @return last selected row data or null
-        */
+         * Fetch last selected result to a row and return it.
+         *
+         * @return last selected row data or null
+         */
         public object[] toLastRow()
         {
             object[] rzl = null;
@@ -289,10 +289,10 @@ namespace acsv
             return rzl;
         }
         /**
-        * Fetch all selected results to the rows and return it.
-        *
-        * @return a array of row data (even if the result is empty)
-        */
+         * Fetch all selected results to the rows and return it.
+         *
+         * @return a array of row data (even if the result is empty)
+         */
         public object[][] toRows()
         {
             if (_selector == null)
@@ -310,10 +310,10 @@ namespace acsv
             return dst;
         }
         /**
-        * Fetch first selected result to a object and return it.
-        *
-        * @return first selected row object or null
-        */
+         * Fetch first selected result to a object and return it.
+         *
+         * @return first selected row object or null
+         */
         public Dictionary<string, object> toFirstObj()
         {
             Dictionary<string, object> rzl = null;
@@ -325,10 +325,10 @@ namespace acsv
             return rzl;
         }
         /**
-        * Fetch last selected result to a object and return it.
-        *
-        * @return last selected row object or null
-        */
+         * Fetch last selected result to a object and return it.
+         *
+         * @return last selected row object or null
+         */
         public Dictionary<string, object> toLastObj()
         {
             Dictionary<string, object> rzl = null;
@@ -344,10 +344,10 @@ namespace acsv
             return rzl;
         }
         /**
-        * Fetch all selected results to the objects and return it.
-        *
-        * @return a array of row object (even if the result is empty)
-        */
+         * Fetch all selected results to the objects and return it.
+         *
+         * @return a array of row object (even if the result is empty)
+         */
         public Dictionary<string, object>[] toObjs()
         {
             if (_selector == null)
@@ -365,10 +365,10 @@ namespace acsv
             return dst;
         }
         /**
-        * Fetch all selected results to a new table.
-        *
-        * @return a new table instance
-        */
+         * Fetch all selected results to a new table.
+         *
+         * @return a new table instance
+         */
         public Table toTable()
         {
             if (_selector == null)
@@ -382,41 +382,41 @@ namespace acsv
             return t;
         }
         /**
-        * Select all rows.
-        *
-        * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
-        */
+         * Select all rows.
+         *
+         * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
+         */
         public Table selectAll()
         {
             _selector = body;
             return this;
         }
         /**
-        * Select the first row.
-        *
-        * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
-        */
+         * Select the first row.
+         *
+         * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
+         */
         public Table selectFirstRow()
         {
             _selector = new object[][]{body[0]};
             return this;
         }
         /**
-        * Select the last row.
-        *
-        * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
-        */
+         * Select the last row.
+         *
+         * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
+         */
         public Table selectLastRow()
         {
             _selector = new object[][]{body[body.GetLength(0) - 1]};
             return this;
         }
         /**
-        * Selects the specified <b>rows</b> by indices.
-        *
-        * @param rowIndices specified row's indices
-        * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
-        */
+         * Selects the specified <b>rows</b> by indices.
+         *
+         * @param rowIndices specified row's indices
+         * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
+         */
         public Table selectAt(int[] rowIndices)
         {
             ArrayList dst = new ArrayList();
@@ -433,13 +433,13 @@ namespace acsv
             return this;
         }
         /**
-        * Select the rows when the column's value is equal to any value of array.
-        *
-        * @param limit    maximum length of every selected results (0 is infinite, if you only need 1 result, 1 is recommended, it will improve performance)
-        * @param values   the array of values
-        * @param colIndex specified column index
-        * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
-        */
+         * Select the rows when the column's value is equal to any value of array.
+         *
+         * @param limit    maximum length of every selected results (0 is infinite, if you only need 1 result, 1 is recommended, it will improve performance)
+         * @param values   the array of values
+         * @param colIndex specified column index
+         * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
+         */
         public Table selectWhenIn(int limit, object[] values, int colIndex)
         {
             ArrayList dst = new ArrayList();
@@ -453,14 +453,14 @@ namespace acsv
             return this;
         }
         /**
-        * Select the rows when the column's value is equal to specified value.
-        *
-        * @param limit         maximum length of selected results (0 is infinite, if you only need 1 result, 1 is recommended, it will improve performance)
-        * @param value         the specified value
-        * @param colIndex      specified column index
-        * @param extraSelector extra selector, use it to save selected result
-        * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
-        */
+         * Select the rows when the column's value is equal to specified value.
+         *
+         * @param limit         maximum length of selected results (0 is infinite, if you only need 1 result, 1 is recommended, it will improve performance)
+         * @param value         the specified value
+         * @param colIndex      specified column index
+         * @param extraSelector extra selector, use it to save selected result
+         * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
+         */
         public Table selectWhenE(int limit, object value, int colIndex, ArrayList extraSelector)
         {
             ArrayList dst = extraSelector;
@@ -512,15 +512,15 @@ namespace acsv
             return this;
         }
         /**
-        * Select the rows when the column's values are equal to specified values.
-        *
-        * @param limit     maximum length of selected results (0 is infinite, if you only need 1 result, 1 is recommended, it will improve performance)
-        * @param value1    first specified value
-        * @param value2    second specified value
-        * @param colIndex2 second specified column index
-        * @param colIndex1 first specified column index
-        * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
-        */
+         * Select the rows when the column's values are equal to specified values.
+         *
+         * @param limit     maximum length of selected results (0 is infinite, if you only need 1 result, 1 is recommended, it will improve performance)
+         * @param value1    first specified value
+         * @param value2    second specified value
+         * @param colIndex2 second specified column index
+         * @param colIndex1 first specified column index
+         * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
+         */
         public Table selectWhenE2(int limit, object value1, object value2, int colIndex2, int colIndex1)
         {
             object[][] src = _selector;
@@ -546,17 +546,17 @@ namespace acsv
             return this;
         }
         /**
-        * Select the rows when the column's values are equal to specified values.
-        *
-        * @param limit     maximum length of selected results (0 is infinite, if you only need 1 result, 1 is recommended, it will improve performance)
-        * @param value1    first specified value
-        * @param value2    second specified value
-        * @param value3    third specified value
-        * @param colIndex3 third specified column index
-        * @param colIndex2 second specified column index
-        * @param colIndex1 first specified column index
-        * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
-        */
+         * Select the rows when the column's values are equal to specified values.
+         *
+         * @param limit     maximum length of selected results (0 is infinite, if you only need 1 result, 1 is recommended, it will improve performance)
+         * @param value1    first specified value
+         * @param value2    second specified value
+         * @param value3    third specified value
+         * @param colIndex3 third specified column index
+         * @param colIndex2 second specified column index
+         * @param colIndex1 first specified column index
+         * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
+         */
         public Table selectWhenE3(int limit, object value1, object value2, object value3, int colIndex3, int colIndex2, int colIndex1)
         {
             object[][] src = _selector;
@@ -582,14 +582,14 @@ namespace acsv
             return this;
         }
         /**
-        * Select the rows when the column's value is greater than specified value.
-        *
-        * @param limit    maximum length of selected results (0 is infinite, if you only need 1 result, 1 is recommended, it will improve performance)
-        * @param withEqu  whether include equation
-        * @param value    the specified value
-        * @param colIndex specified column index
-        * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
-        */
+         * Select the rows when the column's value is greater than specified value.
+         *
+         * @param limit    maximum length of selected results (0 is infinite, if you only need 1 result, 1 is recommended, it will improve performance)
+         * @param withEqu  whether include equation
+         * @param value    the specified value
+         * @param colIndex specified column index
+         * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
+         */
         public Table selectWhenG(int limit, bool withEqu, double value, int colIndex)
         {
             object[][] src = _selector;
@@ -625,14 +625,14 @@ namespace acsv
             return this;
         }
         /**
-        * Select the rows when the column's value is less than specified values.
-        *
-        * @param limit    maximum length of selected results (0 is infinite, if you only need 1 result, 1 is recommended, it will improve performance)
-        * @param withEqu  whether include equation
-        * @param value    the specified value
-        * @param colIndex specified column index
-        * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
-        */
+         * Select the rows when the column's value is less than specified values.
+         *
+         * @param limit    maximum length of selected results (0 is infinite, if you only need 1 result, 1 is recommended, it will improve performance)
+         * @param withEqu  whether include equation
+         * @param value    the specified value
+         * @param colIndex specified column index
+         * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
+         */
         public Table selectWhenL(int limit, bool withEqu, double value, int colIndex)
         {
             object[][] src = _selector;
@@ -669,16 +669,16 @@ namespace acsv
         }
 
         /**
-        * Select the rows when the column's value is greater than specified value <b>and</b> less than specified value.
-        *
-        * @param limit    maximum length of selected results (0 is infinite, if you only need 1 result, 1 is recommended, it will improve performance)
-        * @param GWithEqu whether greater and equal
-        * @param LWithEqu whether less and equal
-        * @param GValue   the specified greater value
-        * @param LValue   the specified less value
-        * @param colIndex specified column index
-        * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
-        */
+         * Select the rows when the column's value is greater than specified value <b>and</b> less than specified value.
+         *
+         * @param limit    maximum length of selected results (0 is infinite, if you only need 1 result, 1 is recommended, it will improve performance)
+         * @param GWithEqu whether greater and equal
+         * @param LWithEqu whether less and equal
+         * @param GValue   the specified greater value
+         * @param LValue   the specified less value
+         * @param colIndex specified column index
+         * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
+         */
         public Table selectWhenGreaterAndLess(int limit, bool GWithEqu, bool LWithEqu, double GValue, double LValue, int colIndex)
         {
             object[][] src = _selector;
@@ -716,16 +716,16 @@ namespace acsv
             return this;
         }
         /**
-        * Select the rows when the column's value is less than specified value <b>or</b> greater than specified value.
-        *
-        * @param limit    maximum length of selected results (0 is infinite, if you only need 1 result, 1 is recommended, it will improve performance)
-        * @param LWithEqu whether less and equal
-        * @param GWithEqu whether greater and equal
-        * @param LValue   the specified less value
-        * @param GValue   the specified greater value
-        * @param colIndex specified column index
-        * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
-        */
+         * Select the rows when the column's value is less than specified value <b>or</b> greater than specified value.
+         *
+         * @param limit    maximum length of selected results (0 is infinite, if you only need 1 result, 1 is recommended, it will improve performance)
+         * @param LWithEqu whether less and equal
+         * @param GWithEqu whether greater and equal
+         * @param LValue   the specified less value
+         * @param GValue   the specified greater value
+         * @param colIndex specified column index
+         * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
+         */
         public Table selectWhenLessOrGreater(int limit, bool LWithEqu, bool GWithEqu, double LValue, double GValue,
                                             int colIndex)
         {
@@ -764,13 +764,13 @@ namespace acsv
             return this;
         }
         /**
-        * Parse csv conent.
-        *
-        * @param content                 As name mean
-        * @param filedSeparator          filed separator
-        * @param filedMultiLineDelimiter filed multi-line delimiter
-        * @return a table instance
-        */
+         * Parse csv conent.
+         *
+         * @param content                 As name mean
+         * @param filedSeparator          filed separator
+         * @param filedMultiLineDelimiter filed multi-line delimiter
+         * @return a table instance
+         */
         public static Table Parse(string content, string filedSeparator, string filedMultiLineDelimiter)
         {
             Table table = arrayToRows(textToArray(content, filedSeparator, filedMultiLineDelimiter));
@@ -778,18 +778,18 @@ namespace acsv
             return table;
         }
         /**
-        * Parse csv conent.
-        *
-        * @param content As name mean
-        * @return a table instance
-        */
+         * Parse csv conent.
+         *
+         * @param content As name mean
+         * @return a table instance
+         */
         public static Table Parse(string content)
         {
             return Parse(content, ",", "\"");
         }
         /**
-        * Convert text to array.
-        */
+         * Convert text to array.
+         */
         static private ArrayList textToArray(string text, string FS, string FML)
         {
             string FMLs = FML + FML;
@@ -924,8 +924,8 @@ namespace acsv
             return arr;
         }
         /**
-        * Convert array to rows.
-        */
+         * Convert array to rows.
+         */
         static private Table arrayToRows(ArrayList arr)
         {
             ArrayList rawHead = (ArrayList) arr[0];
@@ -1037,8 +1037,8 @@ namespace acsv
             return table;
         }
         /**
-        * Check if the type is json.
-        */
+         * Check if the type is json.
+         */
         private bool isJsonType(string v)
         {
             for (int i = 0, l = JSON_TYPES.Length; i < l; i++)
@@ -1051,8 +1051,8 @@ namespace acsv
             return false;
         }
         /**
-        * Convert to json variable instance.
-        */
+         * Convert to json variable instance.
+         */
         private object toJsonIns(string json)
         {
             object ins = null;
@@ -1069,8 +1069,8 @@ namespace acsv
             return ins;
         }
         /**
-        * Convert ArrayList to ObjectArray.
-        */
+         * Convert ArrayList to ObjectArray.
+         */
         private object[][] ArrayListToObjectArray(ArrayList src)
         {
             int l = src.Count;
