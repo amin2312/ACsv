@@ -2,3 +2,5 @@ release/docs/* linguist-vendored=true
 release/docs/** linguist-vendored=true
 src/java/org/** linguist-vendored=true
 *.hx linguist-language=Javascript
+*.html linguist-language=Javascript
+*.css linguist-language=Javascript
