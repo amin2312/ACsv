@@ -667,7 +667,6 @@ namespace acsv
             _selector = ArrayListToObjectArray(dst);
             return this;
         }
-
         /**
          * Select the rows when the column's value is greater than specified value <b>and</b> less than specified value.
          *
