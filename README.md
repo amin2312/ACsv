@@ -11,13 +11,13 @@ ACsv Library
 [![](https://img.shields.io/badge/csv-standard-green)](https://github.com/amin2312/ACsv/tree/main/src/python) 
 [![](https://img.shields.io/badge/csv-enhanced-red)](https://github.com/amin2312/ACsv/tree/main/src/python)  
   
-**ACsv** is a easy, fast and powerful **csv parsing library**.  
+**ACsv** is a easy, multi-platform and powerful **csv parsing library**.  
 
 The features:
-* **Cross platform** - provide **haxe**, **js**, **ts**, **php**, **java**, **python**, **c#** version (the lua version via Haxe)
+* **Multi-platform** - provide **haxe**, **js**, **ts**, **php**, **java**, **python**, **c#** version (the lua version via Haxe)
 * **Standard** - support standard csv format (RFC 4180)
-* **Tiny size** - js version is only 7k
 * **Easy to use** - provide the example, demo and documentation
+* **Tiny size** - js version is only 7k
 * **Fast speed** - optimized code for high performance, it can works easy in older device
 * **Powerful** - support **enhanced** csv format,  
 &emsp;&emsp;&emsp;&emsp;&emsp;allow field type to be declared after field name (like width:**int**, name:**string**),  
