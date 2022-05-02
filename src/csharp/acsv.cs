@@ -11,7 +11,8 @@ namespace acsv
     *
     * CSV head field.
     */
-    public class Field {
+    public class Field
+    {
         /**
         * Full Name.
         */
