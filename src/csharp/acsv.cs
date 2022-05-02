@@ -725,8 +725,7 @@ namespace acsv
          * @param colIndex specified column index
          * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
          */
-        public Table selectWhenLessOrGreater(int limit, bool LWithEqu, bool GWithEqu, double LValue, double GValue,
-                                            int colIndex)
+        public Table selectWhenLessOrGreater(int limit, bool LWithEqu, bool GWithEqu, double LValue, double GValue, int colIndex)
         {
             object[][] src = _selector;
             if (src == null)

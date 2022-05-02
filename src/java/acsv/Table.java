@@ -696,8 +696,7 @@ public class Table {
      * @param colIndex specified column index
      * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
      */
-    public Table selectWhenLessOrGreater(int limit, Boolean LWithEqu, Boolean GWithEqu, double LValue, double GValue,
-                                         int colIndex)
+    public Table selectWhenLessOrGreater(int limit, Boolean LWithEqu, Boolean GWithEqu, double LValue, double GValue, int colIndex)
     {
         Object[][] src = _selector;
         if (src == null)
