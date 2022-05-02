@@ -7,7 +7,7 @@ package acsv;
  *
  * CSV head field.
  */
-class Field {
+public class Field {
 	/**
 	 * Full Name.
 	 */
