@@ -165,7 +165,7 @@ class Table
             var ft = filed.type; // avoid "type" keyword in other languages
             var val0 = row[i];
             var val1:Dynamic = null;
-            if (ft != null && ft != '' && Table.JSON_TYPES.indexOf(ft) != -1)
+            if (ft != null && ft.length > 0 && Table.JSON_TYPES.indexOf(ft) != -1)
             {
                 if (val0 != null)
                 {
@@ -193,7 +193,7 @@ class Table
             var ft = field.type; // avoid "type" keyword in other languages
             var val0 = row[i];
             var val1:Dynamic = null;
-            if (ft != null && ft != '' && Table.JSON_TYPES.indexOf(ft) != -1)
+            if (ft != null && ft.length > 0 && Table.JSON_TYPES.indexOf(ft) != -1)
             {
                 if (val0 != null)
                 {

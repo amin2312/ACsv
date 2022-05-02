@@ -3,6 +3,7 @@ namespace acsv
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using Newtonsoft.Json.Linq;
     /**
     * 1. Copyright (c) 2022 amin2312
     * 2. Version 1.0.0
@@ -73,9 +74,9 @@ namespace acsv
         */
         public Table merge(Table b)
         {
-            object[][] both = new object[this.body.Rank + b.body.Rank][];
+            object[][] both = new object[this.body.GetLength(0) + b.body.GetLength(0)][];
             this.body.CopyTo(both, 0);
-            b.body.CopyTo(both, this.body.Rank);
+            b.body.CopyTo(both, this.body.GetLength(0));
             this.body = both;
             int index = b.content.IndexOf("\r\n");
             if (index == -1)
@@ -96,7 +97,7 @@ namespace acsv
         public void createIndexAt(int colIndex)
         {
             Dictionary<object, object[]> m = new Dictionary<object, object[]>();
-            for (int i = 0, l = this.body.Rank; i < l; i++)
+            for (int i = 0, l = this.body.GetLength(0); i < l; i++)
             {
                 object[] row = this.body[i];
                 object key = row[colIndex];
@@ -142,7 +143,7 @@ namespace acsv
         */
         public Table sortBy(int colIndex, int sortType)
         {
-            int l = _selector.Rank;
+            int l = _selector.GetLength(0);
             for (int i = 0; i < l; i++)
             {
                 for (int j = 0; j < l - 1; j++)
@@ -208,7 +209,7 @@ namespace acsv
                 string ft = filed.type;
                 object val0 = row[i];
                 object val1 = null;
-                if (ft != null && ft.Equals("") == false && isJsonType(ft))
+                if (ft != null && ft.Length > 0 && isJsonType(ft))
                 {
                     if (val0 != null)
                     {
@@ -236,7 +237,7 @@ namespace acsv
                 string ft = field.type;
                 object val0 = row[i];
                 object val1 = null;
-                if (ft != null && ft.Equals("") == false && isJsonType(ft))
+                if (ft != null && ft.Length > 0 && isJsonType(ft))
                 {
                     if (val0 != null)
                     {
@@ -259,7 +260,7 @@ namespace acsv
         public object[] toFirstRow()
         {
             object[] rzl = null;
-            if (_selector != null && _selector.Rank > 0)
+            if (_selector != null && _selector.GetLength(0) > 0)
             {
                 rzl = this.fmtRow(_selector[0]);
             }
@@ -276,7 +277,7 @@ namespace acsv
             object[] rzl = null;
             if (_selector != null)
             {
-                int l = _selector.Rank;
+                int l = _selector.GetLength(0);
                 if (l > 0)
                 {
                     rzl = this.fmtRow(_selector[l - 1]);
@@ -296,7 +297,7 @@ namespace acsv
             {
                 return null;
             }
-            int l = _selector.Rank;
+            int l = _selector.GetLength(0);
             object[][] dst = new object[l][];
             for (int i = 0; i < l; i++)
             {
@@ -314,7 +315,7 @@ namespace acsv
         public Dictionary<string, object> toFirstObj()
         {
             Dictionary<string, object> rzl = null;
-            if (_selector != null && _selector.Rank > 0)
+            if (_selector != null && _selector.GetLength(0) > 0)
             {
                 rzl = this.fmtObj(_selector[0]);
             }
@@ -331,7 +332,7 @@ namespace acsv
             Dictionary<string, object> rzl = null;
             if (_selector != null)
             {
-                int l = _selector.Rank;
+                int l = _selector.GetLength(0);
                 if (l > 0)
                 {
                     rzl = this.fmtObj(_selector[l - 1]);
@@ -351,7 +352,7 @@ namespace acsv
             {
                 return null;
             }
-            int l = _selector.Rank;
+            int l = _selector.GetLength(0);
             Dictionary<string, object>[] dst = new Dictionary<string, object>[l];
             for (int i = 0; i < l; i++)
             {
@@ -405,7 +406,7 @@ namespace acsv
         */
         public Table selectLastRow()
         {
-            _selector = new object[][]{body[body.Rank - 1]};
+            _selector = new object[][]{body[body.GetLength(0) - 1]};
             return this;
         }
         /**
@@ -417,7 +418,7 @@ namespace acsv
         public Table selectAt(int[] rowIndices)
         {
             ArrayList dst = new ArrayList();
-            int maxLen = this.body.Rank;
+            int maxLen = this.body.GetLength(0);
             for (int i = 0, l = rowIndices.Length; i < l; i++)
             {
                 int rowIndex = rowIndices[i];
@@ -468,16 +469,22 @@ namespace acsv
             // 1.check indexed set
             if (limit == 1)
             {
-                Dictionary<object, object[]> m = _indexSet[colIndex];
-                if (m != null)
+                if (_indexSet.ContainsKey(colIndex))
                 {
-                    object[] val = m[value];
-                    if (val != null)
+                    Dictionary<object, object[]> m = _indexSet[colIndex];
+                    if (m != null)
                     {
-                        dst.Add(val);
+                        if (m.ContainsKey(value))
+                        {
+                            object[] val = m[value];
+                            if (val != null)
+                            {
+                                dst.Add(val);
+                            }
+                            _selector = ArrayListToObjectArray(dst);
+                            return this;
+                        }
                     }
-                    _selector = ArrayListToObjectArray(dst);
-                    return this;
                 }
             }
             // 2.line-by-line scan
@@ -486,7 +493,7 @@ namespace acsv
             {
                 src = body;
             }
-            for (int i = 0, l = src.Rank; i < l; i++)
+            for (int i = 0, l = src.GetLength(0); i < l; i++)
             {
                 object[] row = src[i];
                 if (value.Equals(row[colIndex]))
@@ -520,7 +527,7 @@ namespace acsv
                 src = body;
             }
             ArrayList dst = new ArrayList();
-            for (int i = 0, l = src.Rank; i < l; i++)
+            for (int i = 0, l = src.GetLength(0); i < l; i++)
             {
                 object[] row = src[i];
                 if (value1.Equals(row[colIndex1]) && value2.Equals(row[colIndex2]))
@@ -556,7 +563,7 @@ namespace acsv
                 src = body;
             }
             ArrayList dst = new ArrayList();
-            for (int i = 0, l = src.Rank; i < l; i++)
+            for (int i = 0, l = src.GetLength(0); i < l; i++)
             {
                 object[] row = src[i];
                 if (value1.Equals(row[colIndex1]) && value2.Equals(row[colIndex2]) && value3.Equals(row[colIndex3]))
@@ -589,7 +596,7 @@ namespace acsv
                 src = body;
             }
             ArrayList dst = new ArrayList();
-            for (int i = 0, l = src.Rank; i < l; i++)
+            for (int i = 0, l = src.GetLength(0); i < l; i++)
             {
                 object[] row = src[i];
                 double rowVal;
@@ -632,7 +639,7 @@ namespace acsv
                 src = body;
             }
             ArrayList dst = new ArrayList();
-            for (int i = 0, l = src.Rank; i < l; i++)
+            for (int i = 0, l = src.GetLength(0); i < l; i++)
             {
                 object[] row = src[i];
                 double rowVal;
@@ -678,7 +685,7 @@ namespace acsv
                 src = body;
             }
             ArrayList dst = new ArrayList();
-            for (int i = 0, l = src.Rank; i < l; i++)
+            for (int i = 0, l = src.GetLength(0); i < l; i++)
             {
                 object[] row = src[i];
                 double rowVal;
@@ -726,7 +733,7 @@ namespace acsv
                 src = body;
             }
             ArrayList dst = new ArrayList();
-            for (int i = 0, l = src.Rank; i < l; i++)
+            for (int i = 0, l = src.GetLength(0); i < l; i++)
             {
                 object[] row = src[i];
                 double rowVal;
@@ -863,7 +870,7 @@ namespace acsv
                             break;
                         }
                         // 2.truncate the content of double quote
-                        cell = ptr.Substring(ptrPos + cellIndexA + 1, ptrPos + cellIndexB);
+                        cell = ptr.Substring(ptrPos + cellIndexA + 1, cellIndexB - cellIndexA - 1);
                         cell = cell.Replace(FMLs, FML); // convert """" to ""
                         cells.Add(cell);
                         // pass DQ
@@ -900,7 +907,7 @@ namespace acsv
                             cellIndexB = indexB;
                         }
                         // 2.Truncate the cell contennt
-                        cell = ptr.Substring(ptrPos + cellIndexA, ptrPos + cellIndexB);
+                        cell = ptr.Substring(ptrPos + cellIndexA, cellIndexB - cellIndexA);
                         cells.Add(cell);
                     }
                 }
@@ -920,7 +927,7 @@ namespace acsv
         static private Table arrayToRows(ArrayList arr)
         {
             ArrayList rawHead = (ArrayList) arr[0];
-            arr.Remove(0);
+            arr.RemoveAt(0);
             ArrayList rawBody = arr;
             // parse head
             ArrayList newHead = new ArrayList();
@@ -1046,23 +1053,18 @@ namespace acsv
         */
         private object toJsonIns(string json)
         {
-            /*dynamic ins = JsonSerializer.Deserialize(json);
             object ins = null;
-            try {
-                if (json[0] == '{')
-                {
-                    JSONObject obj = new JSONObject(json);
-                    ins = obj;
-                }
-                else
-                {
-                    JSONArray arr = new JSONArray(json);
-                    ins = arr;
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }*/
-            return json;
+            if (json[0] == '{')
+            {
+                JObject obj = JObject.Parse(json);
+                ins = obj;
+            }
+            else
+            {
+                JArray arr = JArray.Parse(json);
+                ins = arr;
+            }
+            return ins;
         }
         /**
         * Convert ArrayList to ObjectArray.

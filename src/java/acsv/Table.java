@@ -187,7 +187,7 @@ public class Table {
             String ft = filed.type;
             Object val0 = row[i];
             Object val1 = null;
-            if (ft != null && ft.isEmpty() == false && isJsonType(ft))
+            if (ft != null && ft.length() > 0 && isJsonType(ft))
             {
                 if (val0 != null)
                 {
@@ -215,7 +215,7 @@ public class Table {
             String ft = field.type;
             Object val0 = row[i];
             Object val1 = null;
-            if (ft != null && ft.isEmpty() == false && isJsonType(ft))
+            if (ft != null && ft.length() > 0 && isJsonType(ft))
             {
                 if (val0 != null)
                 {

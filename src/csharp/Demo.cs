@@ -2,6 +2,7 @@ using acsv;
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Newtonsoft.Json.Linq;
 
 public class Demo
 {
@@ -18,35 +19,63 @@ public class Demo
     {
         string standard_format_text = readTostring("../../release/csvs/standard_format_text.csv");
         _tab1 = Table.Parse(standard_format_text);
-        /*test_standard_csv_format();
-        string enhanced_format_text = readTostring("release/csvs/enhanced_format_text.csv");
+        test_standard_csv_format();
+        string enhanced_format_text = readTostring("../../release/csvs/enhanced_format_text.csv");
         _tab2 = Table.Parse(enhanced_format_text);
-        try {
-            test_enhanced_csv_format();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }*/
+        test_enhanced_csv_format();
     }
     
     public static void P(string cmd, object o)
     {
         Console.WriteLine(cmd);
-        /*if (o == null)
+        if (o == null)
         {
             Console.WriteLine("null");
         }
-        else if (o is Dictionary<string, object[]>)
+        else if (o is Dictionary<string, object>[])
         {
-            Console.WriteLine(o);
+            Dictionary<string, object>[] o1 = (Dictionary<string, object>[])o;
+            if (o1.Length == 0)
+            {
+                Console.WriteLine("[]");
+            }
+            else
+            {
+                for (int i = 0; i < o1.GetLength(0); i++)
+                {
+                    foreach (KeyValuePair<string, object> kvp in (Dictionary<string, object>)o1[i])
+                    {
+                        Console.Write("\"{0}\":{1}, ", kvp.Key, kvp.Value);
+                    }
+                    Console.WriteLine();
+                }
+            }
+        }
+        else if (o is Dictionary<string, object>)
+        {
+            foreach (KeyValuePair<string, object> kvp in (Dictionary<string, object>)o)
+            {
+                Console.Write("\"{0}\":{1}, ", kvp.Key, kvp.Value);
+            }
+            Console.WriteLine();
+        }
+        else if (o is object[][])
+        {
+            object[][] o1 = (object[][])o;
+            for (int i = 0; i < o1.GetLength(0); i++)
+            {
+                Console.Write(String.Join(",", o1[i]) + "\n");
+            }
         }
         else if (o is object[])
         {
-            Console.WriteLine(o);
+            object[] o1 = (object[])o;
+            Console.Write(String.Join(",", o1) + "\n");
         }
         else
         {
             Console.WriteLine(o);
-        }*/
+        }
         Console.WriteLine();
     }
 
@@ -101,10 +130,10 @@ public class Demo
         P("[E] sort by (id3) = 300 desc (id)", _tab2.selectWhenE(0, 300, 2, null).sortBy(0, 1).toObjs());
 
         _tab2.createIndexAt(0);
-        /*P("[E] (indexed) 1st row name", _tab2.selectWhenE(1, "Dwi", _tab2.getColIndexBy("name"), null).toObjs()[0].get("name"));
-        P("[E] (indexed) id=6 education.CC", ((JSONobject)_tab2.id(6, 0).get("education")).getstring("CC") );
-        P("[E] (indexed) id=6 tags #2", ((JSONArray)_tab2.id(6, 0).get("tags")).get(1) );
-        P("[E] (indexed) 99th row", _tab2.selectWhenE(1, 99, 0, null).toObjs());*/
+        P("[E] (indexed) 1st row name", _tab2.selectWhenE(1, "Dwi", _tab2.getColIndexBy("name"), null).toObjs()[0]["name"]);
+        P("[E] (indexed) id=6 education.CC", ((JObject)_tab2.id(6, 0)["education"])["CC"]);
+        //P("[E] (indexed) id=6 tags #2", ((JArray)_tab2.id(6, 0).get("tags")).get(1) );
+        P("[E] (indexed) 99th row", _tab2.selectWhenE(1, 99, 0, null).toObjs());
     }
     
     public static string readTostring(string fileName) 

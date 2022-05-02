@@ -58,10 +58,10 @@ acsv_Table.textToArray = function(text,FS,FML) {
 			if(cc == FS) {
 				cell = "";
 				var nextPos = ptrPos + cellIndexB + 1;
-				if(nextPos >= maxLen) {
-					cc = "\n";
-				} else {
+				if(nextPos < maxLen) {
 					cc = ptr.charAt(nextPos);
+				} else {
+					cc = "\n";
 				}
 				if(cellIndexA == 0 || cc == FS || cc == "\n") {
 					++cellIndexB;
@@ -281,7 +281,7 @@ acsv_Table.prototype = {
 			var ft = filed.type;
 			var val0 = row[i];
 			var val1 = null;
-			if(ft != null && ft != "" && acsv_Table.JSON_TYPES.indexOf(ft) != -1) {
+			if(ft != null && ft.length > 0 && acsv_Table.JSON_TYPES.indexOf(ft) != -1) {
 				if(val0 != null) {
 					val1 = JSON.parse(val0);
 				}
@@ -303,7 +303,7 @@ acsv_Table.prototype = {
 			var ft = field.type;
 			var val0 = row[i];
 			var val1 = null;
-			if(ft != null && ft != "" && acsv_Table.JSON_TYPES.indexOf(ft) != -1) {
+			if(ft != null && ft.length > 0 && acsv_Table.JSON_TYPES.indexOf(ft) != -1) {
 				if(val0 != null) {
 					val1 = JSON.parse(val0);
 				}
