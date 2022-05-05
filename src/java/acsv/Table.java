@@ -180,7 +180,7 @@ public class Table {
      */
     private Object[] fmtRow(Object[] row)
     {
-        ArrayList<Object> obj = new ArrayList<>();
+        Object[] obj = new Object[this.head.length];
         for (int i = 0, l = this.head.length; i < l; i++)
         {
             Field filed = this.head[i];
@@ -198,9 +198,9 @@ public class Table {
             {
                 val1 = val0;
             }
-            obj.add(val1);
+            obj[i] = val1;
         }
-        return obj.toArray();
+        return obj;
     }
     /**
      * Format data to obj.
@@ -406,7 +406,7 @@ public class Table {
                 dst.add(this.body[rowIndex]);
             }
         }
-        _selector = ArrayListToObjectArray(dst);
+        _selector = arrayListToObjectArray(dst);
         return this;
     }
     /**
@@ -426,7 +426,7 @@ public class Table {
             selectWhenE(limit, value, colIndex, dst);
             _selector = null;
         }
-        _selector = ArrayListToObjectArray(dst);
+        _selector = arrayListToObjectArray(dst);
         return this;
     }
     /**
@@ -456,7 +456,7 @@ public class Table {
                 {
                     dst.add(val);
                 }
-                _selector = ArrayListToObjectArray(dst);
+                _selector = arrayListToObjectArray(dst);
                 return this;
             }
         }
@@ -479,7 +479,7 @@ public class Table {
                 }
             }
         }
-        _selector = ArrayListToObjectArray(dst);
+        _selector = arrayListToObjectArray(dst);
         return this;
     }
     /**
@@ -513,7 +513,7 @@ public class Table {
                 }
             }
         }
-        _selector = ArrayListToObjectArray(dst);
+        _selector = arrayListToObjectArray(dst);
         return this;
     }
     /**
@@ -549,7 +549,7 @@ public class Table {
                 }
             }
         }
-        _selector = ArrayListToObjectArray(dst);
+        _selector = arrayListToObjectArray(dst);
         return this;
     }
     /**
@@ -592,7 +592,7 @@ public class Table {
                 }
             }
         }
-        _selector = ArrayListToObjectArray(dst);
+        _selector = arrayListToObjectArray(dst);
         return this;
     }
     /**
@@ -635,7 +635,7 @@ public class Table {
                 }
             }
         }
-        _selector = ArrayListToObjectArray(dst);
+        _selector = arrayListToObjectArray(dst);
         return this;
     }
     /**
@@ -682,7 +682,7 @@ public class Table {
                 }
             }
         }
-        _selector = ArrayListToObjectArray(dst);
+        _selector = arrayListToObjectArray(dst);
         return this;
     }
     /**
@@ -729,7 +729,7 @@ public class Table {
                 }
             }
         }
-        _selector = ArrayListToObjectArray(dst);
+        _selector = arrayListToObjectArray(dst);
         return this;
     }
     /**
@@ -900,7 +900,7 @@ public class Table {
         ArrayList<String> rawHead = arr.remove(0);
         ArrayList<ArrayList<String>> rawBody = arr;
         // parse head
-        ArrayList<Field> newHead = new ArrayList<Field>();
+        Field[] newHead = new Field[rawHead.size()];
         for (int i = 0, l = rawHead.size(); i < l; i++)
         {
             String fullName = rawHead.get(i);
@@ -909,20 +909,20 @@ public class Table {
             filed.fullName = fullName;
             filed.name = parts[0];
             filed.type = parts.length == 2 ? parts[1] : "";
-            newHead.add(filed);
+            newHead[i] = filed;
         }
         // parse body
-        ArrayList<ArrayList<Object>> newBody = new ArrayList<>();
+        Object[][] newBody = new Object[rawBody.size()][];
         for (int i = 0, l = rawBody.size(); i < l; i++)
         {
             ArrayList<String> row = rawBody.get(i);
-            ArrayList<Object> item = new ArrayList<>();
+            Object[] newRow = new Object[row.size()];
             for (int j = 0, lenJ = row.size(); j < lenJ; j++)
             {
                 String cell = row.get(j);
                 Object newVal = cell;
                 Boolean isEmptyCell = (cell.equals(null) || cell.equals(""));
-                String ft = newHead.get(j).type;
+                String ft = newHead[j].type;
                 if (ft.equals("bool"))
                 {
                     if (isEmptyCell || cell.equals("false") || cell.equals("0"))
@@ -967,7 +967,7 @@ public class Table {
                         char cc = cell.charAt(0);
                         if (!(cc == '[' || cc == '{'))
                         {
-                            System.out.print("[ACsv] Invalid json format:" + newHead.get(j).name + ',' + cell);
+                            System.out.print("[ACsv] Invalid json format:" + newHead[j].name + ',' + cell);
                             return null;
                         }
                         newVal = cell;
@@ -984,23 +984,14 @@ public class Table {
                         newVal = "[\"" + String.join("\",\"", cell.split(",")) + "\"]";
                     }
                 }
-                item.add(newVal);
+                newRow[j] = newVal;
             }
-            newBody.add(item); // update row
+            newBody[i] = newRow; // update row
         }
         // create table
         Table table = new Table();
-        table.head = (Field[]) newHead.toArray(new Field[0]);
-        int numRows = newBody.size();
-        int numCols = newHead.size();
-        table.body = new Object[numRows][numCols];
-        for (int i = 0; i < numRows; i++)
-        {
-            for (int j = 0; j < numCols; j++)
-            {
-                table.body[i][j] = newBody.get(i).get(j);
-            }
-        }
+        table.head = newHead;
+        table.body = newBody;
         return table;
     }
     /**
@@ -1042,10 +1033,10 @@ public class Table {
     /**
      * Convert ArrayList to ObjectArray.
      */
-    private Object[][] ArrayListToObjectArray(ArrayList<Object[]> src)
+    private Object[][] arrayListToObjectArray(ArrayList<Object[]> src)
     {
         int l = src.size();
-        Object[][] dst = new Object[src.size()][];
+        Object[][] dst = new Object[l][];
         for (int i = 0; i < l; i++)
         {
             dst[i] = src.get(i);
