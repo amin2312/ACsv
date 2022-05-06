@@ -14,25 +14,25 @@ var acsv_Table = $hx_exports["acsv"]["Table"] = function() {
 	this.head = [];
 	this.content = null;
 };
-acsv_Table.Parse = function(content,filedSeparator,filedMultiLineDelimiter) {
-	if(filedMultiLineDelimiter == null) {
-		filedMultiLineDelimiter = "\"";
+acsv_Table.Parse = function(content,filedSeparator,filedDelimiter) {
+	if(filedDelimiter == null) {
+		filedDelimiter = "\"";
 	}
 	if(filedSeparator == null) {
 		filedSeparator = ",";
 	}
-	var table = acsv_Table.arrayToRows(acsv_Table.textToArray(content,filedSeparator,filedMultiLineDelimiter));
+	var table = acsv_Table.arrayToRows(acsv_Table.textToArray(content,filedSeparator,filedDelimiter));
 	table.content = content;
 	return table;
 };
-acsv_Table.textToArray = function(text,FS,FML) {
-	if(FML == null) {
-		FML = "\"";
+acsv_Table.textToArray = function(text,FS,FD) {
+	if(FD == null) {
+		FD = "\"";
 	}
 	if(FS == null) {
 		FS = ",";
 	}
-	var FMLs = FML + FML;
+	var FDs = FD + FD;
 	var arr = [];
 	var maxLen = text.length;
 	var ptr = text;
@@ -72,10 +72,10 @@ acsv_Table.textToArray = function(text,FS,FML) {
 				} else {
 					++cellIndexB;
 				}
-			} else if(cc == FML) {
+			} else if(cc == FD) {
 				++cellIndexB;
 				while(true) {
-					cellIndexB = ptr.indexOf(FML,ptrPos + cellIndexB);
+					cellIndexB = ptr.indexOf(FD,ptrPos + cellIndexB);
 					if(cellIndexB == -1) {
 						console.log("[ACsv] Invalid Double Quote");
 						return null;
@@ -83,7 +83,7 @@ acsv_Table.textToArray = function(text,FS,FML) {
 					cellIndexB -= ptrPos;
 					var nextPos1 = ptrPos + cellIndexB + 1;
 					if(nextPos1 < maxLen) {
-						if(ptr.charAt(nextPos1) == FML) {
+						if(ptr.charAt(nextPos1) == FD) {
 							cellIndexB += 2;
 							continue;
 						}
@@ -91,7 +91,7 @@ acsv_Table.textToArray = function(text,FS,FML) {
 					break;
 				}
 				cell = ptr.substring(ptrPos + cellIndexA + 1,ptrPos + cellIndexB);
-				cell = StringTools.replace(cell,FMLs,FML);
+				cell = StringTools.replace(cell,FDs,FD);
 				cells.push(cell);
 				++cellIndexB;
 			} else {

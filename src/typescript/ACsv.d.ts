@@ -215,9 +215,9 @@ declare namespace acsv
          * Parse csv conent.
          * @param content As name mean
          * @param filedSeparator filed separator
-         * @param filedMultiLineDelimiter filed multi-line delimiter
+         * @param filedDelimiter filed delimiter
          * @return a table instance
          */
-        static Parse(content: String, filedSeparator?: String, filedMultiLineDelimiter?: String): Table;
+        static Parse(content: String, filedSeparator?: String, filedDelimiter?: String): Table;
     }
 }

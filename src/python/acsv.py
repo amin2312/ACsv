@@ -475,20 +475,20 @@ class Table:
 
     :param content: As name mean
     :param filedSeparator: filed separator
-    :param filedMultiLineDelimiter: filed multi-line delimiter
+    :param filedDelimiter: filed delimiter
     :return: a table instance
     '''
     @staticmethod
-    def Parse(content, filedSeparator = ",", filedMultiLineDelimiter = "\""):
-        table = Table.arrayToRows(Table.textToArray(content, filedSeparator, filedMultiLineDelimiter))
+    def Parse(content, filedSeparator = ",", filedDelimiter = "\""):
+        table = Table.arrayToRows(Table.textToArray(content, filedSeparator, filedDelimiter))
         table.content = content
         return table
     '''
     Convert text to array.
     '''
     @staticmethod
-    def textToArray(text, FS = ",", FML = "\""):
-        FMLs = FML + FML
+    def textToArray(text, FS = ",", FD = "\""):
+        FDs = FD + FD
         arr = []
         maxLen = len(text)
         ptr = text
@@ -524,25 +524,25 @@ class Table:
                         cells.append("")
                     else:
                         cellIndexB += 1
-                elif (cc == FML): # is double quote
+                elif (cc == FD): # is double quote
                     # pass DQ
                     cellIndexB = cellIndexB + 1
                     # 1.find the nearest double quote
                     while (True):
-                        cellIndexB = ptr.find(FML, ptrPos + cellIndexB)
+                        cellIndexB = ptr.find(FD, ptrPos + cellIndexB)
                         if (cellIndexB == -1):
                             echo("[ACsv] Invalid Double Quote")
                             return None
                         cellIndexB -= ptrPos
                         nextPos = ptrPos + cellIndexB + 1
                         if (nextPos < maxLen):
-                            if (ptr[nextPos] == FML): # """" is normal double quote
+                            if (ptr[nextPos] == FD): # """" is normal double quote
                                 cellIndexB += 2; # pass """"
                                 continue
                         break
                     # 2.truncate the content of double quote
                     cell = ptr[ptrPos + cellIndexA + 1 : ptrPos + cellIndexB]
-                    cell = cell.replace(FMLs, FML); # convert """" to ""
+                    cell = cell.replace(FDs, FD); # convert """" to ""
                     cells.append(cell)
                     # pass DQ
                     cellIndexB = cellIndexB + 1

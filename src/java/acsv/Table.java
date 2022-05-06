@@ -737,12 +737,12 @@ public class Table {
      *
      * @param content                 As name mean
      * @param filedSeparator          filed separator
-     * @param filedMultiLineDelimiter filed multi-line delimiter
+     * @param filedDelimiter filed delimiter
      * @return a table instance
      */
-    public static Table Parse(String content, String filedSeparator, String filedMultiLineDelimiter)
+    public static Table Parse(String content, String filedSeparator, String filedDelimiter)
     {
-        Table table = arrayToRows(textToArray(content, filedSeparator, filedMultiLineDelimiter));
+        Table table = arrayToRows(textToArray(content, filedSeparator, filedDelimiter));
         table.content = content;
         return table;
     }
@@ -759,9 +759,9 @@ public class Table {
     /**
      * Convert text to array.
      */
-    static private ArrayList<ArrayList<String>> textToArray(String text, String FS, String FML)
+    static private ArrayList<ArrayList<String>> textToArray(String text, String FS, String FD)
     {
-        String FMLs = FML + FML;
+        String FDs = FD + FD;
         ArrayList<ArrayList<String>> arr = new ArrayList<>();
         int maxLen = text.length();
         String ptr = text;
@@ -815,14 +815,14 @@ public class Table {
                         cellIndexB += 1;
                     }
                 }
-                else if (cc.equals(FML)) // is double quote
+                else if (cc.equals(FD)) // is double quote
                 {
                     // pass DQ
                     cellIndexB++;
                     // 1.find the nearest double quote
                     while (true)
                     {
-                        cellIndexB = ptr.indexOf(FML, ptrPos + cellIndexB);
+                        cellIndexB = ptr.indexOf(FD, ptrPos + cellIndexB);
                         if (cellIndexB == -1)
                         {
                             System.out.print("[ACsv] Invalid Double Quote");
@@ -832,7 +832,7 @@ public class Table {
                         int nextPos = ptrPos + cellIndexB + 1;
                         if (nextPos < maxLen)
                         {
-                            if (String.valueOf(ptr.charAt(nextPos)).equals(FML)) // """" is normal double quote
+                            if (String.valueOf(ptr.charAt(nextPos)).equals(FD)) // """" is normal double quote
                             {
                                 cellIndexB += 2; // pass """"
                                 continue;
@@ -842,7 +842,7 @@ public class Table {
                     }
                     // 2.truncate the content of double quote
                     cell = ptr.substring(ptrPos + cellIndexA + 1, ptrPos + cellIndexB);
-                    cell = cell.replaceAll(FMLs, FML); // convert """" to ""
+                    cell = cell.replaceAll(FDs, FD); // convert """" to ""
                     cells.add(cell);
                     // pass DQ
                     cellIndexB++;

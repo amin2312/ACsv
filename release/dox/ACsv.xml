@@ -643,7 +643,7 @@
 			<haxe_doc>* Supported json field types.</haxe_doc>
 		</JSON_TYPES>
 		<Parse public="1" set="method" line="674" static="1">
-			<f a="content:?filedSeparator:?filedMultiLineDelimiter">
+			<f a="content:?filedSeparator:?filedDelimiter">
 				<c path="String"/>
 				<c path="String"/>
 				<c path="String"/>
@@ -652,11 +652,11 @@
 			<haxe_doc>* Parse csv conent.
      * @param content As name mean
      * @param filedSeparator filed separator
-     * @param filedMultiLineDelimiter filed multi-line delimiter
+     * @param filedDelimiter filed delimiter
      * @return a table instance</haxe_doc>
 		</Parse>
 		<textToArray set="method" line="683" static="1">
-			<f a="text:?FS:?FML">
+			<f a="text:?FS:?FD">
 				<c path="String"/>
 				<c path="String"/>
 				<c path="String"/>

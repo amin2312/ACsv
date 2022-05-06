@@ -638,21 +638,21 @@ namespace acsv
          * Parse csv conent.
          * @param strintg $content As name mean
          * @param strintg $filedSeparator filed separator
-         * @param strintg $filedMultiLineDelimiter filed multi-line delimiter
+         * @param strintg $filedDelimiter filed delimiter
          * @return Table a table instance
          */
-        public static function Parse($content, $filedSeparator = ",", $filedMultiLineDelimiter = "\"")
+        public static function Parse($content, $filedSeparator = ",", $filedDelimiter = "\"")
         {
-            $table = self::arrayToRows(self::textToArray($content, $filedSeparator, $filedMultiLineDelimiter));
+            $table = self::arrayToRows(self::textToArray($content, $filedSeparator, $filedDelimiter));
             $table->content = $content;
             return $table;
         }
         /**
          * Convert text to array.
          */
-        private static function textToArray($text, $FS = ",", $FML = "\"")
+        private static function textToArray($text, $FS = ",", $FD = "\"")
         {
-            $FMLs = $FML . $FML;
+            $FDs = $FD . $FD;
             $arr = [];
             $maxLen = strlen($text);
             $ptr = $text;
@@ -706,14 +706,14 @@ namespace acsv
                             $cellIndexB += 1;
                         }
                     }
-                    else if ($cc == $FML) // is double quote
+                    else if ($cc == $FD) // is double quote
                     {
                         // pass DQ
                         $cellIndexB++;
                         // 1.find the nearest double quote
                         while (true)
                         {
-                            $cellIndexB = strpos($ptr, $FML, $ptrPos + $cellIndexB);
+                            $cellIndexB = strpos($ptr, $FD, $ptrPos + $cellIndexB);
                             if ($cellIndexB === false)
                             {
                                 echo("[ACsv] Invalid Double Quote");
@@ -723,7 +723,7 @@ namespace acsv
                             $nextPos = $ptrPos + $cellIndexB + 1;
                             if ($nextPos < $maxLen)
                             {
-                                if ($ptr[$nextPos] == $FML) // """" is normal double quote
+                                if ($ptr[$nextPos] == $FD) // """" is normal double quote
                                 {
                                     $cellIndexB += 2; // pass """"
                                     continue;
@@ -733,7 +733,7 @@ namespace acsv
                         }
                         // 2.truncate the content of double quote
                         $cell = substr($ptr, $ptrPos + $cellIndexA + 1, $cellIndexB - $cellIndexA - 1);
-                        $cell = str_replace($FMLs, $FML, $cell); // convert """" to ""
+                        $cell = str_replace($FDs, $FD, $cell); // convert """" to ""
                         array_push($cells, $cell);
                         // pass DQ
                         $cellIndexB++;

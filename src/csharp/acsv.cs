@@ -766,12 +766,12 @@ namespace acsv
          *
          * @param content                 As name mean
          * @param filedSeparator          filed separator
-         * @param filedMultiLineDelimiter filed multi-line delimiter
+         * @param filedDelimiter filed delimiter
          * @return a table instance
          */
-        public static Table Parse(string content, string filedSeparator, string filedMultiLineDelimiter)
+        public static Table Parse(string content, string filedSeparator, string filedDelimiter)
         {
-            Table table = arrayToRows(textToArray(content, filedSeparator, filedMultiLineDelimiter));
+            Table table = arrayToRows(textToArray(content, filedSeparator, filedDelimiter));
             table.content = content;
             return table;
         }
@@ -788,9 +788,9 @@ namespace acsv
         /**
          * Convert text to array.
          */
-        static private ArrayList textToArray(string text, string FS, string FML)
+        static private ArrayList textToArray(string text, string FS, string FD)
         {
-            string FMLs = FML + FML;
+            string FDs = FD + FD;
             ArrayList arr = new ArrayList();
             int maxLen = text.Length;
             string ptr = text;
@@ -844,14 +844,14 @@ namespace acsv
                             cellIndexB += 1;
                         }
                     }
-                    else if (cc.Equals(FML)) // is double quote
+                    else if (cc.Equals(FD)) // is double quote
                     {
                         // pass DQ
                         cellIndexB++;
                         // 1.find the nearest double quote
                         while (true)
                         {
-                            cellIndexB = ptr.IndexOf(FML, ptrPos + cellIndexB);
+                            cellIndexB = ptr.IndexOf(FD, ptrPos + cellIndexB);
                             if (cellIndexB == -1)
                             {
                                 Console.WriteLine("[ACsv] Invalid double Quote");
@@ -861,7 +861,7 @@ namespace acsv
                             int nextPos = ptrPos + cellIndexB + 1;
                             if (nextPos < maxLen)
                             {
-                                if (ptr[nextPos].ToString().Equals(FML)) // """" is normal double quote
+                                if (ptr[nextPos].ToString().Equals(FD)) // """" is normal double quote
                                 {
                                     cellIndexB += 2; // pass """"
                                     continue;
@@ -871,7 +871,7 @@ namespace acsv
                         }
                         // 2.truncate the content of double quote
                         cell = ptr.Substring(ptrPos + cellIndexA + 1, cellIndexB - cellIndexA - 1);
-                        cell = cell.Replace(FMLs, FML); // convert """" to ""
+                        cell = cell.Replace(FDs, FD); // convert """" to ""
                         cells.Add(cell);
                         // pass DQ
                         cellIndexB++;

@@ -630,11 +630,11 @@ func (this *Table) SelectWhenLessOrGreater(limit int, LWithEqu bool, GWithEqu bo
  * Parse csv conent.
  * @param Content As name mean
  * @param filedSeparator filed separator
- * @param filedMultiLineDelimiter filed multi-line delimiter
+ * @param filedDelimiter filed delimiter
  * @return a table instance
  */
-func ParseWith(content string, filedSeparator string, filedMultiLineDelimiter string) *Table {
-	var table = arrayToRows(textToArray(content, filedSeparator, filedMultiLineDelimiter))
+func ParseWith(content string, filedSeparator string, filedDelimiter string) *Table {
+	var table = arrayToRows(textToArray(content, filedSeparator, filedDelimiter))
 	table.Content = content
 	return table
 }
@@ -645,8 +645,8 @@ func Parse(content string) *Table {
 /**
  * Convert text to array.
  */
-func textToArray(text string, FS string, FML string) *list.List {
-	var FMLs = FML + FML
+func textToArray(text string, FS string, FD string) *list.List {
+	var FDs = FD + FD
 	var arr = list.New()
 	var maxLen = len(text)
 	var ptr = text
@@ -686,13 +686,13 @@ func textToArray(text string, FS string, FML string) *list.List {
 				} else {
 					cellIndexB += 1
 				}
-			} else if cc == FML { // is double quote
+			} else if cc == FD { // is double quote
 				// pass DQ
 				cellIndexB++
 				// 1.find the nearest double quote
 				for {
 					var nextPos = ptrPos + cellIndexB
-					cellIndexB = strings.Index(ptr[nextPos:], FML) + nextPos
+					cellIndexB = strings.Index(ptr[nextPos:], FD) + nextPos
 					if cellIndexB < nextPos {
 						println("[ACsv] Invalid Double Quote")
 						return nil
@@ -700,7 +700,7 @@ func textToArray(text string, FS string, FML string) *list.List {
 					cellIndexB -= ptrPos
 					nextPos = ptrPos + cellIndexB + 1
 					if nextPos < maxLen {
-						if string(ptr[nextPos]) == FML { // """" is normal double quote
+						if string(ptr[nextPos]) == FD { // """" is normal double quote
 							cellIndexB += 2 // pass """"
 							continue
 						}
@@ -709,7 +709,7 @@ func textToArray(text string, FS string, FML string) *list.List {
 				}
 				// 2.truncate the Content of double quote
 				cell = ptr[ptrPos+cellIndexA+1 : ptrPos+cellIndexB]
-				cell = strings.ReplaceAll(cell, FMLs, FML) // convert """" to ""
+				cell = strings.ReplaceAll(cell, FDs, FD) // convert """" to ""
 				cells.PushBack(cell)
 				// pass DQ
 				cellIndexB++

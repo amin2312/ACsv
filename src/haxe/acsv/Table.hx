@@ -668,21 +668,21 @@ class Table
      * Parse csv conent.
      * @param content As name mean
      * @param filedSeparator filed separator
-     * @param filedMultiLineDelimiter filed multi-line delimiter
+     * @param filedDelimiter filed delimiter
      * @return a table instance
      */
-    public static function Parse(content:String, filedSeparator:String = ",", filedMultiLineDelimiter:String = "\""):Table
+    public static function Parse(content:String, filedSeparator:String = ",", filedDelimiter:String = "\""):Table
     {
-        var table:Table = arrayToRows(textToArray(content, filedSeparator, filedMultiLineDelimiter));
+        var table:Table = arrayToRows(textToArray(content, filedSeparator, filedDelimiter));
         table.content = content;
         return table;
     }
     /**
      * Convert text to array.
      */
-    static private function textToArray(text:String, FS:String = ",", FML:String = "\""):Array<Array<Dynamic>>
+    static private function textToArray(text:String, FS:String = ",", FD:String = "\""):Array<Array<Dynamic>>
     {
-        var FMLs = FML + FML;
+        var FDs = FD + FD;
         var arr:Array<Array<Dynamic>> = [];
         var maxLen:Int = text.length;
         var ptr:String = text;
@@ -736,14 +736,14 @@ class Table
                         cellIndexB += 1;
                     }
                 }
-                else if (cc == FML) // is double quote
+                else if (cc == FD) // is double quote
                 {
                     // pass DQ
                     cellIndexB++;
                     // 1.find the nearest double quote
                     while (true)
                     {
-                        cellIndexB = ptr.indexOf(FML, ptrPos + cellIndexB);
+                        cellIndexB = ptr.indexOf(FD, ptrPos + cellIndexB);
                         if (cellIndexB == -1)
                         {
                             trace("[ACsv] Invalid Double Quote");
@@ -753,7 +753,7 @@ class Table
                         var nextPos = ptrPos + cellIndexB + 1;
                         if (nextPos < maxLen)
                         {
-                            if (ptr.charAt(nextPos) == FML) // """" is normal double quote
+                            if (ptr.charAt(nextPos) == FD) // """" is normal double quote
                             {
                                 cellIndexB += 2; // pass """"
                                 continue;
@@ -763,7 +763,7 @@ class Table
                     }
                     // 2.truncate the content of double quote
                     cell = ptr.substring(ptrPos + cellIndexA + 1, ptrPos + cellIndexB);
-                    cell = StringTools.replace(cell, FMLs, FML); // convert """" to ""
+                    cell = StringTools.replace(cell, FDs, FD); // convert """" to ""
                     cells.push(cell);
                     // pass DQ
                     cellIndexB++;
