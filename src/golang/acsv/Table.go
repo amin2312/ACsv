@@ -2,6 +2,7 @@ package acsv
 
 import (
 	"container/list"
+	"encoding/json"
 	"strconv"
 	"strings"
 )
@@ -42,12 +43,21 @@ type Table struct {
 }
 
 /**
+ * Constructor
+ */
+func NewTable() *Table {
+	var t = new(Table)
+	t._indexSet = map[int]map[interface{}][]interface{}{}
+	return t
+}
+
+/**
  * Merge a table.
  * <br/><b>Notice:</b> two tables' structure must be same.
  * @param b source table
  * @return THIS instance
  */
-func (this *Table) merge(b Table) *Table {
+func (this *Table) Merge(b *Table) *Table {
 	this.Body = append(this.Body, b.Body...)
 	var index = strings.Index(b.Content, "\r\n")
 	if index == -1 {
@@ -64,7 +74,7 @@ func (this *Table) merge(b Table) *Table {
  * <br>It will improve performance.
  * @param colIndex column index
  */
-func (this *Table) createIndexAt(colIndex int) {
+func (this *Table) CreateIndexAt(colIndex int) {
 	var m = map[interface{}][]interface{}{}
 	for i := range this.Body {
 		var row = this.Body[i]
@@ -79,7 +89,7 @@ func (this *Table) createIndexAt(colIndex int) {
  * @param name As name mean
  * @return column index
  */
-func (this *Table) getColIndexBy(name string) int {
+func (this *Table) GetColIndexBy(name string) int {
 	for i := range this.Body {
 		var field = this.Head[i]
 		if field.Name == name {
@@ -95,8 +105,8 @@ func (this *Table) getColIndexBy(name string) int {
  * @param colIndex specified column index
  * @return selected row object
  */
-func (this *Table) id(value interface{}, colIndex int) interface{} {
-	return this.selectWhenE(1, value, colIndex, nil).toFirstObj()
+func (this *Table) Id(value interface{}, colIndex int) interface{} {
+	return this.SelectWhenE(1, value, colIndex, nil).ToFirstObj()
 }
 
 /**
@@ -105,7 +115,7 @@ func (this *Table) id(value interface{}, colIndex int) interface{} {
  * @param sortType 0: asc, 1: desc
  * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
  */
-func (this *Table) sortBy(colIndex int, sortType int) *Table {
+func (this *Table) SortBy(colIndex int, sortType int) *Table {
 	var l = len(this._selector)
 	for i := 0; i < l; i++ {
 		for j := 0; j < l-1; j++ {
@@ -144,14 +154,14 @@ func (this *Table) sortBy(colIndex int, sortType int) *Table {
  * <br><b>Notice:</b> It be assigned after call "select..." function
  * @return current selector
  */
-func (this *Table) getCurrentSelector() [][]interface{} {
+func (this *Table) GetCurrentSelector() [][]interface{} {
 	return this._selector
 }
 
 /**
  * Format data to row.
  */
-func (this *Table) fmtRow(row []interface{}) []interface{} {
+func (this *Table) FmtRow(row []interface{}) []interface{} {
 	var obj = make([]interface{}, len(this.Head))
 	for i := range this.Head {
 		var filed = this.Head[i]
@@ -160,7 +170,7 @@ func (this *Table) fmtRow(row []interface{}) []interface{} {
 		var val1 interface{} = nil
 		if len(ft) > 0 && arrayIndexOf(TABLE_JSON_TYPES, ft) != -1 {
 			if val0 != nil {
-				val1 = val0 //haxe.Json.parse(val0)
+				val1 = toJsonIns(val0.(string))
 			}
 		} else {
 			val1 = val0
@@ -173,7 +183,7 @@ func (this *Table) fmtRow(row []interface{}) []interface{} {
 /**
  * Format data to obj.
  */
-func (this *Table) fmtObj(row []interface{}) map[string]interface{} {
+func (this *Table) FmtObj(row []interface{}) map[string]interface{} {
 	var obj = map[string]interface{}{}
 	for i := range this.Head {
 		var field = this.Head[i]
@@ -183,7 +193,7 @@ func (this *Table) fmtObj(row []interface{}) map[string]interface{} {
 		var val1 interface{} = nil
 		if len(ft) > 0 && arrayIndexOf(TABLE_JSON_TYPES, ft) != -1 {
 			if val0 != nil {
-				val1 = val0 //haxe.Json.parse(val0)
+				val1 = toJsonIns(val0.(string))
 			}
 		} else {
 			val1 = val0
@@ -197,10 +207,10 @@ func (this *Table) fmtObj(row []interface{}) map[string]interface{} {
  * Fetch first selected result to a row and return it.
  * @return first selected row data or nil
  */
-func (this *Table) toFirstRow() []interface{} {
+func (this *Table) ToFirstRow() []interface{} {
 	var rzl []interface{} = nil
 	if this._selector != nil && len(this._selector) > 0 {
-		rzl = this.fmtRow(this._selector[0])
+		rzl = this.FmtRow(this._selector[0])
 	}
 	this._selector = nil
 	return rzl
@@ -210,12 +220,12 @@ func (this *Table) toFirstRow() []interface{} {
  * Fetch last selected result to a row and return it.
  * @return last selected row data or nil
  */
-func (this *Table) toLastRow() []interface{} {
+func (this *Table) ToLastRow() []interface{} {
 	var rzl []interface{} = nil
 	if this._selector != nil {
 		var l = len(this._selector)
 		if l > 0 {
-			rzl = this.fmtRow(this._selector[l-1])
+			rzl = this.FmtRow(this._selector[l-1])
 		}
 	}
 	this._selector = nil
@@ -226,7 +236,7 @@ func (this *Table) toLastRow() []interface{} {
  * Fetch all selected results to the rows and return it.
  * @return a array of row data (even if the result is empty)
  */
-func (this *Table) toRows() [][]interface{} {
+func (this *Table) ToRows() [][]interface{} {
 	if this._selector == nil {
 		return nil
 	}
@@ -234,7 +244,7 @@ func (this *Table) toRows() [][]interface{} {
 	var dst = make([][]interface{}, l)
 	for i := 0; i < len(this._selector); i++ {
 		var row = this._selector[i]
-		dst[i] = this.fmtRow(row)
+		dst[i] = this.FmtRow(row)
 	}
 	this._selector = nil
 	return dst
@@ -244,10 +254,10 @@ func (this *Table) toRows() [][]interface{} {
  * Fetch first selected result to a object and return it.
  * @return first selected row object or nil
  */
-func (this *Table) toFirstObj() map[string]interface{} {
+func (this *Table) ToFirstObj() map[string]interface{} {
 	var rzl map[string]interface{} = nil
 	if this._selector != nil && len(this._selector) > 0 {
-		rzl = this.fmtObj(this._selector[0])
+		rzl = this.FmtObj(this._selector[0])
 	}
 	this._selector = nil
 	return rzl
@@ -257,12 +267,12 @@ func (this *Table) toFirstObj() map[string]interface{} {
  * Fetch last selected result to a object and return it.
  * @return last selected row object or nil
  */
-func (this *Table) toLastObj() interface{} {
+func (this *Table) ToLastObj() map[string]interface{} {
 	var rzl map[string]interface{} = nil
 	if this._selector != nil {
 		var l = len(this._selector)
 		if l > 0 {
-			rzl = this.fmtObj(this._selector[l-1])
+			rzl = this.FmtObj(this._selector[l-1])
 		}
 	}
 	this._selector = nil
@@ -273,14 +283,14 @@ func (this *Table) toLastObj() interface{} {
  * Fetch all selected results to the objects and return it.
  * @return a array of row object (even if the result is empty)
  */
-func (this *Table) toObjs() []map[string]interface{} {
+func (this *Table) ToObjs() []map[string]interface{} {
 	if this._selector == nil {
 		return nil
 	}
 	var dst []map[string]interface{}
 	for i := 0; i < len(this._selector); i++ {
 		var row = this._selector[i]
-		dst = append(dst, this.fmtObj(row))
+		dst = append(dst, this.FmtObj(row))
 	}
 	this._selector = nil
 	return dst
@@ -290,11 +300,11 @@ func (this *Table) toObjs() []map[string]interface{} {
  * Fetch all selected results to a new table.
  * @return a new table instance
  */
-func (this *Table) toTable() *Table {
+func (this *Table) ToTable() *Table {
 	if this._selector == nil {
 		return nil
 	}
-	var t = new(Table)
+	var t = NewTable()
 	copy(t.Head, this.Head)
 	t.Body = this._selector
 	this._selector = nil
@@ -305,7 +315,7 @@ func (this *Table) toTable() *Table {
  * Select all rows.
  * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
  */
-func (this *Table) selectAll() *Table {
+func (this *Table) SelectAll() *Table {
 	this._selector = this.Body
 	return this
 }
@@ -314,8 +324,8 @@ func (this *Table) selectAll() *Table {
  * Select the first row.
  * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
  */
-func (this *Table) selectFirstRow() *Table {
-	this._selector = [][]interface{}{{this.Body[0]}}
+func (this *Table) SelectFirstRow() *Table {
+	this._selector = [][]interface{}{this.Body[0]}
 	return this
 }
 
@@ -323,8 +333,8 @@ func (this *Table) selectFirstRow() *Table {
  * Select the last row.
  * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
  */
-func (this *Table) selectLastRow() *Table {
-	this._selector = [][]interface{}{{this.Body[len(this.Body)-1]}}
+func (this *Table) SelectLastRow() *Table {
+	this._selector = [][]interface{}{this.Body[len(this.Body)-1]}
 	return this
 }
 
@@ -333,7 +343,7 @@ func (this *Table) selectLastRow() *Table {
  * @param rowIndices specified row's indices
  * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
  */
-func (this *Table) selectAt(rowIndices []int) *Table {
+func (this *Table) SelectAt(rowIndices []int) *Table {
 	var dst = list.New()
 	var maxLen = len(this.Body)
 	for i := range rowIndices {
@@ -353,11 +363,11 @@ func (this *Table) selectAt(rowIndices []int) *Table {
  * @param colIndex specified column index
  * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
  */
-func (this *Table) selectWhenIn(limit int, values []interface{}, colIndex int) *Table {
+func (this *Table) SelectWhenIn(limit int, values []interface{}, colIndex int) *Table {
 	var dst = list.New()
 	for i := range values {
 		var value = values[i]
-		this.selectWhenE(limit, value, colIndex, dst)
+		this.SelectWhenE(limit, value, colIndex, dst)
 		this._selector = nil
 	}
 	this._selector = arrayListToObjectArray(dst)
@@ -372,7 +382,7 @@ func (this *Table) selectWhenIn(limit int, values []interface{}, colIndex int) *
  * @param extraSelector extra selector, use it to save selected result
  * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
  */
-func (this *Table) selectWhenE(limit int, value interface{}, colIndex int, extraSelector *list.List) *Table {
+func (this *Table) SelectWhenE(limit int, value interface{}, colIndex int, extraSelector *list.List) *Table {
 	var dst = extraSelector
 	if dst == nil {
 		dst = list.New()
@@ -417,7 +427,7 @@ func (this *Table) selectWhenE(limit int, value interface{}, colIndex int, extra
  * @param colIndex1 first specified column index
  * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
  */
-func (this *Table) selectWhenE2(limit int, value1 interface{}, value2 interface{}, colIndex2 int, colIndex1 int) *Table {
+func (this *Table) SelectWhenE2(limit int, value1 interface{}, value2 interface{}, colIndex2 int, colIndex1 int) *Table {
 	var src = this._selector
 	if src == nil {
 		src = this.Body
@@ -448,7 +458,7 @@ func (this *Table) selectWhenE2(limit int, value1 interface{}, value2 interface{
  * @param colIndex1 first specified column index
  * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
  */
-func (this *Table) selectWhenE3(limit int, value1 interface{}, value2 interface{}, value3 interface{}, colIndex3 int, colIndex2 int, colIndex1 int) *Table {
+func (this *Table) SelectWhenE3(limit int, value1 interface{}, value2 interface{}, value3 interface{}, colIndex3 int, colIndex2 int, colIndex1 int) *Table {
 	var src = this._selector
 	if src == nil {
 		src = this.Body
@@ -476,7 +486,7 @@ func (this *Table) selectWhenE3(limit int, value1 interface{}, value2 interface{
  * @param colIndex specified column index
  * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
  */
-func (this *Table) selectWhenG(limit int, withEqu bool, value float64, colIndex int) *Table {
+func (this *Table) SelectWhenG(limit int, withEqu bool, value float64, colIndex int) *Table {
 	var src = this._selector
 	if src == nil {
 		src = this.Body
@@ -511,7 +521,7 @@ func (this *Table) selectWhenG(limit int, withEqu bool, value float64, colIndex 
  * @param colIndex specified column index
  * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
  */
-func (this *Table) selectWhenL(limit int, withEqu bool, value float64, colIndex int) *Table {
+func (this *Table) SelectWhenL(limit int, withEqu bool, value float64, colIndex int) *Table {
 	var src = this._selector
 	if src == nil {
 		src = this.Body
@@ -548,7 +558,7 @@ func (this *Table) selectWhenL(limit int, withEqu bool, value float64, colIndex 
  * @param colIndex specified column index
  * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
  */
-func (this *Table) selectWhenGreaterAndLess(limit int, GWithEqu bool, LWithEqu bool, GValue float64, LValue float64, colIndex int) *Table {
+func (this *Table) SelectWhenGreaterAndLess(limit int, GWithEqu bool, LWithEqu bool, GValue float64, LValue float64, colIndex int) *Table {
 	var src = this._selector
 	if src == nil {
 		src = this.Body
@@ -587,7 +597,7 @@ func (this *Table) selectWhenGreaterAndLess(limit int, GWithEqu bool, LWithEqu b
  * @param colIndex specified column index
  * @return THIS instance (for Method Chaining), can call "to..." or "select..." function in next step.
  */
-func (this *Table) selectWhenLessOrGreater(limit int, LWithEqu bool, GWithEqu bool, LValue float64, GValue float64, colIndex int) *Table {
+func (this *Table) SelectWhenLessOrGreater(limit int, LWithEqu bool, GWithEqu bool, LValue float64, GValue float64, colIndex int) *Table {
 	var src = this._selector
 	if src == nil {
 		src = this.Body
@@ -681,13 +691,14 @@ func textToArray(text string, FS string, FML string) *list.List {
 				cellIndexB++
 				// 1.find the nearest double quote
 				for {
-					cellIndexB = strings.Index(ptr[ptrPos+cellIndexB:], FML)
-					if cellIndexB == -1 {
+					var nextPos = ptrPos + cellIndexB
+					cellIndexB = strings.Index(ptr[nextPos:], FML) + nextPos
+					if cellIndexB < nextPos {
 						println("[ACsv] Invalid Double Quote")
 						return nil
 					}
 					cellIndexB -= ptrPos
-					var nextPos = ptrPos + cellIndexB + 1
+					nextPos = ptrPos + cellIndexB + 1
 					if nextPos < maxLen {
 						if string(ptr[nextPos]) == FML { // """" is normal double quote
 							cellIndexB += 2 // pass """"
@@ -703,18 +714,19 @@ func textToArray(text string, FS string, FML string) *list.List {
 				// pass DQ
 				cellIndexB++
 			} else { // is normal
+				var nextPos = ptrPos + cellIndexB
 				// 1.find the nearest comma and LF
-				var indexA = strings.Index(ptr[ptrPos+cellIndexB:], FS)
-				if indexA == -1 {
+				var indexA = strings.Index(ptr[nextPos:], FS) + nextPos
+				if indexA < nextPos {
 					indexA = curLen // is last cell
 				} else {
 					indexA -= ptrPos
 				}
-				var indexB = strings.Index(ptr[ptrPos+cellIndexB:], "\r\n")
-				if indexB == -1 {
-					indexB = strings.Index(ptr[ptrPos+cellIndexB:], "\n")
+				var indexB = strings.Index(ptr[nextPos:], "\r\n") + nextPos
+				if indexB < nextPos {
+					indexB = strings.Index(ptr[nextPos:], "\n") + nextPos
 				}
-				if indexB == -1 {
+				if indexB < nextPos {
 					indexB = curLen
 				} else {
 					indexB -= ptrPos
@@ -762,7 +774,7 @@ func arrayToRows(arr *list.List) *Table {
 	var newBody = make([][]interface{}, rawBody.Len())
 	for i, ptr := 0, rawBody.Front(); ptr != nil; i, ptr = i+1, ptr.Next() {
 		var row = ptr.Value.(*list.List)
-		var newRow = make([]interface{}, row.Len())
+		var newRow = make([]interface{}, rawHead.Len())
 		for j, pt2 := 0, row.Front(); pt2 != nil; j, pt2 = j+1, pt2.Next() {
 			var cell = pt2.Value.(string)
 			var newVal interface{} = cell
@@ -809,7 +821,7 @@ func arrayToRows(arr *list.List) *Table {
 		newBody[i] = newRow // update row
 	}
 	// create table
-	var table = new(Table)
+	var table = NewTable()
 	table.Head = newHead
 	table.Body = newBody
 	return table
@@ -830,4 +842,13 @@ func arrayIndexOf(arr []string, element string) int {
 		}
 	}
 	return -1
+}
+
+func toJsonIns(jsonText string) interface{} {
+	var ins interface{} = nil
+	err := json.Unmarshal([]byte(jsonText), &ins)
+	if err != nil {
+		println(err)
+	}
+	return ins
 }

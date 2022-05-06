@@ -849,8 +849,9 @@ public class Table {
                 }
                 else // is normal
                 {
+                    int nextPos = ptrPos + cellIndexB;
                     // 1.find the nearest comma and LF
-                    int indexA = ptr.indexOf(FS, ptrPos + cellIndexB);
+                    int indexA = ptr.indexOf(FS, nextPos);
                     if (indexA == -1)
                     {
                         indexA = curLen; // is last cell
@@ -859,10 +860,10 @@ public class Table {
                     {
                         indexA -= ptrPos;
                     }
-                    int indexB = ptr.indexOf("\r\n", ptrPos + cellIndexB);
+                    int indexB = ptr.indexOf("\r\n", nextPos);
                     if (indexB == -1)
                     {
-                        indexB = ptr.indexOf("\n", ptrPos + cellIndexB);
+                        indexB = ptr.indexOf("\n", nextPos);
                     }
                     if (indexB == -1)
                     {
@@ -916,7 +917,7 @@ public class Table {
         for (int i = 0, l = rawBody.size(); i < l; i++)
         {
             ArrayList<String> row = rawBody.get(i);
-            Object[] newRow = new Object[row.size()];
+            Object[] newRow = new Object[rawHead.size()];
             for (int j = 0, lenJ = row.size(); j < lenJ; j++)
             {
                 String cell = row.get(j);
@@ -1011,18 +1012,18 @@ public class Table {
     /**
      * Convert to json variable instance.
      */
-    private Object toJsonIns(String json)
+    private Object toJsonIns(String jsonText)
     {
         Object ins = null;
         try {
-            if (json.charAt(0) == '{')
+            if (jsonText.charAt(0) == '{')
             {
-                JSONObject obj = new JSONObject(json);
+                JSONObject obj = new JSONObject(jsonText);
                 ins = obj;
             }
             else
             {
-                JSONArray arr = new JSONArray(json);
+                JSONArray arr = new JSONArray(jsonText);
                 ins = arr;
             }
         } catch (JSONException e) {
