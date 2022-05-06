@@ -15,7 +15,7 @@ ACsv Library
 **ACsv** is a easy, multi-platform and powerful **csv parsing library**.  
 
 The features:
-* **Multi-platform** - provide **haxe**, **js**, **ts**, **php**, **java**, **python**, **c#** , **golang**
+* **Multi-platform** - provide **haxe**, **js**, **ts**, **php**, **java**, **python**, **c#** , **golang** version
 * **Standard** - support standard csv format (RFC 4180)
 * **Easy to use** - provide the example, demo and documentation
 * **Fast speed** - optimized code for high performance, it can works easy in older device
