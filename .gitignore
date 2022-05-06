@@ -4,4 +4,4 @@ package-lock.json
 *.pyc
 src/csharp/*.exe
 src/csharp/*.pdb
-src/golang/*.pdb
+src/golang/*.exe
