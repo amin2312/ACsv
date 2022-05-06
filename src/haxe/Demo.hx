@@ -47,9 +47,21 @@ Besok juga hari yang baik"
      */
     public static function main()
     {
+        #if js
+        var xhr = new js.html.XMLHttpRequest();
+        xhr.open("GET","../../release/csvs/standard_format_text.csv",false);
+        xhr.send();
+        var standard_format_text = xhr.responseText;
+        _tab1 = acsv.Table.Parse(standard_format_text);
+        var xhr = new js.html.XMLHttpRequest();
+        xhr.open("GET","../../release/csvs/enhanced_format_text.csv",false);
+        xhr.send();
+        var enhanced_format_text = xhr.responseText;
+        _tab2 = acsv.Table.Parse(enhanced_format_text);
+        #else
 		_tab1 = Table.Parse(standard_format_text);
 		_tab2 = Table.Parse(enhanced_format_text);
-
+        #end
         showTable("standard csv format", _tab1);
         test_standard_csv_format();
         showTable("[E] enhanced csv format", _tab2);

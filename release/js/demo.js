@@ -3,8 +3,16 @@
 $hx_exports["acsv"] = $hx_exports["acsv"] || {};
 var Demo = function() { };
 Demo.main = function() {
-	Demo._tab1 = acsv_Table.Parse(Demo.standard_format_text);
-	Demo._tab2 = acsv_Table.Parse(Demo.enhanced_format_text);
+	var xhr = new XMLHttpRequest();
+	xhr.open("GET","../../release/csvs/standard_format_text.csv",false);
+	xhr.send();
+	var standard_format_text = xhr.responseText;
+	Demo._tab1 = acsv_Table.Parse(standard_format_text);
+	var xhr1 = new XMLHttpRequest();
+	xhr1.open("GET","../../release/csvs/enhanced_format_text.csv",false);
+	xhr1.send();
+	var enhanced_format_text = xhr1.responseText;
+	Demo._tab2 = acsv_Table.Parse(enhanced_format_text);
 	Demo.showTable("standard csv format",Demo._tab1);
 	Demo.test_standard_csv_format();
 	Demo.showTable("[E] enhanced csv format",Demo._tab2);
