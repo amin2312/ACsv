@@ -849,9 +849,8 @@ public class Table {
                 }
                 else // is normal
                 {
-                    int nextPos = ptrPos + cellIndexB;
                     // 1.find the nearest comma and LF
-                    int indexA = ptr.indexOf(FS, nextPos);
+                    int indexA = ptr.indexOf(FS, ptrPos + cellIndexB);
                     if (indexA == -1)
                     {
                         indexA = curLen; // is last cell
@@ -860,10 +859,10 @@ public class Table {
                     {
                         indexA -= ptrPos;
                     }
-                    int indexB = ptr.indexOf("\r\n", nextPos);
+                    int indexB = ptr.indexOf("\r\n", ptrPos + cellIndexB);
                     if (indexB == -1)
                     {
-                        indexB = ptr.indexOf("\n", nextPos);
+                        indexB = ptr.indexOf("\n", ptrPos + cellIndexB);
                     }
                     if (indexB == -1)
                     {

@@ -930,7 +930,7 @@ namespace acsv
             arr.RemoveAt(0);
             ArrayList rawBody = arr;
             // parse head
-            ArrayList newHead = new ArrayList();
+            Field[] newHead = new Field[rawHead.Count];
             for (int i = 0, l = rawHead.Count; i < l; i++)
             {
                 string fullName = (string) rawHead[i];
@@ -939,14 +939,14 @@ namespace acsv
                 filed.fullName = fullName;
                 filed.name = parts[0];
                 filed.type = parts.Length == 2 ? parts[1] : "";
-                newHead.Add(filed);
+                newHead[i] = filed;
             }
             // parse body
-            ArrayList newBody = new ArrayList();
+            Object[][] newBody = new Object[rawBody.Count][];
             for (int i = 0, l = rawBody.Count; i < l; i++)
             {
                 ArrayList row = (ArrayList)rawBody[i];
-                ArrayList item = new ArrayList();
+                Object[] newRow = new Object[rawHead.Count];
                 for (int j = 0, lenJ = row.Count; j < lenJ; j++)
                 {
                     string cell = (string)row[j];
@@ -1014,24 +1014,14 @@ namespace acsv
                             newVal = "[\"" + String.Join("\",\"", cell.Split(',')) + "\"]";
                         }
                     }
-                    item.Add(newVal);
+                    newRow[j] = newVal;
                 }
-                newBody.Add(item); // update row
+                newBody[i] = newRow; // update row
             }
             // create table
             Table table = new Table();
-            table.head = (Field[]) newHead.ToArray(typeof(Field));
-            int numRows = newBody.Count;
-            int numCols = newHead.Count;
-            table.body = new object[numRows][];
-            for (int i = 0; i < numRows; i++)
-            {
-                table.body[i] = new object[numCols];
-                for (int j = 0; j < numCols; j++)
-                {
-                    table.body[i][j] = ((ArrayList)newBody[i])[j];
-                }
-            }
+            table.head = newHead;
+            table.body = newBody;
             return table;
         }
         /**

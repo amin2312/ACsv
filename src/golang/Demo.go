@@ -17,10 +17,10 @@ var _tab2 *acsv.Table
  * @return
  */
 func main() {
-	var standard_format_text = readToString("release/csvs/standard_format_text.csv")
+	var standard_format_text = readToString("../../release/csvs/standard_format_text.csv")
 	_tab1 = acsv.Parse(standard_format_text)
 	test_standard_csv_format()
-	var enhanced_format_text = readToString("release/csvs/enhanced_format_text.csv")
+	var enhanced_format_text = readToString("../../release/csvs/enhanced_format_text.csv")
 	_tab2 = acsv.Parse(enhanced_format_text)
 	test_enhanced_csv_format()
 }

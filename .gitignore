@@ -3,5 +3,5 @@ package-lock.json
 .vscode
 *.pyc
 src/csharp/*.exe
-src/csharp/*.dll
 src/csharp/*.pdb
+src/golang/*.pdb
