@@ -18,7 +18,6 @@ The features:
 * **Multi-platform** - provide **haxe**, **js**, **ts**, **php**, **java**, **python**, **c#** , **golang** version (the lua version via Haxe)
 * **Standard** - support standard csv format (RFC 4180)
 * **Easy to use** - provide the example, demo and documentation
-* **Tiny size** - js version is only 7k
 * **Fast speed** - optimized code for high performance, it can works easy in older device
 * **Powerful** - support **enhanced** csv format,  
 &emsp;&emsp;&emsp;&emsp;&emsp;allow field type to be declared after field name (like width:**int**, name:**string**),  
