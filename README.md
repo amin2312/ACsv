@@ -20,7 +20,7 @@ The features:
 * **Easy to use** - provide the example, demo and documentation
 * **Fast speed** - optimized code for high performance, it can works easy in older device
 * **Powerful** - support **enhanced** csv format,  
-&emsp;&emsp;&emsp;&emsp;&emsp;allow field type to be declared after field name (like width:**int**, name:**string**),  
+&emsp;&emsp;&emsp;&emsp;&emsp;allow field type to be declared after field name (like [![](https://img.shields.io/badge/width-:int-blue)](), [![](https://img.shields.io/badge/name-:string-blue)]()),  
 &emsp;&emsp;&emsp;&emsp;&emsp;supported field types: **bool, int, number, string, json, strings**  
 &emsp;&emsp;&emsp;&emsp;&emsp;see details in "release/csvs/enhanced_format_text.csv"   
   
