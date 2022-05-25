@@ -12,16 +12,16 @@ ACsv Library
 [![](https://img.shields.io/badge/csv-standard-green)](https://github.com/amin2312/ACsv/tree/main/src/python) 
 [![](https://img.shields.io/badge/csv-enhanced-red)](https://github.com/amin2312/ACsv/tree/main/src/python)  
   
-**ACsv** est une **csv parsing livraria** analyse simple, multi-plateforme et puissante.  
+**ACsv** là một **csv parsing library** dễ dàng, đa nền tảng và mạnh mẽ.  
 
-Les caractéristiques:
-* **multi-plateforme** - fournir **haxe**, **js**, **ts**, **php**, **java**, **python**, **c#** , **golang** version
-* **standard** - prend en charge le csv standard format (RFC 4180)
-* **facile à utiliser** - fournissez exemple, démonstration et documentation
-* **vitesse rapide** - code optimisé pour des performances élevées, il peut fonctionner facilement dans un appareil plus ancien
-* **puissant** - prendre en charge le **amélioré** csv format, voir les détails sur [page en anglais](../README.md)
+Các tính năng:
+* **đa nền tảng** - cung cấp **haxe**, **js**, **ts**, **php**, **java**, **python**, **c#** , **golang** phiên bản
+* **tiêu chuẩn** - hỗ trợ csv định dạng tiêu chuẩn (RFC 4180)
+* **dễ sử dụng** - cung cấp ví dụ, bản trình diễn và tài liệu
+* **tốc độ nhanh** - mã được tối ưu hóa cho hiệu suất cao, nó có thể hoạt động dễ dàng trong thiết bị cũ hơn
+* **mạnh mẽ** - hỗ trợ **nâng cao** csv định dạng,  xem chi tiết trong [trang Engilsh](../README.md)  
   
-exemple
+ví dụ
 ----------------
 ```javascript
 // enhanced_csv_content
@@ -50,16 +50,16 @@ table.selectWhenE(0, 20, 2).selectWhenL(0, false, 60.2).toObjs();
 // ]
 ```
 
-démonstration 
+bản trình diễn 
 ----------------
 * [Javascript demo - via Haxe code to compile](https://amin2312.github.io/ACsv/release/js/demo.html)
 * [Javascript demo - via Typescript code to compile](https://amin2312.github.io/ACsv/release/ts/demo.html)
 
-documentation
+tài liệu
 ----------------
 [Online docs - via dox](https://amin2312.github.io/ACsv/release/docs/hx/index.html)
 
-autres
+khác
 ----------------
-***⭐ Si vous aimez ce projet, merci de mettre une étoile***  
+***⭐ Nếu bạn thích dự án này, hãy cho một ngôi sao***  
 ***⭐ [english version](../README.md)***  

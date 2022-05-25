@@ -12,16 +12,16 @@ ACsv Library
 [![](https://img.shields.io/badge/csv-standard-green)](https://github.com/amin2312/ACsv/tree/main/src/python) 
 [![](https://img.shields.io/badge/csv-enhanced-red)](https://github.com/amin2312/ACsv/tree/main/src/python)  
   
-**ACsv** est une **csv parsing livraria** analyse simple, multi-plateforme et puissante.  
+**ACsv** adalah **cse parsing perpustakaan** yang mudah, multi-platform dan kuat.  
 
-Les caractéristiques:
-* **multi-plateforme** - fournir **haxe**, **js**, **ts**, **php**, **java**, **python**, **c#** , **golang** version
-* **standard** - prend en charge le csv standard format (RFC 4180)
-* **facile à utiliser** - fournissez exemple, démonstration et documentation
-* **vitesse rapide** - code optimisé pour des performances élevées, il peut fonctionner facilement dans un appareil plus ancien
-* **puissant** - prendre en charge le **amélioré** csv format, voir les détails sur [page en anglais](../README.md)
+Fitur:
+* **multi-platform** - sediakan **haxe**, **js**, **ts**, **php**, **java**, **python**, **c#** , **golang** versi
+* **standar** - ini mendukung csv standar format (RFC 4180)
+* **mudah digunakan** - berikan contoh, demo, dan dokumentasi
+* **kecepatan cepat** - kode yang dioptimalkan untuk kinerja tinggi, dapat bekerja dengan mudah di perangkat yang lebih lama
+* **kuat** - mendukung **enhanced** csv format, lihat detailnya di [halaman Inggris](../README.md)
   
-exemple
+contoh
 ----------------
 ```javascript
 // enhanced_csv_content
@@ -50,16 +50,16 @@ table.selectWhenE(0, 20, 2).selectWhenL(0, false, 60.2).toObjs();
 // ]
 ```
 
-démonstration 
+demo 
 ----------------
 * [Javascript demo - via Haxe code to compile](https://amin2312.github.io/ACsv/release/js/demo.html)
 * [Javascript demo - via Typescript code to compile](https://amin2312.github.io/ACsv/release/ts/demo.html)
 
-documentation
+dokumentasi
 ----------------
 [Online docs - via dox](https://amin2312.github.io/ACsv/release/docs/hx/index.html)
 
-autres
+yang lain
 ----------------
-***⭐ Si vous aimez ce projet, merci de mettre une étoile***  
+***⭐ Jika Anda menyukai proyek ini, tolong beri bintang***  
 ***⭐ [english version](../README.md)***  

@@ -20,9 +20,7 @@ Las características:
 * **fácil de usar** - proporcione el ejemplo, la demostración y la documentación
 * **rápida velocidad** - código optimizado para alto rendimiento, puede funcionar fácilmente en dispositivos más antiguos
 * **poderoso** - apoyar **mejorada** csv formato,  
-&emsp;&emsp;&emsp;&emsp;&emsp;permitir que el tipo de campo se declare después del nombre del campo (como [![](https://img.shields.io/badge/name-:string-blue)]()),  
-&emsp;&emsp;&emsp;&emsp;&emsp;tipos de campos admitidos: **bool, int, number, string, json, strings**  
-&emsp;&emsp;&emsp;&emsp;&emsp;ver detalles en "release/csvs/enhanced_format_text.csv"   
+&emsp;&emsp;&emsp;&emsp;&emsp;ver detalles en [pagina en ingles](../README.md)
   
 ejemplo
 ----------------

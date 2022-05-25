@@ -62,14 +62,17 @@ Docs
 ----------------
 [Online docs - via dox](https://amin2312.github.io/ACsv/release/docs/hx/index.html)
 
+Languages
+----------------
++ **[Español](readme/espa%C3%B1ol.md)**  
++ **[Portugués](readme/portugués.md)**  
++ **[Français](readme/fran%C3%A7ais.md)**  
++ **[Русский](readme/русский.md)**  
++ **[中文](readme/中文.md)**  
++ **[日本語](readme/日本語.md)**  
++ **[Tiếng Việt](readme/tiếng_việt.md)**  
++ **[Indonesia](readme/indonesia.md)**  
+
 Others
 ----------------
 ***⭐ If you like this project, please give a star ⭐***
-+ **[español](readme/espa%C3%B1ol.md)**  
-+ **[portugués](readme/portugués.md)**  
-+ **[français](readme/fran%C3%A7ais.md)**  
-+ **русский**  
-+ **[中文](readme/中文.md)**  
-+ **日本語**  
-+ **tiếng Việt**  
-+ **Indonesia**  
