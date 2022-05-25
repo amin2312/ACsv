@@ -12,19 +12,19 @@ ACsv Library
 [![](https://img.shields.io/badge/csv-standard-green)](https://github.com/amin2312/ACsv/tree/main/src/python) 
 [![](https://img.shields.io/badge/csv-enhanced-red)](https://github.com/amin2312/ACsv/tree/main/src/python)  
   
-**ACsv** is a easy, multi-platform and powerful **csv parsing library**.  
+**ACsv** es una  **csv parsing librería** fácil, multi-plataforma y poderosa.  
 
-The features:
-* **Multi-platform** - provide **haxe**, **js**, **ts**, **php**, **java**, **python**, **c#** , **golang** version
-* **Standard** - support standard csv format (RFC 4180)
-* **Easy to use** - provide the example, demo and documentation
-* **Fast speed** - optimized code for high performance, it can works easy in older device
-* **Powerful** - support **enhanced** csv format,  
-&emsp;&emsp;&emsp;&emsp;&emsp;allow field type to be declared after field name (like [![](https://img.shields.io/badge/name-:string-blue)]()),  
-&emsp;&emsp;&emsp;&emsp;&emsp;supported field types: **bool, int, number, string, json, strings**  
-&emsp;&emsp;&emsp;&emsp;&emsp;see details in "release/csvs/enhanced_format_text.csv"   
+Las características:
+* **multi-plataforma** - proveer **haxe**, **js**, **ts**, **php**, **java**, **python**, **c#** , **golang** versión
+* **estándar** - compatible con csv estándar formato (RFC 4180)
+* **fácil de usar** - proporcione el ejemplo, la demostración y la documentación
+* **rápida velocidad** - código optimizado para alto rendimiento, puede funcionar fácilmente en dispositivos más antiguos
+* **poderoso** - apoyar **mejorada** csv formato,  
+&emsp;&emsp;&emsp;&emsp;&emsp;permitir que el tipo de campo se declare después del nombre del campo (como [![](https://img.shields.io/badge/name-:string-blue)]()),  
+&emsp;&emsp;&emsp;&emsp;&emsp;tipos de campos admitidos: **bool, int, number, string, json, strings**  
+&emsp;&emsp;&emsp;&emsp;&emsp;ver detalles en "release/csvs/enhanced_format_text.csv"   
   
-Example
+ejemplo
 ----------------
 ```javascript
 // enhanced_csv_content
@@ -53,23 +53,16 @@ table.selectWhenE(0, 20, 2).selectWhenL(0, false, 60.2).toObjs();
 // ]
 ```
 
-Demos 
+demostración 
 ----------------
 * [Javascript demo - via Haxe code to compile](https://amin2312.github.io/ACsv/release/js/demo.html)
 * [Javascript demo - via Typescript code to compile](https://amin2312.github.io/ACsv/release/ts/demo.html)
 
-Docs
+documentación
 ----------------
 [Online docs - via dox](https://amin2312.github.io/ACsv/release/docs/hx/index.html)
 
-Others
+otros
 ----------------
-***⭐ If you like this project, please give a star ⭐***
-+ **[español](readme/espa%C3%B1ol.md)**  
-+ **[portugués](readme/portugués.md)**  
-+ **[français](readme/fran%C3%A7ais.md)**  
-+ **русский**  
-+ **[中文](readme/中文.md)**  
-+ **日本語**  
-+ **tiếng Việt**  
-+ **Indonesia**  
+***⭐ Si te gusta este proyecto, por favor dale una estrella***  
+***⭐ [english version](../README.md)***  
