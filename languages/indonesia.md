@@ -12,16 +12,16 @@ ACsv Library
 [![](https://img.shields.io/badge/csv-standard-green)](https://github.com/amin2312/ACsv/tree/main/src/python) 
 [![](https://img.shields.io/badge/csv-enhanced-red)](https://github.com/amin2312/ACsv/tree/main/src/python)  
   
-**ACsv** là một **csv parsing library** dễ dàng, đa nền tảng và mạnh mẽ.  
+**ACsv** adalah **"cse parsing perpustakaan"** yang mudah, multi-platform dan kuat.  
 
-Các tính năng:
-* **đa nền tảng** - cung cấp **haxe**, **js**, **ts**, **php**, **java**, **python**, **c#** , **golang** phiên bản
-* **tiêu chuẩn** - hỗ trợ csv định dạng tiêu chuẩn (RFC 4180)
-* **dễ sử dụng** - cung cấp ví dụ, bản trình diễn và tài liệu
-* **tốc độ nhanh** - mã được tối ưu hóa cho hiệu suất cao, nó có thể hoạt động dễ dàng trong thiết bị cũ hơn
-* **mạnh mẽ** - hỗ trợ **nâng cao** csv định dạng,  xem chi tiết trong [trang Engilsh](../README.md)  
+Fitur:
+* **multi-platform** - sediakan **haxe**, **js**, **ts**, **php**, **java**, **python**, **c#** , **golang** versi
+* **standar** - mendukung csv standar format (RFC 4180)
+* **mudah digunakan** - sediakan contoh, demo, dan dokumentasi
+* **kecepatan cepat** - kode yang dioptimalkan untuk kinerja tinggi, dapat bekerja dengan mudah di perangkat yang lebih lama
+* **kuat** - mendukung **"enhanced"** csv format, lihat detailnya di [halaman Inggris](../README.md)
   
-ví dụ
+contoh
 ----------------
 ```javascript
 // enhanced_csv_content
@@ -50,16 +50,16 @@ table.selectWhenE(0, 20, 2).selectWhenL(0, false, 60.2).toObjs();
 // ]
 ```
 
-bản trình diễn 
+demo 
 ----------------
 * [Javascript demo - via Haxe code to compile](https://amin2312.github.io/ACsv/release/js/demo.html)
 * [Javascript demo - via Typescript code to compile](https://amin2312.github.io/ACsv/release/ts/demo.html)
 
-tài liệu
+dokumentasi
 ----------------
 [Online docs - via dox](https://amin2312.github.io/ACsv/release/docs/hx/index.html)
 
-khác
+yang lain
 ----------------
-***⭐ Nếu bạn thích dự án này, hãy cho một ngôi sao***  
+***⭐ Jika Anda menyukai proyek ini, silakan tambahkan bintang***  
 ***⭐ [english version](../README.md)***  

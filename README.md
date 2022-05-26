@@ -12,7 +12,7 @@ ACsv Library
 [![](https://img.shields.io/badge/csv-standard-green)](https://github.com/amin2312/ACsv/tree/main/src/python) 
 [![](https://img.shields.io/badge/csv-enhanced-red)](https://github.com/amin2312/ACsv/tree/main/src/python)  
   
-**ACsv** is a easy, multi-platform and powerful **csv parsing library**.  
+**ACsv** is a easy, multi-platform and powerful **"csv parsing library"**.  
 
 The features:
 * **Multi-platform** - provide **haxe**, **js**, **ts**, **php**, **java**, **python**, **c#** , **golang** version
@@ -64,15 +64,15 @@ Docs
 
 Languages
 ----------------
-+ **[Español](readme/espa%C3%B1ol.md)**  
-+ **[Portugués](readme/portugués.md)**  
-+ **[Français](readme/fran%C3%A7ais.md)**  
-+ **[Русский](readme/русский.md)**  
-+ **[中文](readme/中文.md)**  
-+ **[日本語](readme/日本語.md)**  
-+ **[Tiếng Việt](readme/tiếng_việt.md)**  
-+ **[Indonesia](readme/indonesia.md)**  
++ **[Español](languages/espa%C3%B1ol.md)**  
++ **[Portugués](languages/portugués.md)**  
++ **[Français](languages/fran%C3%A7ais.md)**  
++ **[Русский](languages/русский.md)**  
++ **[中文](languages/中文.md)**  
++ **[日本語](languages/日本語.md)**  
++ **[Tiếng Việt](languages/tiếng_việt.md)**  
++ **[Indonesia](languages/indonesia.md)**  
 
 Others
 ----------------
-***⭐ If you like this project, please give a star ⭐***
+***⭐ If you like this project, please add a star ⭐***

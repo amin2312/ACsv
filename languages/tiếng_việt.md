@@ -12,16 +12,16 @@ ACsv Library
 [![](https://img.shields.io/badge/csv-standard-green)](https://github.com/amin2312/ACsv/tree/main/src/python) 
 [![](https://img.shields.io/badge/csv-enhanced-red)](https://github.com/amin2312/ACsv/tree/main/src/python)  
   
-**ACsv** adalah **cse parsing perpustakaan** yang mudah, multi-platform dan kuat.  
+**ACsv** là một **"csv parsing library"** dễ dàng, đa nền tảng và mạnh mẽ.  
 
-Fitur:
-* **multi-platform** - sediakan **haxe**, **js**, **ts**, **php**, **java**, **python**, **c#** , **golang** versi
-* **standar** - ini mendukung csv standar format (RFC 4180)
-* **mudah digunakan** - berikan contoh, demo, dan dokumentasi
-* **kecepatan cepat** - kode yang dioptimalkan untuk kinerja tinggi, dapat bekerja dengan mudah di perangkat yang lebih lama
-* **kuat** - mendukung **enhanced** csv format, lihat detailnya di [halaman Inggris](../README.md)
+Các tính năng:
+* **đa nền tảng** - cung cấp **haxe**, **js**, **ts**, **php**, **java**, **python**, **c#** , **golang** phiên bản
+* **tiêu chuẩn** - hỗ trợ csv tiêu chuẩn định dạng (RFC 4180)
+* **dễ sử dụng** - cung cấp ví dụ, bản trình diễn và tài liệu
+* **tốc độ nhanh** - mã được tối ưu hóa cho hiệu suất cao, nó có thể hoạt động dễ dàng trong thiết bị cũ hơn
+* **mạnh mẽ** - hỗ trợ **"enhanced"** csv định dạng, xem chi tiết trong [trang Engilsh](../README.md)  
   
-contoh
+ví dụ
 ----------------
 ```javascript
 // enhanced_csv_content
@@ -50,16 +50,16 @@ table.selectWhenE(0, 20, 2).selectWhenL(0, false, 60.2).toObjs();
 // ]
 ```
 
-demo 
+bản trình diễn 
 ----------------
 * [Javascript demo - via Haxe code to compile](https://amin2312.github.io/ACsv/release/js/demo.html)
 * [Javascript demo - via Typescript code to compile](https://amin2312.github.io/ACsv/release/ts/demo.html)
 
-dokumentasi
+tài liệu
 ----------------
 [Online docs - via dox](https://amin2312.github.io/ACsv/release/docs/hx/index.html)
 
-yang lain
+khác
 ----------------
-***⭐ Jika Anda menyukai proyek ini, tolong beri bintang***  
+***⭐ Nếu bạn thích dự án này, hãy thêm một ngôi sao***  
 ***⭐ [english version](../README.md)***  

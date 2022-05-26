@@ -12,17 +12,16 @@ ACsv Library
 [![](https://img.shields.io/badge/csv-standard-green)](https://github.com/amin2312/ACsv/tree/main/src/python) 
 [![](https://img.shields.io/badge/csv-enhanced-red)](https://github.com/amin2312/ACsv/tree/main/src/python)  
   
-**ACsv** es una  **csv parsing librería** fácil, multi-plataforma y poderosa.  
+**ACsv** est une **"csv parsing livraria"** facile, multi-plateforme et puissante.  
 
-Las características:
-* **multi-plataforma** - proveer **haxe**, **js**, **ts**, **php**, **java**, **python**, **c#** , **golang** versión
-* **estándar** - compatible con csv estándar formato (RFC 4180)
-* **fácil de usar** - proporcione el ejemplo, la demostración y la documentación
-* **rápida velocidad** - código optimizado para alto rendimiento, puede funcionar fácilmente en dispositivos más antiguos
-* **poderoso** - apoyar **mejorada** csv formato,  
-&emsp;&emsp;&emsp;&emsp;&emsp;ver detalles en [pagina en ingles](../README.md)
+Les caractéristiques:
+* **multi-plateforme** - fournir **haxe**, **js**, **ts**, **php**, **java**, **python**, **c#** , **golang** version
+* **standard** - prend en charge csv standard format (RFC 4180)
+* **facile à utiliser** - fournir exemple, démonstration et documentation
+* **vitesse rapide** - code optimisé pour des performances élevées, il peut fonctionner facilement dans un appareil plus ancien
+* **puissante** - prend en charge le **"enhanced"** csv format, voir les détails sur [page en anglais](../README.md)
   
-ejemplo
+exemple
 ----------------
 ```javascript
 // enhanced_csv_content
@@ -51,16 +50,16 @@ table.selectWhenE(0, 20, 2).selectWhenL(0, false, 60.2).toObjs();
 // ]
 ```
 
-demostración 
+démonstration 
 ----------------
 * [Javascript demo - via Haxe code to compile](https://amin2312.github.io/ACsv/release/js/demo.html)
 * [Javascript demo - via Typescript code to compile](https://amin2312.github.io/ACsv/release/ts/demo.html)
 
-documentación
+documentation
 ----------------
 [Online docs - via dox](https://amin2312.github.io/ACsv/release/docs/hx/index.html)
 
-otros
+autres
 ----------------
-***⭐ Si te gusta este proyecto, por favor dale una estrella***  
+***⭐ Si vous aimez ce projet, veuillez ajouter une étoile***  
 ***⭐ [english version](../README.md)***  

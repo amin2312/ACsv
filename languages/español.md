@@ -12,16 +12,16 @@ ACsv Library
 [![](https://img.shields.io/badge/csv-standard-green)](https://github.com/amin2312/ACsv/tree/main/src/python) 
 [![](https://img.shields.io/badge/csv-enhanced-red)](https://github.com/amin2312/ACsv/tree/main/src/python)  
   
-**ACsv** это простая, многоплатформенная и мощная **csv parseing библиотека**.
+**ACsv** es una  **"csv parsing librería"** fácil, multi-plataforma y poderosa.  
 
-Особенности:
-* **многоплатформенная** - предоставьте **haxe**, **js**, **ts**, **php**, **java**, **python**, **c#** , **golang** версию
-* **стандартный** - поддержка стандартного csv формата (RFC 4180)
-* **простая** - предоставьте пример, демонстрацию и документацию
-* **высокая скорость** - оптимизированный код для высокой производительности, он может легко работать на старых устройствах
-* **мощная** - поддержка **расширенного** csv формата, см. подробности на [английской странице](../README.md)  
+Las características:
+* **multi-plataforma** - proporcionar **haxe**, **js**, **ts**, **php**, **java**, **python**, **c#** , **golang** versión
+* **estándar** - compatible con csv estándar formato (RFC 4180)
+* **fácil de usar** - proporcionar el ejemplo, la demostración y la documentación
+* **rápida velocidad** - código optimizado para alto rendimiento, puede funcionar fácilmente en dispositivos más antiguos
+* **poderosa** - compatible con **"enhanced"** csv formato, ver detalles en [pagina en ingles](../README.md)
   
-пример
+ejemplo
 ----------------
 ```javascript
 // enhanced_csv_content
@@ -50,16 +50,16 @@ table.selectWhenE(0, 20, 2).selectWhenL(0, false, 60.2).toObjs();
 // ]
 ```
 
-демонстрацию 
+demostración 
 ----------------
 * [Javascript demo - via Haxe code to compile](https://amin2312.github.io/ACsv/release/js/demo.html)
 * [Javascript demo - via Typescript code to compile](https://amin2312.github.io/ACsv/release/ts/demo.html)
 
-документацию
+documentación
 ----------------
 [Online docs - via dox](https://amin2312.github.io/ACsv/release/docs/hx/index.html)
 
-другие
+otros
 ----------------
-***⭐ Если вам нравится этот проект, пожалуйста, дайте звезду***  
+***⭐ Si te gusta este proyecto, por favor agrega una estrella***  
 ***⭐ [english version](../README.md)***  
