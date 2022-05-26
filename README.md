@@ -1,5 +1,5 @@
 ACsv Library
-***
+================
 [![](https://img.shields.io/badge/support-haxe-blue)](https://github.com/amin2312/ACsv/tree/main/src/haxe) 
 [![](https://img.shields.io/badge/support-javascript-blue)](https://github.com/amin2312/ACsv/tree/main/src/javascript) 
 [![](https://img.shields.io/badge/support-typescript-blue)](https://github.com/amin2312/ACsv/tree/main/src/typescript) 
@@ -10,10 +10,10 @@ ACsv Library
 [![](https://img.shields.io/badge/support-golang-blue)](https://github.com/amin2312/ACsv/tree/main/src/csharp)  
 [![](https://img.shields.io/badge/csv-parsing-green)](https://github.com/amin2312/ACsv/tree/main/src/python) 
 [![](https://img.shields.io/badge/csv-standard-green)](https://github.com/amin2312/ACsv/tree/main/src/python) 
-[![](https://img.shields.io/badge/csv-enhanced-red)](https://github.com/amin2312/ACsv/tree/main/src/python)
-***  
+[![](https://img.shields.io/badge/csv-enhanced-red)](https://github.com/amin2312/ACsv/tree/main/src/python)  
+---    
 Languages - **[Español](languages/espa%C3%B1ol.md)**, **[Portugués](languages/portugués.md)**, **[Français](languages/fran%C3%A7ais.md)**, **[Русский](languages/русский.md)**, **[中文](languages/中文.md)**, **[日本語](languages/日本語.md)**, **[Tiếng Việt](languages/tiếng_việt.md)**, **[Indonesia](languages/indonesia.md)**
-***  
+---  
 **ACsv** is a easy, multi-platform and powerful **"csv parsing library"**.  
 
 The features:
