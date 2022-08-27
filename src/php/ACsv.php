@@ -652,6 +652,11 @@ namespace acsv
          */
         private static function textToArray($text, $FS = ",", $FD = "\"")
         {
+            // Compatibility of BOM
+            if (ord($text[0]) == 0xEF && ord($text[1]) == 0xBB && ord($text[2]) == 0xBF)
+            {
+                $text = substr($text , 3);
+            }
             $FDs = $FD . $FD;
             $arr = [];
             $maxLen = strlen($text);
