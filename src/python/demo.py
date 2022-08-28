@@ -8,10 +8,10 @@ class Demo:
 
     def __init__(self):
         srcDir = os.path.dirname(__file__)
-        f = open(srcDir + "/../../release/csvs/standard_format_text.csv", "r")
+        f = open(srcDir + "/../../release/csvs/standard_format_text.csv", "r", encoding='utf8')
         self._tab1 = acsv.Table.Parse(f.read())
         self.test_standard_csv_format()
-        f = open(srcDir + "/../../release/csvs/enhanced_format_text.csv", "r")
+        f = open(srcDir + "/../../release/csvs/enhanced_format_text.csv", "r", encoding='utf8')
         self._tab2 = acsv.Table.Parse(f.read())
         self.test_enhanced_csv_format()
 
