@@ -158,6 +158,9 @@ acsv_Table.textToArray = function(text,FS,FD) {
 	if(FS == null) {
 		FS = ",";
 	}
+	if(text.charCodeAt(0) == 0xFEFF) {
+		text = text.substring(1);
+	}
 	var FDs = FD + FD;
 	var arr = [];
 	var maxLen = text.length;
