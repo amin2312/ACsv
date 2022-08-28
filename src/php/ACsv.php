@@ -652,7 +652,7 @@ namespace acsv
          */
         private static function textToArray($text, $FS = ",", $FD = "\"")
         {
-            // Compatibility of BOM
+            // compatible with utf8 BOM
             if (ord($text[0]) == 0xEF && ord($text[1]) == 0xBB && ord($text[2]) == 0xBF)
             {
                 $text = substr($text , 3);

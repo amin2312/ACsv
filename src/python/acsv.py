@@ -488,6 +488,9 @@ class Table:
     '''
     @staticmethod
     def textToArray(text, FS = ",", FD = "\""):
+        # compatible with unicode BOM
+        if (ord(text[0]) == 0xFEFF):
+            text = text[1:]
         FDs = FD + FD
         arr = []
         maxLen = len(text)

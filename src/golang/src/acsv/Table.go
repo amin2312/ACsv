@@ -646,6 +646,10 @@ func Parse(content string) *Table {
  * Convert text to array.
  */
 func textToArray(text string, FS string, FD string) *list.List {
+	// compatible with utf8 BOM
+	if (text[0] == 0xEF && text[1] == 0xBB && text[2] == 0xBF) {
+		text = text[3:]
+	}
 	var FDs = FD + FD
 	var arr = list.New()
 	var maxLen = len(text)

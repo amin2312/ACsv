@@ -761,6 +761,11 @@ public class Table {
      */
     static private ArrayList<ArrayList<String>> textToArray(String text, String FS, String FD)
     {
+        // compatible with unicode BOM
+        if (text.charAt(0) == 0xFEFF)
+        {
+            text = text.substring(1);
+        }
         String FDs = FD + FD;
         ArrayList<ArrayList<String>> arr = new ArrayList<>();
         int maxLen = text.length();

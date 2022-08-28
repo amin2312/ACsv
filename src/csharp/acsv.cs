@@ -790,6 +790,11 @@ namespace acsv
          */
         static private ArrayList textToArray(string text, string FS, string FD)
         {
+            // compatible with unicode BOM
+            if (text[0] == 0xFEFF)
+            {
+                text = text.Substring(1);
+            }
             string FDs = FD + FD;
             ArrayList arr = new ArrayList();
             int maxLen = text.Length;

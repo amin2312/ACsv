@@ -682,6 +682,24 @@ class Table
      */
     static private function textToArray(text:String, FS:String = ",", FD:String = "\""):Array<Array<Dynamic>>
     {
+        // compatible with unicdoe BOM
+        #if js
+        if (untyped __js__("text.charCodeAt(0) == 0xFEFF"))
+        {
+            text = text.substring(1);
+        }
+        #else
+        // compatible with unicdoe BOM - because some languages is UTF16 encoding
+        if (text.charCodeAt(0) == 0xFEFF)
+        {
+            text = text.substring(1);
+        }
+        // compatible with utf8 BOM - because some languages is byte string
+        else if (text.charCodeAt(0) == 0xEF && text.charCodeAt(1) == 0xBB && text.charCodeAt(2) == 0xBF)
+        {
+            text = text.substring(3);
+        }
+        #end
         var FDs = FD + FD;
         var arr:Array<Array<Dynamic>> = [];
         var maxLen:Int = text.length;
