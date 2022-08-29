@@ -15,16 +15,16 @@ ACsv Library
 | **[Español](languages/espa%C3%B1ol.md)** | **[Portugués](languages/portugués.md)** | **[Français](languages/fran%C3%A7ais.md)** | **[Русский](languages/русский.md)** | **[中文](languages/中文.md)** | **[日本語](languages/日本語.md)** | **[Tiếng Việt](languages/tiếng_việt.md)** | **[Indonesia](languages/indonesia.md)** |  
   
 **ACsv** is an easy, multi-platform and powerful **"csv parsing library"**.  
-
 The features:
 * **Multi-platform** - provides **Haxe**, **JS**, **TS**, **PHP**, **Java**, **Python**, **C#**, and **Golang** versions
 * **Standard** - supports standard CSV format (RFC 4180)
 * **Easy to use** - provides example, demos and documentations
 * **Fast speed** - optimized code for high performance. It can work easily in older devices.
 * **Powerful** - supports **enhanced** CSV format;  
-&emsp;&emsp;&emsp;&emsp;&emsp;allows field type to be declared after the field name (like [![](https://img.shields.io/badge/name-:string-blue)]());  
-&emsp;&emsp;&emsp;&emsp;&emsp;supported field types: **bool, int, number, string, json, strings**;
-&emsp;&emsp;&emsp;&emsp;&emsp;See details in "release/csvs/enhanced_format_text.csv"   
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;allows field type to be declared after the field name (like [![](https://img.shields.io/badge/name-:string-blue)]());  
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;supported field types: **bool, int, number, string, json, strings**;  
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;See details in "release/csvs/enhanced_format_text.csv"  
+&emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp;- compatibles with unicdoe BOM
   
 Example
 ----------------
