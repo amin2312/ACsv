@@ -104,9 +104,9 @@ acsv_Table.textToArray = function(text,FS,FD) {
 				} else {
 					indexA -= ptrPos;
 				}
-				var indexB = ptr.indexOf("\r\n",ptrPos + cellIndexB);
-				if(indexB == -1) {
-					indexB = ptr.indexOf("\n",ptrPos + cellIndexB);
+				var indexB = ptr.indexOf("\n",ptrPos + cellIndexB);
+				if(indexB != -1 && ptr.charAt(indexB - 1) == "\r") {
+					--indexB;
 				}
 				if(indexB == -1) {
 					indexB = curLen;

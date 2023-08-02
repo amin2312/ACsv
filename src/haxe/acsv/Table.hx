@@ -722,7 +722,7 @@ class Table
                     cellIndexB += 2;
                     break;
                 }
-                if (cc == "\n") // line is over, compatible with linux/unix/server env
+                if (cc == "\n") // line is over, compatible with linux/unix
                 {
                     cellIndexB += 1;
                     break;
@@ -739,7 +739,7 @@ class Table
                     {
                         cc = '\n'; // fix the bug when the last cell is empty
                     }
-                    if (cellIndexA == 0 || cc == FS || cc == "\n") // is empty cell, compatible with linux/unix/server env
+                    if (cellIndexA == 0 || cc == FS || cc == "\n") // is empty cell, compatible with linux/unix
                     {
                         cellIndexB += 1;
                         cells.push("");
@@ -798,10 +798,10 @@ class Table
                     {
                         indexA -= ptrPos;
                     }
-                    var indexB:Int = ptr.indexOf("\r\n", ptrPos + cellIndexB);
-                    if (indexB == -1)
+                    var indexB:Int = ptr.indexOf("\n", ptrPos + cellIndexB);
+                    if (indexB != -1 && ptr.charAt(indexB - 1) == "\r") // Compatible with window
                     {
-                        indexB = ptr.indexOf("\n", ptrPos + cellIndexB); // Compatible with linux/unix/server env
+                        indexB--;
                     }
                     if (indexB == -1)
                     {
