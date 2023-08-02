@@ -864,10 +864,10 @@ public class Table {
                     {
                         indexA -= ptrPos;
                     }
-                    int indexB = ptr.indexOf("\r\n", ptrPos + cellIndexB);
-                    if (indexB == -1)
+                    int indexB = ptr.indexOf("\n", ptrPos + cellIndexB);
+                    if (indexB != -1 && ptr.charAt(indexB - 1) == '\r') // Compatible with window
                     {
-                        indexB = ptr.indexOf("\n", ptrPos + cellIndexB);
+                        indexB--;
                     }
                     if (indexB == -1)
                     {

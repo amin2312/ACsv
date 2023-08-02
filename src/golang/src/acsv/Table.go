@@ -647,7 +647,7 @@ func Parse(content string) *Table {
  */
 func textToArray(text string, FS string, FD string) *list.List {
 	// compatible with utf8 BOM
-	if (text[0] == 0xEF && text[1] == 0xBB && text[2] == 0xBF) {
+	if text[0] == 0xEF && text[1] == 0xBB && text[2] == 0xBF {
 		text = text[3:]
 	}
 	var FDs = FD + FD
@@ -726,9 +726,9 @@ func textToArray(text string, FS string, FD string) *list.List {
 				} else {
 					indexA -= ptrPos
 				}
-				var indexB = strings.Index(ptr[nextPos:], "\r\n") + nextPos
-				if indexB < nextPos {
-					indexB = strings.Index(ptr[nextPos:], "\n") + nextPos
+				var indexB = strings.Index(ptr[nextPos:], "\n") + nextPos
+				if indexB > nextPos && ptr[indexB-1] == '\r' { // Compatible with window
+					indexB--
 				}
 				if indexB < nextPos {
 					indexB = curLen

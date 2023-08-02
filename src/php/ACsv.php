@@ -755,10 +755,10 @@ namespace acsv
                         {
                             $indexA -= $ptrPos;
                         }
-                        $indexB = strpos($ptr, "\r\n", $ptrPos + $cellIndexB);
-                        if ($indexB === false)
+                        $indexB = strpos($ptr, "\n", $ptrPos + $cellIndexB);
+                        if ($indexB !== false && $ptr[$indexB - 1] == "\r") // Compatible with window
                         {
-                            $indexB = strpos($ptr, "\n", $ptrPos + $cellIndexB);
+                            $indexB--;
                         }
                         if ($indexB === false)
                         {

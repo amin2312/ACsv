@@ -556,9 +556,9 @@ class Table:
                         indexA = curLen; # is last cell
                     else:
                         indexA -= ptrPos
-                    indexB = ptr.find("\r\n", ptrPos + cellIndexB)
-                    if (indexB == -1):
-                        indexB = ptr.find("\n", ptrPos + cellIndexB)
+                    indexB = ptr.find("\n", ptrPos + cellIndexB)
+                    if (indexB != -1 and ptr[indexB - 1] == "\r"): # Compatible with window
+                        indexB = indexB - 1
                     if (indexB == -1):
                         indexB = curLen
                     else:

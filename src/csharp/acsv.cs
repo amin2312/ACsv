@@ -893,10 +893,10 @@ namespace acsv
                         {
                             indexA -= ptrPos;
                         }
-                        int indexB = ptr.IndexOf("\r\n", ptrPos + cellIndexB);
-                        if (indexB == -1)
+                        int indexB = ptr.IndexOf("\n", ptrPos + cellIndexB);
+                        if (indexB != -1 && ptr[indexB - 1] == '\r') // Compatible with window
                         {
-                            indexB = ptr.IndexOf("\n", ptrPos + cellIndexB);
+                            indexB--;
                         }
                         if (indexB == -1)
                         {

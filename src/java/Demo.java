@@ -30,10 +30,10 @@ public class Demo
         System.out.println(System.getProperty("user.dir"));
         System.out.println();
 
-        String standard_format_text = readToString("release/csvs/standard_format_text.csv");
+        String standard_format_text = readToString("../../release/csvs/standard_format_text.csv");
 		_tab1 = Table.Parse(standard_format_text);
         test_standard_csv_format();
-        String enhanced_format_text = readToString("release/csvs/enhanced_format_text.csv");
+        String enhanced_format_text = readToString("../../release/csvs/enhanced_format_text.csv");
 		_tab2 = Table.Parse(enhanced_format_text);
         try {
             test_enhanced_csv_format();
