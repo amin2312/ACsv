@@ -6,6 +6,7 @@
 <style>
     html {
         font-size: 12px;
+        font-family: system-ui;
     }
 
     html,
@@ -23,6 +24,9 @@
     table {
         border-spacing: 0px;
         border-collapse: collapse;
+        box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+        border-radius: 20px;
+        margin: 20px 0;
     }
 
     td {
@@ -32,25 +36,31 @@
 
     #nav {
         height: 30px;
+        /* width: 100vw; */
         line-height: 30px;
         font-size: 1.5rem;
         background-color: #EEE;
+        padding: 20px 0;
+        margin: auto;
+        text-align: center;
     }
 
     #nav a {
-        color: blue;
-        margin-left: 10px;
+        color: #2980b9;
+        margin-left: 25px;
         text-decoration: none;
+        font-weight: bold;
+        transition: textDecoration 2s;
     }
 
     #nav a:hover {
-        color: blue;
+        color: #2980b9;
         text-decoration: underline;
     }
 
     #main {
-        width: 1000px;
-        margin: 0px auto;
+        /* width: 1000px; */
+        
     }
 
     #output>div {
@@ -60,29 +70,33 @@
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
+        margin: 20px 0;
     }
 
     #output>div:nth-child(odd) {
         background-color: #EEE;
+        color: #000;
     }
 
     #output>div>span {
-        background-color: #090;
+        background-color: #27ae60;
         color: white;
-        margin: 0px 5px;
-        padding: 3px;
+        margin-right: 5px;
+        padding: 5px;
+        border-radius: 5px;
     }
 
     .E {
-        background-color: #C00;
+        background-color: #e74c3c;
+        padding: 5px;
     }
 
     #output table {
-        margin: 5px 0px;
+        margin: auto;
     }
     #output thead td {
         font-weight: bold;
-        color: red;
+        color: #e74c3c;
     }
     #output td {
         font-size: 1rem;
@@ -96,17 +110,34 @@
         text-align: center;
         background-color: #EEE;
     }
+    .title{
+        text-align: center;
+        margin: 50px auto;
+    }
+    .container{
+        padding: 0 10%; 
+    }
+    .dark{
+        background-color: #34495e;
+        color: #bdc3c7;
+    }
 </style>
 
 <body>
     <div id="main">
-        <div id="nav"><a href="https://github.com/amin2312/ACsv">[Home]</a><a href="demo.html">[javascript code]</a><a href="../ts/demo.html">[typescript code]</a></div>
-        <div style="line-height: 60px; font-size:2rem; font-weight: bold; text-align: center;">ACsv javascript code (via Haxe)</div>
-        <div id="output">
+        <div id="nav" class=" container"><a href="https://github.com/amin2312/ACsv">Home</a><a href="demo.html">javascript code</a><a href="../ts/demo.html">typescript code</a> <a href="#" onclick="darkMode()">dark mode</a></div>
+        <h1 class="title">ACsv javascript code (via Haxe)</div>
+        <div id="output" class=" container">
         </div>
     </div>
-    <br /><br /><br /><br /><br /><br />
+    
 </body>
 
 </html>
 <script src="demo.js"></script>
+<script>
+    const darkMode =()=>{
+        const body = document.getElementsByTagName('body')
+        body[0].classList.value === 'dark'?body[0].classList.remove('dark'):body[0].classList.add('dark')
+    }
+</script>
